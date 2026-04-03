@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cobblebase Datapack Generator</title>
+  <meta name="description" content="Create custom Minecraft datapacks for the Cobblebase mod. Configure Pokemon species skills and proficiencies without editing JSON files.">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <h1>Cobblebase Datapack Generator</h1>
+      <p class="subtitle">Create custom species skill datapacks for Cobblemon</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar">
+      <button id="btn-add-species" class="btn btn-primary">+ Add Species</button>
+      <button id="btn-import" class="btn btn-secondary">Import Datapack</button>
+      <button id="btn-download" class="btn btn-accent" disabled>Download Datapack</button>
+      <input type="file" id="import-file" accept=".zip" hidden>
+    </section>
+
+    <section id="species-container">
+      <div class="empty-state">
+        <div class="empty-icon">&#x1F4E6;</div>
+        <h2>No species configured</h2>
+        <p>Click "Add Species" to start building your datapack.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="species-search-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Select Species</h2>
+        <button class="modal-close">&times;</button>
+      </div>
+      <input type="text" id="species-search-input" placeholder="Search species..." autocomplete="off">
+      <div id="species-search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <template id="species-card-template">
+    <div class="species-card" data-species="">
+      <div class="species-header">
+        <h3 class="species-name"></h3>
+        <button class="btn-remove" title="Remove species">&times;</button>
+      </div>
+      <div class="skills-grid"></div>
+    </div>
+  </template>
+
+  <template id="skill-item-template">
+    <div class="skill-item" data-skill-id="">
+      <label class="skill-toggle">
+        <input type="checkbox" class="skill-checkbox">
+        <span class="skill-info">
+          <span class="skill-name"></span>
+          <span class="skill-desc"></span>
+        </span>
+      </label>
+      <div class="proficiency-stars" data-proficiency="0">
+        <span class="star" data-value="1"></span>
+        <span class="star" data-value="2"></span>
+        <span class="star" data-value="3"></span>
+        <span class="star" data-value="4"></span>
+        <span class="star" data-value="5"></span>
+      </div>
+    </div>
+  </template>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
