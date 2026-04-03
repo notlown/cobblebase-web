@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compatibility - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="jobs.html">Jobs Guide</a>
+                <a href="proficiency.html">Proficiency System</a>
+                <a href="gui.html">GUI Guide</a>
+                <a href="buffs.html">Buffs &amp; Legendaries</a>
+                <a href="admin.html">Admin Guide</a>
+                <a href="datapacks.html">Datapacks</a>
+                <a href="compatibility.html" class="active">Compatibility</a>
+                <a href="faq.html">FAQ</a>
+                <a href="../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
+
+                <h1>Compatibility</h1>
+                <p>This page covers supported Fakemon packs, known mod incompatibilities, and dependency information.</p>
+
+                <h2>Dependencies</h2>
+                <p>Cobblebase requires the following mods to be installed:</p>
+                <table>
+                    <tr><th>Dependency</th><th>Version</th><th>Notes</th></tr>
+                    <tr><td>Minecraft</td><td>1.21.1</td><td>Only this version is supported</td></tr>
+                    <tr><td>Cobblemon</td><td>1.7.0+</td><td>The base Pokemon mod</td></tr>
+                    <tr><td>Cloth Config</td><td>Latest</td><td><strong>Required</strong> -- mod crashes without it</td></tr>
+                    <tr><td>Fabric Language Kotlin</td><td>Latest</td><td>Fabric only</td></tr>
+                    <tr><td>Kotlin for Forge</td><td>5.x</td><td>NeoForge only</td></tr>
+                </table>
+
+                <h3>Cloth Config Dependency</h3>
+                <p>Cobblebase uses Cloth Config (<code>me.shedaniel.autoconfig</code>) for its configuration screen. Without it installed, the mod will crash on startup with:</p>
+                <pre><code>ClassNotFoundException: me.shedaniel.autoconfig.ConfigData</code></pre>
+                <p>Install Cloth Config from <a href="https://modrinth.com/mod/cloth-config">Modrinth</a> or <a href="https://www.curseforge.com/minecraft/mc-mods/cloth-config">CurseForge</a>.</p>
+
+                <hr>
+
+                <h2>Supported Fakemon Packs</h2>
+                <p>Cobblebase includes <strong>built-in skill assignments</strong> for all species in these Fakemon mods. They work out of the box with no configuration needed.</p>
+
+                <h3>Official Cobblemon</h3>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Species</td><td>996</td></tr>
+                    <tr><td>Assignment Method</td><td>Hand-crafted, individually tuned</td></tr>
+                    <tr><td>Notes</td><td>Every Pokemon has skills chosen based on its identity and lore, not just typing</td></tr>
+                </table>
+
+                <h3>Lively Mons</h3>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Species</td><td>59</td></tr>
+                    <tr><td>Assignment Method</td><td>Auto-assigned by typing + stats</td></tr>
+                    <tr><td>Download</td><td>Available on Modrinth</td></tr>
+                </table>
+
+                <h3>Alatias Fakemon Pack (AFP)</h3>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Species</td><td>87</td></tr>
+                    <tr><td>Assignment Method</td><td>Auto-assigned by typing + stats</td></tr>
+                    <tr><td>Download</td><td>Available on Modrinth</td></tr>
+                </table>
+
+                <h3>Laser's Fakemon Pack</h3>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Species</td><td>53</td></tr>
+                    <tr><td>Assignment Method</td><td>Auto-assigned by typing + stats</td></tr>
+                    <tr><td>Download</td><td>Available on Modrinth</td></tr>
+                </table>
+
+                <h3>Wilbayan's Fakemons (Vol 1-3 + G)</h3>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Species</td><td>37</td></tr>
+                    <tr><td>Assignment Method</td><td>Auto-assigned by typing + stats</td></tr>
+                    <tr><td>Download</td><td>Available on Modrinth</td></tr>
+                </table>
+
+                <h3>Gravelmon</h3>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Species</td><td>7,194</td></tr>
+                    <tr><td>Assignment Method</td><td>Auto-assigned by typing + stats</td></tr>
+                    <tr><td>Download</td><td>Available on Modrinth</td></tr>
+                    <tr><td>Notes</td><td>Largest supported pack -- all 7,194 species have assignments</td></tr>
+                </table>
+
+                <h3>Total Species Count</h3>
+                <p><strong>8,426 species</strong> have built-in skill assignments across all supported packs.</p>
+
+                <hr>
+
+                <h2>How Fakemon Auto-Assignment Works</h2>
+                <p>For Fakemon packs (everything except official Cobblemon), skills are automatically assigned based on three factors:</p>
+
+                <h3>1. Typing</h3>
+                <p>A Fakemon's type determines which skills it can receive:</p>
+                <table>
+                    <tr><th>Type</th><th>Assigned Skills</th></tr>
+                    <tr><td>Water</td><td>Fishing, Water Fill, Water Breathing, Diving</td></tr>
+                    <tr><td>Fire</td><td>Furnace Fuel, Lava Fill</td></tr>
+                    <tr><td>Grass</td><td>Harvester, Irrigator, Botanist</td></tr>
+                    <tr><td>Ground/Rock</td><td>Mining, Archeologist, Excavator</td></tr>
+                    <tr><td>Fighting</td><td>Guard, Trainer</td></tr>
+                    <tr><td>Psychic</td><td>Mentor</td></tr>
+                    <tr><td>Fairy</td><td>Friend Recruiter</td></tr>
+                    <tr><td>Normal</td><td>Gatherer</td></tr>
+                    <tr><td>Ghost/Dark</td><td>Night Vision, Scout</td></tr>
+                    <tr><td>Ice</td><td>Snow Fill</td></tr>
+                    <tr><td>Bug</td><td>Honey Collect</td></tr>
+                    <tr><td>Poison</td><td>Brew Fuel</td></tr>
+                </table>
+
+                <h3>2. Base Stats</h3>
+                <p>Individual base stats influence additional skill assignments:</p>
+                <table>
+                    <tr><th>Stat Condition</th><th>Assigned Skill</th></tr>
+                    <tr><td>High ATK (110+)</td><td>Guard</td></tr>
+                    <tr><td>High SPE (110+)</td><td>Scout</td></tr>
+                    <tr><td>High SPA (110+)</td><td>Mentor</td></tr>
+                    <tr><td>High HP (100+)</td><td>Healer</td></tr>
+                </table>
+
+                <h3>3. BST Tiers</h3>
+                <p>Base Stat Total determines proficiency levels and access to legendary skills:</p>
+                <table>
+                    <tr><th>BST Range</th><th>Effects</th></tr>
+                    <tr><td>600+ (Legendary)</td><td>Prof 5, Legendary Recruiter, Lucky Charm, Aura Boost</td></tr>
+                    <tr><td>570+ (Pseudo)</td><td>High proficiency, Aura Boost, high Mentor</td></tr>
+                    <tr><td>530+</td><td>+2 proficiency bonus to all skills</td></tr>
+                    <tr><td>480+</td><td>+1 proficiency bonus to all skills</td></tr>
+                    <tr><td>Below 480</td><td>Base proficiency levels</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Using Unsupported Fakemon Packs</h2>
+                <p>If you install a Fakemon mod that is not in the supported list above, those species will not have any skill assignments by default. You have two options:</p>
+
+                <h3>Option 1: Admin GUI (Recommended for small packs)</h3>
+                <p>Use <code>/cobblebase admin</code> to manually assign skills to each species. See the <a href="admin.html">Admin Guide</a> for details.</p>
+                <ol>
+                    <li>Open the Admin GUI</li>
+                    <li>Search for the Fakemon species</li>
+                    <li>If it does not appear, type the name and click <strong>"+ Add"</strong></li>
+                    <li>Assign skills and proficiency levels</li>
+                    <li>Changes save automatically</li>
+                </ol>
+
+                <h3>Option 2: Datapacks (Recommended for large packs)</h3>
+                <p>Create a <a href="datapacks.html">datapack</a> with species assignment JSON files for bulk configuration. This is better for large packs with many species that you want to configure all at once.</p>
+
+                <hr>
+
+                <h2>Known Incompatibilities</h2>
+
+                <h3>Chiselmon</h3>
+                <p><strong>Status:</strong> Incompatible</p>
+                <p>Chiselmon causes GUI crashes when opening the Cobblebase screen. If you experience crashes when clicking the "Cobblebase" button in the Pasture Block, check if Chiselmon is installed.</p>
+                <p><strong>Workaround:</strong> Remove Chiselmon from your mods folder. There is currently no fix available.</p>
+
+                <hr>
+
+                <h2>Recommended Modpack</h2>
+                <p>For the best Cobblebase experience, use the <a href="https://modrinth.com/modpack/cobbleverse">Cobbleverse</a> modpack. It includes hundreds of additional Pokemon species, and Cobblebase has skill assignments for all of them. The modpack is tested for compatibility and includes all required dependencies.</p>
+
+                <hr>
+
+                <h2>Reporting Compatibility Issues</h2>
+                <p>If you find a mod that causes issues with Cobblebase, please report it on the <a href="https://github.com/notlown/cobblebase/issues">GitHub Issues</a> page or in the <a href="https://discord.gg/6As3sVZgVT">Discord server</a>.</p>
+                <p>Include the following information:</p>
+                <ul>
+                    <li>Cobblebase version</li>
+                    <li>Conflicting mod name and version</li>
+                    <li>Minecraft version and mod loader (Fabric/NeoForge)</li>
+                    <li>Crash log or error description</li>
+                </ul>
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

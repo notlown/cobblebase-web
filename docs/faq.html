@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="jobs.html">Jobs Guide</a>
+                <a href="proficiency.html">Proficiency System</a>
+                <a href="gui.html">GUI Guide</a>
+                <a href="buffs.html">Buffs &amp; Legendaries</a>
+                <a href="admin.html">Admin Guide</a>
+                <a href="datapacks.html">Datapacks</a>
+                <a href="compatibility.html">Compatibility</a>
+                <a href="faq.html" class="active">FAQ</a>
+                <a href="../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
+
+                <h1>Frequently Asked Questions</h1>
+
+                <h2>General</h2>
+
+                <h3>What is Cobblebase?</h3>
+                <p>Cobblebase is a Minecraft mod for Cobblemon that transforms the Pasture Block into a Palworld-style base. Your Pokemon get assigned jobs, work automatically, and produce resources, apply buffs, guard your base, and more.</p>
+
+                <h3>Does Cobblebase work on servers?</h3>
+                <p>Yes. Cobblebase works on both singleplayer and multiplayer servers. All data (skill assignments, logs, discoveries) is stored server-side and persists across restarts.</p>
+
+                <h3>Does it work with Fabric and NeoForge?</h3>
+                <p>Yes. Cobblebase has separate builds for both Fabric and NeoForge. Make sure to download the correct version for your mod loader.</p>
+
+                <h3>Is Cobblebase compatible with Cobblemon 1.7.0?</h3>
+                <p>Cobblebase requires Cobblemon <strong>1.7.0 or higher</strong>. It was built and tested against Cobblemon 1.7.x on Minecraft 1.21.1.</p>
+
+                <hr>
+
+                <h2>Installation</h2>
+
+                <h3>The game crashes on startup with ClassNotFoundException</h3>
+                <p>You are missing <strong>Cloth Config</strong>. Cobblebase requires Cloth Config to be installed. Without it, the mod crashes with <code>ClassNotFoundException: me.shedaniel.autoconfig.ConfigData</code>. Install Cloth Config from <a href="https://modrinth.com/mod/cloth-config">Modrinth</a> or <a href="https://www.curseforge.com/minecraft/mc-mods/cloth-config">CurseForge</a>.</p>
+
+                <h3>The game crashes on NeoForge</h3>
+                <p>Make sure you have <strong>Kotlin for Forge 5.x</strong> installed. Also verify that you are using the NeoForge build of Cobblebase, not the Fabric build.</p>
+                <p>If you still experience crashes, check for known <a href="compatibility.html">mod incompatibilities</a>.</p>
+
+                <h3>Where do I configure Cobblebase?</h3>
+                <p>Press <strong>K</strong> (default keybind) in-game to open the Cloth Config settings screen. All settings can also be edited via JSON config files.</p>
+
+                <hr>
+
+                <h2>Skills and Jobs</h2>
+
+                <h3>How do I assign a job to my Pokemon?</h3>
+                <ol>
+                    <li>Right-click a Pasture Block</li>
+                    <li>Click the <strong>"Cobblebase"</strong> button</li>
+                    <li>In the Skills tab, click a skill button next to the Pokemon you want to assign, or click <strong>Auto</strong> to let the mod choose the best skill</li>
+                </ol>
+
+                <h3>What does "Auto" do?</h3>
+                <p>Auto mode selects the skill with the highest proficiency for that Pokemon. In most cases, this is the optimal choice.</p>
+
+                <h3>My Pokemon is not doing anything. Why?</h3>
+                <p>Check these common issues:</p>
+                <ul>
+                    <li><strong>Is the Pokemon assigned to a job?</strong> Open the Skills tab and verify a skill is selected.</li>
+                    <li><strong>Is the skill on cooldown?</strong> Some skills have long cooldowns (Mining: 5 min, Finder jobs: 4 min, Legendary Recruiter: 10 min). Wait for the cooldown to expire.</li>
+                    <li><strong>Does the skill require something nearby?</strong> Fishing and Diving require water within the search radius. Furnace Fuel needs a furnace. Cauldron fills need an empty cauldron.</li>
+                    <li><strong>Is the skill category disabled?</strong> Check Cloth Config settings -- skill categories can be individually toggled off.</li>
+                </ul>
+
+                <h3>Can I change a Pokemon's proficiency?</h3>
+                <p>Proficiency is fixed per species and cannot be leveled up through gameplay. However, server admins can change proficiency levels using the <a href="admin.html">Admin GUI</a> (<code>/cobblebase admin</code>) or via <a href="datapacks.html">datapacks</a>.</p>
+
+                <h3>What determines which skills a Pokemon gets?</h3>
+                <p>For official Cobblemon species (996 Pokemon), every skill assignment is hand-crafted based on the Pokemon's identity and lore. A Charizard gets Lava Fill and Guard, not because it is a Fire type, but because those fit its character.</p>
+                <p>For <a href="compatibility.html">Fakemon packs</a>, skills are auto-assigned based on typing, base stats, and BST tiers.</p>
+
+                <hr>
+
+                <h2>Proficiency</h2>
+
+                <h3>How does proficiency affect cooldowns?</h3>
+                <p>See the <a href="proficiency.html">Proficiency Guide</a> for the full formula. In short: Prof 1 is 1.67x slower than base, Prof 3 is normal speed, and Prof 5 is 0.33x (about 5 times faster than Prof 1).</p>
+
+                <h3>What does Prof 5 do for buffs?</h3>
+                <p>At proficiency 5, buff skills become <strong>global</strong> -- they apply to the pasture owner anywhere in the world, not just near the pasture. The effect is also effectively permanent with zero cooldown. See the <a href="buffs.html">Buffs Guide</a>.</p>
+
+                <h3>Is there a way to level up proficiency?</h3>
+                <p>No. Proficiency is a fixed attribute of each Pokemon species. A Magikarp with Fishing Prof 1 will always be Prof 1. To get higher proficiency, you need to find or catch a Pokemon species with higher proficiency for that skill.</p>
+
+                <hr>
+
+                <h2>Buffs</h2>
+
+                <h3>Do buffs stack?</h3>
+                <p><strong>Same buff type:</strong> No. Only the highest proficiency applies.</p>
+                <p><strong>Different buff types:</strong> Yes. You can have Speed Boost, Strength Boost, and Night Vision all active at the same time.</p>
+
+                <h3>I can not see buff particles on my character</h3>
+                <p>Buff particles on players are intentionally disabled to reduce visual clutter. You can see active buffs in the <a href="gui.html">Buffs tab</a> and through the standard Minecraft effect icons.</p>
+
+                <h3>How do I get permanent buffs?</h3>
+                <p>You need a Pokemon with <strong>proficiency 5</strong> for the buff skill you want. At Prof 5, the buff has zero cooldown and 70-second duration, making it effectively permanent and global. These Pokemon are rare -- check the <a href="buffs.html">Buffs Guide</a> for which Pokemon have each buff.</p>
+
+                <hr>
+
+                <h2>Admin and Customization</h2>
+
+                <h3>How do I open the Admin GUI?</h3>
+                <p>Run <code>/cobblebase admin</code> in chat. You need <strong>OP level 2</strong> or higher.</p>
+
+                <h3>Can I add skills to Fakemon?</h3>
+                <p>Yes. Use the <a href="admin.html">Admin GUI</a> to assign skills to any loaded species. You can also add entirely new species by typing the name in the search bar and clicking "+ Add".</p>
+
+                <h3>Do Admin GUI changes survive server restarts?</h3>
+                <p>Yes. Custom assignments are saved to <code>cobblebase_species_overrides.json</code> in the world folder.</p>
+
+                <h3>Can I share my custom skill assignments with other servers?</h3>
+                <p>Yes. Copy the <code>cobblebase_species_overrides.json</code> file from your world folder to the other server's world folder. You can also create a <a href="datapacks.html">datapack</a> for a more portable solution.</p>
+
+                <hr>
+
+                <h2>Troubleshooting</h2>
+
+                <h3>The GUI is blurry</h3>
+                <p>This was a known bug in earlier versions caused by Minecraft 1.21+'s Gaussian blur shader. It is fixed in version 1.2.0 and later. Update to the latest version.</p>
+
+                <h3>Selected skills reset when I switch tabs</h3>
+                <p>Fixed in version 1.3.0. Update to the latest version.</p>
+
+                <h3>A Pokemon named Farfetch'd crashes the GUI</h3>
+                <p>Fixed in version 1.3.0. Species names with special characters (apostrophes, accents) are now handled correctly.</p>
+
+                <h3>Items are dropping on the ground instead of going into chests</h3>
+                <p>Most loot-producing skills (Diving, Archeologist, Honey Collect, all Finders) deposit items into nearby chests automatically. Make sure:</p>
+                <ul>
+                    <li>There are chests within the search radius (default: 10 blocks)</li>
+                    <li>The chests have available inventory space</li>
+                    <li>The chests are accessible (not blocked by other blocks)</li>
+                </ul>
+                <p>If no valid chest is found, items drop on the ground as a fallback.</p>
+
+                <h3>Lucky Charm does not seem to work</h3>
+                <p>Lucky Charm applies to the <strong>owner</strong> of the pasture, not to all players. It boosts the shiny rate for wild Pokemon that spawn near you. The effect is passive and has no visual indicator -- you need to encounter wild Pokemon to notice the difference. At Prof 5, the shiny rate is 3x the base rate.</p>
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

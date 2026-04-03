@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        ul ul { margin-top: 6px; margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="index.html">Cobblebase Docs</a>
+            </div>
+            <nav>
+                <a href="getting-started.html" class="active">Getting Started</a>
+                <a href="jobs.html">Jobs Guide</a>
+                <a href="proficiency.html">Proficiency System</a>
+                <a href="gui.html">GUI Guide</a>
+                <a href="buffs.html">Buffs &amp; Legendaries</a>
+                <a href="admin.html">Admin Guide</a>
+                <a href="datapacks.html">Datapacks</a>
+                <a href="compatibility.html">Compatibility</a>
+                <a href="faq.html">FAQ</a>
+                <a href="../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header">
+                <img src="../cobblebase_header.png" alt="Cobblebase">
+            </div>
+            <div class="content">
+                <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
+
+                <h1>Getting Started</h1>
+
+                <p>This guide walks you through installing Cobblebase and getting your first Pokemon base up and running.</p>
+
+                <h2>Requirements</h2>
+
+                <table>
+                    <tr><th>Dependency</th><th>Version</th></tr>
+                    <tr><td>Minecraft</td><td><strong>1.21.1</strong></td></tr>
+                    <tr><td>Cobblemon</td><td><strong>1.7.0+</strong></td></tr>
+                    <tr><td>Cloth Config</td><td>Required (mod crashes without it)</td></tr>
+                </table>
+
+                <h3>Fabric</h3>
+                <ul>
+                    <li>Fabric Loader <strong>0.16.14+</strong></li>
+                    <li>Fabric Language Kotlin</li>
+                </ul>
+
+                <h3>NeoForge</h3>
+                <ul>
+                    <li>NeoForge <strong>21.1+</strong></li>
+                    <li>Kotlin for Forge <strong>5.x</strong></li>
+                </ul>
+
+                <h2>Installation</h2>
+                <ol>
+                    <li>Download the latest Cobblebase JAR for your platform (Fabric or NeoForge) from <a href="https://modrinth.com/project/cobblebase">Modrinth</a> or <a href="https://github.com/notlown/cobblebase/releases">GitHub Releases</a>.</li>
+                    <li>Place the JAR in your <code>mods/</code> folder alongside Cobblemon, Cloth Config, and the Kotlin language adapter for your platform.</li>
+                    <li>Launch the game.</li>
+                </ol>
+
+                <h2>First Steps</h2>
+
+                <h3>1. Place a Pasture Block</h3>
+                <p>Cobblebase works through the Cobblemon Pasture Block. Place one down and send your Pokemon into the pasture as you normally would.</p>
+
+                <h3>2. Open the Cobblebase GUI</h3>
+                <p>Right-click the Pasture Block to open it. You will see a <strong>"Cobblebase"</strong> button in the Pasture Block UI. Click it to open the management interface.</p>
+
+                <h3>3. Assign Jobs</h3>
+                <p>In the <strong>Skills</strong> tab, you will see each Pokemon in your pasture along with their available skills. You have two options:</p>
+                <ul>
+                    <li><strong>Auto</strong> -- The mod automatically picks the best skill for each Pokemon based on proficiency.</li>
+                    <li><strong>Manual</strong> -- Click a specific skill button to assign that job.</li>
+                </ul>
+
+                <h3>4. Watch Your Pokemon Work</h3>
+                <p>Once assigned, Pokemon begin performing their jobs on cooldown-based cycles. They will harvest crops, mine ores, guard your base, find items, and more -- all automatically.</p>
+
+                <h3>5. Check Your Logs</h3>
+                <p>Switch to the <strong>Logs</strong> tab to see what your Pokemon have been doing. Filter by rarity to quickly find valuable discoveries.</p>
+
+                <h2>Configuration</h2>
+                <p>Press <strong>K</strong> (default keybind) to open the Cloth Config settings screen. Key options include:</p>
+
+                <table>
+                    <tr><th>Setting</th><th>Description</th><th>Default</th></tr>
+                    <tr><td>Dev Mode</td><td>Sets all cooldowns to 5 seconds for testing</td><td>Off</td></tr>
+                    <tr><td>Passive XP</td><td>Toggle passive XP gain for pastured Pokemon</td><td>On</td></tr>
+                    <tr><td>Passive XP Percentage</td><td>Percentage of XP to next level gained per tick</td><td>5%</td></tr>
+                    <tr><td>Passive XP Interval</td><td>Seconds between passive XP ticks</td><td>60s</td></tr>
+                    <tr><td>Skill Toggles</td><td>Enable/disable entire skill categories</td><td>All on</td></tr>
+                    <tr><td>Search Radius</td><td>Default block search radius for skills</td><td>10</td></tr>
+                    <tr><td>Mentor Max Boost</td><td>Cap the mentor XP multiplier</td><td>100%</td></tr>
+                </table>
+
+                <p>All settings are also available as JSON configuration files for server admins.</p>
+
+                <h2>Building from Source</h2>
+                <pre><code>git clone https://github.com/notlown/cobblebase.git
+cd cobblebase
+./gradlew build          # builds both Fabric and NeoForge
+./gradlew fabric:build   # Fabric only
+./gradlew neoforge:build # NeoForge only</code></pre>
+
+                <p>Output JARs are located in <code>fabric/build/libs/</code> and <code>neoforge/build/libs/</code>. Requires <strong>Java 21</strong>.</p>
+
+                <h2>Next Steps</h2>
+                <ul>
+                    <li>Learn about all <a href="jobs.html">44 jobs</a> your Pokemon can perform</li>
+                    <li>Understand the <a href="proficiency.html">proficiency system</a> that scales performance</li>
+                    <li>Explore the <a href="gui.html">GUI</a> tabs for managing your base</li>
+                    <li>Check <a href="compatibility.html">compatibility</a> with Fakemon packs</li>
+                </ul>
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

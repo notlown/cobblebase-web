@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobs Guide - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="jobs.html" class="active">Jobs Guide</a>
+                <a href="proficiency.html">Proficiency System</a>
+                <a href="gui.html">GUI Guide</a>
+                <a href="buffs.html">Buffs &amp; Legendaries</a>
+                <a href="admin.html">Admin Guide</a>
+                <a href="datapacks.html">Datapacks</a>
+                <a href="compatibility.html">Compatibility</a>
+                <a href="faq.html">FAQ</a>
+                <a href="../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
+
+                <h1>Jobs</h1>
+                <p>Cobblebase features <strong>44 unique jobs</strong> across 10 categories. Every Pokemon species has hand-crafted skill assignments -- not based on type alone, but on the identity and lore of each species.</p>
+
+                <hr>
+
+                <h2>Gathering (6 jobs)</h2>
+                <p>Pokemon that harvest, fish, mine, and collect resources from the world around your base.</p>
+
+                <h3>Harvester</h3>
+                <p>Picks apricorns, crops, berries, mints, tumblestones, and nether wart from nearby farmland and plants.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>10 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>20 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Venusaur, Scizor, Celebi</td></tr>
+                </table>
+
+                <h3>Fishing</h3>
+                <p>Navigates to nearby water and catches fish and loot using Minecraft's fishing loot table.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>60 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Requires</td><td>Water nearby</td></tr>
+                    <tr><td>Example Pokemon</td><td>Gyarados, Blastoise, Kyogre</td></tr>
+                </table>
+
+                <h3>Mining</h3>
+                <p>Digs for ores, fossils, gems, and tumblestones. Loot is divided into four tiers:</p>
+                <ul>
+                    <li><strong>Common:</strong> Tumblestone, raw copper, raw iron</li>
+                    <li><strong>Uncommon:</strong> Raw gold, lapis lazuli, type gems</li>
+                    <li><strong>Rare:</strong> Diamond, fossils</li>
+                    <li><strong>Ultra Rare:</strong> Ancient debris, netherite scrap</li>
+                </ul>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>300 seconds (5 min)</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Steelix, Excadrill, Ting-Lu</td></tr>
+                </table>
+
+                <h3>Honey Collect</h3>
+                <p>Produces honey bottles, honeycomb, and honey blocks. No beehive needed -- the Pokemon produces honey on its own.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>120 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Vespiquen, Beedrill, Combee</td></tr>
+                </table>
+
+                <h3>Archeologist</h3>
+                <p>Excavates ancient relics and artifacts including prismarine, nautilus shells, and other treasures.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>80 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Nidoking, Steelix, Nidoqueen</td></tr>
+                </table>
+
+                <h3>Diving</h3>
+                <p>Dives for underwater treasure including prismarine, nautilus shells, heart of the sea, and tridents.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>90 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Requires</td><td>Water nearby</td></tr>
+                    <tr><td>Example Pokemon</td><td>Manaphy, Tentacruel, Lapras</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Finding (12 jobs)</h2>
+                <p>Twelve specialized Finder subtypes, each with a dedicated loot table for targeted item discovery. All Finder jobs share a <strong>240-second (4-minute) base cooldown</strong> and a <strong>10-block search radius</strong>.</p>
+
+                <h3>Alchemist</h3>
+                <p>Finds evolution items and stones.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Fire Stone, Water Stone, Leaf Stone</td></tr>
+                    <tr><td>Uncommon</td><td>Thunder Stone, Moon Stone, Linking Cord</td></tr>
+                    <tr><td>Rare</td><td>Dawn Stone, Shiny Stone</td></tr>
+                    <tr><td>Ultra Rare</td><td>Ability Patch</td></tr>
+                </table>
+
+                <h3>Pharmacist</h3>
+                <p>Finds healing items and berries.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Potion, Oran Berry</td></tr>
+                    <tr><td>Uncommon</td><td>Super Potion, Sitrus Berry</td></tr>
+                    <tr><td>Rare</td><td>Max Revive, Full Restore</td></tr>
+                    <tr><td>Ultra Rare</td><td>Sacred Ash</td></tr>
+                </table>
+
+                <h3>Architect</h3>
+                <p>Finds building materials.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Planks, Bricks</td></tr>
+                    <tr><td>Uncommon</td><td>Prismarine, Sea Lantern</td></tr>
+                    <tr><td>Rare</td><td>Crying Obsidian</td></tr>
+                    <tr><td>Ultra Rare</td><td>End Stone, Purpur Block</td></tr>
+                </table>
+
+                <h3>Excavator</h3>
+                <p>Finds ores and raw minerals.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Raw Copper, Raw Iron</td></tr>
+                    <tr><td>Uncommon</td><td>Raw Gold, Lapis Lazuli</td></tr>
+                    <tr><td>Rare</td><td>Diamond, Emerald</td></tr>
+                    <tr><td>Ultra Rare</td><td>Ancient Debris</td></tr>
+                </table>
+
+                <h3>Botanist</h3>
+                <p>Finds seeds, plants, and mulch.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Wheat Seeds, Apricorn Seeds</td></tr>
+                    <tr><td>Uncommon</td><td>Mint Seeds, Berries</td></tr>
+                    <tr><td>Rare</td><td>Torchflower Seeds</td></tr>
+                    <tr><td>Ultra Rare</td><td>Pitcher Pod</td></tr>
+                </table>
+                <p>Includes mulch variants: Growth Mulch, Rich Mulch, Surprise Mulch, Loamy Mulch.</p>
+
+                <h3>Collector</h3>
+                <p>Finds Pokeballs of all types.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Poke Ball, Great Ball</td></tr>
+                    <tr><td>Uncommon</td><td>Ultra Ball, Apricorn Balls</td></tr>
+                    <tr><td>Rare</td><td>Timer Ball, Dusk Ball</td></tr>
+                    <tr><td>Ultra Rare</td><td>Master Ball, Beast Ball, Dream Ball</td></tr>
+                </table>
+
+                <h3>Scholar</h3>
+                <p>Finds XP Candies and Rare Candies.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Exp Candy XS</td></tr>
+                    <tr><td>Uncommon</td><td>Exp Candy S, Exp Candy M</td></tr>
+                    <tr><td>Rare</td><td>Exp Candy L, Exp Candy XL</td></tr>
+                    <tr><td>Ultra Rare</td><td>Rare Candy</td></tr>
+                </table>
+
+                <h3>Chef</h3>
+                <p>Finds food and cooking ingredients.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Bread, Cooked Beef</td></tr>
+                    <tr><td>Uncommon</td><td>Ponigiri, Cake</td></tr>
+                    <tr><td>Rare</td><td>Golden Apple, Lava Cookie</td></tr>
+                    <tr><td>Ultra Rare</td><td>Enchanted Golden Apple</td></tr>
+                </table>
+
+                <h3>Trainer</h3>
+                <p>Finds vitamins and training items.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Protein, Iron</td></tr>
+                    <tr><td>Uncommon</td><td>Calcium, Zinc</td></tr>
+                    <tr><td>Rare</td><td>HP Up, Carbos</td></tr>
+                    <tr><td>Ultra Rare</td><td>Ability Patch</td></tr>
+                </table>
+
+                <h3>Armorer</h3>
+                <p>Finds battle held items.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Sitrus Berry (held)</td></tr>
+                    <tr><td>Uncommon</td><td>Choice Band, Leftovers</td></tr>
+                    <tr><td>Rare</td><td>Life Orb, Expert Belt</td></tr>
+                    <tr><td>Ultra Rare</td><td>Focus Sash</td></tr>
+                </table>
+
+                <h3>Prospector</h3>
+                <p>Finds relics and treasure.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Gold Nugget</td></tr>
+                    <tr><td>Uncommon</td><td>Gold Ingot, Relic Coins</td></tr>
+                    <tr><td>Rare</td><td>Diamond</td></tr>
+                    <tr><td>Ultra Rare</td><td>Netherite Ingot</td></tr>
+                </table>
+
+                <h3>Smith</h3>
+                <p>Finds smithing templates and pottery.</p>
+                <table>
+                    <tr><th>Tier</th><th>Example Loot</th></tr>
+                    <tr><td>Common</td><td>Pottery Sherds</td></tr>
+                    <tr><td>Uncommon</td><td>Armor Trims</td></tr>
+                    <tr><td>Rare</td><td>Rare Armor Trims</td></tr>
+                    <tr><td>Ultra Rare</td><td>Netherite Upgrade Smithing Template</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Combat (1 job)</h2>
+
+                <h3>Guard</h3>
+                <p>Patrols the area around the pasture, repelling wild Pokemon. Earns XP and drops loot.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>120 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>XP Reward</td><td>50 XP per repel</td></tr>
+                    <tr><td>Example Pokemon</td><td>Gallade, Scizor, Incineroar</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Support (2 jobs)</h2>
+
+                <h3>Healer</h3>
+                <p>Directly heals Pokemon in the pasture by a percentage of their max HP. Also revives fainted Pokemon. Prioritizes the Pokemon with the lowest HP percentage.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>Continuous (0s)</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Healing Range</td><td>5-25% max HP per tick (scales with proficiency)</td></tr>
+                    <tr><td>Example Pokemon</td><td>Blissey, Xerneas, Zacian</td></tr>
+                </table>
+
+                <h3>Mentor</h3>
+                <p>Provides a passive XP boost for all Pokemon in the same pasture. The highest proficiency Mentor wins -- bonuses do not stack.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>Continuous (passive)</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Prof 1 Boost</td><td>+20% XP</td></tr>
+                    <tr><td>Prof 5 Boost</td><td>+100% XP (double)</td></tr>
+                    <tr><td>Example Pokemon</td><td>Alakazam, Latios, Mesprit</td></tr>
+                </table>
+                <p>The max boost is configurable via Cloth Config (default: 100%).</p>
+
+                <hr>
+
+                <h2>Logistics (1 job)</h2>
+
+                <h3>Item Gatherer</h3>
+                <p>Picks up dropped items from the ground and sorts them into nearby chests and barrels. Uses smart sorting that prioritizes chests already containing the same item type.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>5 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>24 blocks</td></tr>
+                    <tr><td>Prof 1 Pickup Radius</td><td>5 blocks</td></tr>
+                    <tr><td>Prof 5 Pickup Radius</td><td>12 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Ambipom, Furret, Munchlax</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Exploration (1 job)</h2>
+
+                <h3>Scout</h3>
+                <p>Explores the surrounding area to discover wild Pokemon, structures, and biomes. Discoveries are permanent and visible in the Discovery GUI tab.</p>
+                <table>
+                    <tr><th>Proficiency</th><th>Range</th><th>Discovers</th></tr>
+                    <tr><td>1-2</td><td>50-100 blocks</td><td>Wild Pokemon only</td></tr>
+                    <tr><td>3</td><td>120 blocks</td><td>+ Structures (Villages, Mineshafts, Shipwrecks)</td></tr>
+                    <tr><td>4-5</td><td>160-200 blocks</td><td>+ Rare Biomes (Mushroom Fields, Deep Dark, Cherry Grove)</td></tr>
+                </table>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>300 seconds (5 min)</td></tr>
+                    <tr><td>Base Search Radius</td><td>100 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Ninjask, Spectrier, Rayquaza</td></tr>
+                </table>
+                <p>Wild Pokemon sightings auto-expire after 30 minutes. Structures and biomes persist permanently.</p>
+
+                <hr>
+
+                <h2>Environmental (6 jobs)</h2>
+                <p>Pokemon that interact with blocks and containers around your base.</p>
+
+                <h3>Irrigator</h3>
+                <p>Hydrates nearby farmland blocks, keeping them watered for crop growth.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>Continuous (0s)</td></tr>
+                    <tr><td>Search Radius</td><td>20 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Venusaur, Virizion, Shaymin</td></tr>
+                </table>
+
+                <h3>Lava Fill</h3>
+                <p>Fills nearby empty cauldrons with lava.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>90 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Magmortar, Flareon, Magmar</td></tr>
+                </table>
+
+                <h3>Water Fill</h3>
+                <p>Fills nearby empty cauldrons with water.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>90 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Vaporeon, Blastoise, Palkia</td></tr>
+                </table>
+
+                <h3>Snow Fill</h3>
+                <p>Fills nearby empty cauldrons with powder snow.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>90 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Regice, Glastrier, Articuno</td></tr>
+                </table>
+
+                <h3>Furnace Fuel</h3>
+                <p>Adds burn time to nearby furnaces, keeping them fueled automatically.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>80 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Moltres, Volcanion, Ho-Oh</td></tr>
+                </table>
+
+                <h3>Brewing Fuel</h3>
+                <p>Adds fuel to nearby brewing stands.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>80 seconds</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Weezing, Dragonite, Koffing</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Recruiting (2 jobs)</h2>
+
+                <h3>Friend Recruiter</h3>
+                <p>Spawns wild Pokemon of the same type near your base. Uses official Cobblemon 1.7.3 spawn bucket data for accurate rarity distribution.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>300 seconds (5 min)</td></tr>
+                    <tr><td>Search Radius</td><td>15 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Togekiss, Sylveon, Gardevoir</td></tr>
+                </table>
+                <p>Rarity distribution scales with proficiency:</p>
+                <table>
+                    <tr><th>Proficiency</th><th>Common</th><th>Uncommon</th><th>Rare</th><th>Ultra-Rare</th></tr>
+                    <tr><td>1</td><td>93.8%</td><td>5.0%</td><td>1.0%</td><td>0.2%</td></tr>
+                    <tr><td>3</td><td>90.3%</td><td>7.5%</td><td>1.5%</td><td>0.3%</td></tr>
+                    <tr><td>5</td><td>86.8%</td><td>10.0%</td><td>2.0%</td><td>0.4%</td></tr>
+                </table>
+
+                <h3>Legendary Recruiter</h3>
+                <p>Spawns rare and legendary Pokemon near your base. Much longer cooldown than Friend Recruiter.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>600 seconds (10 min)</td></tr>
+                    <tr><td>Search Radius</td><td>20 blocks</td></tr>
+                    <tr><td>Example Pokemon</td><td>Arceus, Mew, Jirachi</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Passive Buffs (9 jobs)</h2>
+                <p>Status effects applied to all players near the pasture. See the full <a href="buffs.html">Buffs Guide</a> for details on duration, range, and Prof 5 global behavior.</p>
+                <table>
+                    <tr><th>Buff</th><th>Effect</th><th>Example Pokemon</th></tr>
+                    <tr><td>Speed Boost</td><td>Speed II</td><td>Ninjask, Regieleki, Rapidash</td></tr>
+                    <tr><td>Strength Boost</td><td>Strength I</td><td>Kartana, Rayquaza, Machamp</td></tr>
+                    <tr><td>Resistance Boost</td><td>Resistance I</td><td>Regirock, Steelix, Melmetal</td></tr>
+                    <tr><td>Night Vision</td><td>Night Vision</td><td>Ting-Lu, Spectrier, Giratina</td></tr>
+                    <tr><td>Water Breathing</td><td>Water Breathing</td><td>Kyogre, Milotic, Lapras</td></tr>
+                    <tr><td>Jump Boost</td><td>Jump Boost I</td><td>Lopunny, Hitmonlee, Blaziken</td></tr>
+                    <tr><td>Haste Boost</td><td>Haste I</td><td>Palkia, Dialga, Rayquaza</td></tr>
+                    <tr><td>Saturation</td><td>Saturation</td><td>Slurpuff, Snorlax, Munchlax</td></tr>
+                    <tr><td>Aura Boost</td><td>Luck I-III</td><td>Victini, Rayquaza, Arceus</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Legendary Abilities (3 jobs)</h2>
+                <p>Special passive abilities found only on legendary and mythical Pokemon. See the <a href="buffs.html">Buffs Guide</a> for more details.</p>
+                <table>
+                    <tr><th>Ability</th><th>Effect</th><th>Pokemon</th></tr>
+                    <tr><td>Lucky Charm</td><td>Boosts shiny rate 1.4x-3.0x</td><td>Arceus, Mew, Jirachi, Victini</td></tr>
+                    <tr><td>Growth Aura</td><td>Accelerates crop growth near pasture</td><td>Arceus, Celebi, Shaymin</td></tr>
+                    <tr><td>Extinguisher</td><td>Removes fire and extinguishes campfires</td><td>Wartortle, Muk, Squirtle, Blastoise</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Job Count Summary</h2>
+                <table>
+                    <tr><th>Category</th><th>Jobs</th></tr>
+                    <tr><td>Gathering</td><td>6</td></tr>
+                    <tr><td>Finding</td><td>12</td></tr>
+                    <tr><td>Combat</td><td>1</td></tr>
+                    <tr><td>Support</td><td>2</td></tr>
+                    <tr><td>Logistics</td><td>1</td></tr>
+                    <tr><td>Exploration</td><td>1</td></tr>
+                    <tr><td>Environmental</td><td>6</td></tr>
+                    <tr><td>Recruiting</td><td>2</td></tr>
+                    <tr><td>Passive Buffs</td><td>9</td></tr>
+                    <tr><td>Legendary</td><td>3</td></tr>
+                    <tr><td><strong>Total</strong></td><td><strong>44</strong> (including Aura Boost counted under Buffs)</td></tr>
+                </table>
+                <p>All cooldowns are affected by the <a href="proficiency.html">proficiency system</a>. Higher proficiency means faster cooldowns, better loot, and wider range.</p>
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

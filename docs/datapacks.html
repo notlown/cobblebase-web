@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datapacks - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="jobs.html">Jobs Guide</a>
+                <a href="proficiency.html">Proficiency System</a>
+                <a href="gui.html">GUI Guide</a>
+                <a href="buffs.html">Buffs &amp; Legendaries</a>
+                <a href="admin.html">Admin Guide</a>
+                <a href="datapacks.html" class="active">Datapacks</a>
+                <a href="compatibility.html">Compatibility</a>
+                <a href="faq.html">FAQ</a>
+                <a href="../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
+
+                <h1>Datapacks</h1>
+                <p>Cobblebase is fully customizable via Minecraft datapacks. You can add new skills, modify loot tables, or reassign Pokemon species without touching any code.</p>
+
+                <h2>Overview</h2>
+                <p>Cobblebase uses two types of JSON data:</p>
+                <ol>
+                    <li><strong>Skill definitions</strong> -- Define what a job does, its cooldown, search radius, and executor</li>
+                    <li><strong>Species assignments</strong> -- Map Pokemon species to skills and set proficiency levels</li>
+                </ol>
+                <p>Both can be overridden or extended via datapacks placed in your world's <code>datapacks/</code> folder.</p>
+
+                <h2>File Structure</h2>
+                <p>A Cobblebase datapack follows the standard Minecraft datapack structure:</p>
+                <pre><code>my_cobblebase_pack/
+  pack.mcmeta
+  data/
+    cobblebase/
+      skills/
+        my_custom_skill.json
+      species/
+        my_custom_pokemon.json</code></pre>
+
+                <h3>pack.mcmeta</h3>
+                <pre><code>{
+  "pack": {
+    "pack_format": 48,
+    "description": "My custom Cobblebase datapack"
+  }
+}</code></pre>
+                <p>Use pack format <code>48</code> for Minecraft 1.21.1.</p>
+
+                <h2>Skill Definition Format</h2>
+                <p>Each skill is defined as a JSON file in <code>data/cobblebase/skills/</code>. Here is the full format with all available fields:</p>
+                <pre><code>{
+  "id": "cobblebase:my_skill",
+  "name": "My Custom Skill",
+  "description": "What this skill does",
+  "category": "gathering",
+  "cooldownSeconds": 120,
+  "searchRadius": 10,
+  "executor": "harvester",
+  "effectType": "default",
+  "lootTable": "cobblebase:my_loot_table",
+  "targetBlock": "minecraft:water",
+  "requiresNearby": true,
+  "xpReward": 50
+}</code></pre>
+
+                <h3>Field Reference</h3>
+                <table>
+                    <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+                    <tr><td><code>id</code></td><td>string</td><td>Yes</td><td>Unique identifier in <code>namespace:name</code> format</td></tr>
+                    <tr><td><code>name</code></td><td>string</td><td>Yes</td><td>Display name shown in the GUI</td></tr>
+                    <tr><td><code>description</code></td><td>string</td><td>Yes</td><td>Tooltip text</td></tr>
+                    <tr><td><code>category</code></td><td>string</td><td>Yes</td><td>Skill category (see below)</td></tr>
+                    <tr><td><code>cooldownSeconds</code></td><td>integer</td><td>Yes</td><td>Base cooldown in seconds (modified by proficiency)</td></tr>
+                    <tr><td><code>searchRadius</code></td><td>integer</td><td>Yes</td><td>How far the Pokemon searches for targets</td></tr>
+                    <tr><td><code>executor</code></td><td>string</td><td>Yes</td><td>Which executor handles this skill (see below)</td></tr>
+                    <tr><td><code>effectType</code></td><td>string</td><td>Yes</td><td>Visual effect type</td></tr>
+                    <tr><td><code>lootTable</code></td><td>string</td><td>No</td><td>Loot table reference for loot-based skills</td></tr>
+                    <tr><td><code>targetBlock</code></td><td>string</td><td>No</td><td>Block the Pokemon needs nearby (e.g., <code>minecraft:water</code>)</td></tr>
+                    <tr><td><code>requiresNearby</code></td><td>boolean</td><td>No</td><td>Whether the target block must be within search radius</td></tr>
+                    <tr><td><code>xpReward</code></td><td>integer</td><td>No</td><td>XP awarded on successful execution</td></tr>
+                </table>
+
+                <h3>Categories</h3>
+                <table>
+                    <tr><th>Category</th><th>Description</th></tr>
+                    <tr><td><code>gathering</code></td><td>Resource collection skills</td></tr>
+                    <tr><td><code>combat</code></td><td>Fighting and defense</td></tr>
+                    <tr><td><code>support</code></td><td>Healing and buff skills</td></tr>
+                    <tr><td><code>generation</code></td><td>Block/fuel generation (furnace, cauldron, brewing)</td></tr>
+                    <tr><td><code>utility</code></td><td>Utility skills (gathering items, irrigating, scouting)</td></tr>
+                    <tr><td><code>fairy</code></td><td>Recruiting skills</td></tr>
+                    <tr><td><code>legendary</code></td><td>Legendary-exclusive abilities</td></tr>
+                </table>
+
+                <h3>Executors</h3>
+                <table>
+                    <tr><th>Executor</th><th>Used By</th></tr>
+                    <tr><td><code>harvester</code></td><td>Harvester</td></tr>
+                    <tr><td><code>fishing</code></td><td>Fishing</td></tr>
+                    <tr><td><code>mining</code></td><td>Mining</td></tr>
+                    <tr><td><code>honey</code></td><td>Honey Collect</td></tr>
+                    <tr><td><code>archeology</code></td><td>Archeologist</td></tr>
+                    <tr><td><code>diving</code></td><td>Diving</td></tr>
+                    <tr><td><code>finder_evo</code>, <code>finder_hea</code>, <code>finder_bui</code>, etc.</td><td>All Finder subtypes</td></tr>
+                    <tr><td><code>guard</code></td><td>Guard</td></tr>
+                    <tr><td><code>healer</code></td><td>Healer</td></tr>
+                    <tr><td><code>mentor</code></td><td>Mentor</td></tr>
+                    <tr><td><code>gather_items</code></td><td>Item Gatherer</td></tr>
+                    <tr><td><code>scout</code></td><td>Scout</td></tr>
+                    <tr><td><code>irrigate</code></td><td>Irrigator</td></tr>
+                    <tr><td><code>cauldron_fill</code></td><td>Lava Fill, Water Fill, Snow Fill</td></tr>
+                    <tr><td><code>furnace_fuel</code></td><td>Furnace Fuel</td></tr>
+                    <tr><td><code>brew_fuel</code></td><td>Brewing Fuel</td></tr>
+                    <tr><td><code>recruiter</code></td><td>Friend Recruiter, Legendary Recruiter</td></tr>
+                    <tr><td><code>lucky_charm</code></td><td>Lucky Charm</td></tr>
+                    <tr><td><code>growth</code></td><td>Growth Aura</td></tr>
+                    <tr><td><code>extinguish</code></td><td>Extinguisher</td></tr>
+                    <tr><td><code>speed_boost</code>, <code>strength_boost</code>, etc.</td><td>All buff skills</td></tr>
+                    <tr><td><code>aura</code></td><td>Aura Boost</td></tr>
+                </table>
+
+                <h3>Effect Types</h3>
+                <table>
+                    <tr><th>Effect Type</th><th>Visual</th></tr>
+                    <tr><td><code>default</code></td><td>Standard particles</td></tr>
+                    <tr><td><code>harvest</code></td><td>Green/nature particles</td></tr>
+                    <tr><td><code>water</code></td><td>Blue water particles</td></tr>
+                    <tr><td><code>fire</code></td><td>Fire/orange particles</td></tr>
+                    <tr><td><code>combat</code></td><td>Red combat particles</td></tr>
+                    <tr><td><code>heal</code></td><td>Pink/green heal particles</td></tr>
+                    <tr><td><code>special</code></td><td>Gold/sparkle particles</td></tr>
+                </table>
+
+                <h2>Skill Definition Examples</h2>
+
+                <h3>Example: Custom Gathering Skill</h3>
+                <pre><code>{
+  "id": "mypack:mushroom_forager",
+  "name": "Mushroom Forager",
+  "description": "Forages for mushrooms in dark areas",
+  "category": "gathering",
+  "cooldownSeconds": 60,
+  "searchRadius": 15,
+  "executor": "harvester",
+  "effectType": "harvest"
+}</code></pre>
+
+                <h3>Example: Custom Environmental Skill</h3>
+                <pre><code>{
+  "id": "mypack:campfire_lighter",
+  "name": "Campfire Lighter",
+  "description": "Lights nearby campfires",
+  "category": "generation",
+  "cooldownSeconds": 45,
+  "searchRadius": 10,
+  "executor": "furnace_fuel",
+  "effectType": "fire"
+}</code></pre>
+
+                <h3>Example: Overriding a Built-in Skill</h3>
+                <p>To modify an existing skill, create a file with the same path. For example, to change Mining's cooldown from 300 to 180 seconds, create:</p>
+                <p><code>data/cobblebase/skills/mining.json</code></p>
+                <pre><code>{
+  "id": "cobblebase:mining",
+  "name": "Mining",
+  "description": "Digs for ores, tumblestones, fossils, and gems",
+  "category": "gathering",
+  "cooldownSeconds": 180,
+  "searchRadius": 10,
+  "executor": "mining",
+  "effectType": "harvest"
+}</code></pre>
+
+                <h2>Species Assignment Format</h2>
+                <p>Species skill assignments map Pokemon to their available skills and proficiency levels. These are stored in <code>data/cobblebase/species/</code> with one JSON file per species.</p>
+                <pre><code>{
+  "species": "cobblemon:charizard",
+  "skills": {
+    "cobblebase:guard": 4,
+    "cobblebase:lava_fill": 5,
+    "cobblebase:furnace_fuel": 4
+  }
+}</code></pre>
+                <p>The keys are skill IDs and the values are proficiency levels (1-5).</p>
+
+                <h3>Example: Adding Skills to a Fakemon</h3>
+                <pre><code>{
+  "species": "myfakemons:flamedeer",
+  "skills": {
+    "cobblebase:guard": 3,
+    "cobblebase:furnace_fuel": 4,
+    "cobblebase:lava_fill": 3,
+    "cobblebase:finder_food": 2
+  }
+}</code></pre>
+
+                <h2>Loading Datapacks</h2>
+                <ol>
+                    <li>Place your datapack folder in <code>&lt;world&gt;/datapacks/</code></li>
+                    <li>Run <code>/reload</code> or restart the server</li>
+                    <li>The new skills and species assignments take effect immediately</li>
+                </ol>
+
+                <h2>Priority Order</h2>
+                <p>When multiple sources define skills for the same species:</p>
+                <ol>
+                    <li><strong>Admin GUI overrides</strong> (highest priority) -- saved in <code>cobblebase_species_overrides.json</code></li>
+                    <li><strong>Datapacks</strong> -- loaded from <code>datapacks/</code> folder</li>
+                    <li><strong>Built-in data</strong> (lowest priority) -- shipped with the mod</li>
+                </ol>
+                <p>This means datapacks override built-in data, and the Admin GUI overrides everything.</p>
+
+                <h2>Tips</h2>
+                <ul>
+                    <li><strong>Test with Dev Mode.</strong> Enable Dev Mode in Cloth Config settings to set all cooldowns to 5 seconds, making it easy to verify your datapack changes.</li>
+                    <li><strong>Use the Admin GUI for quick edits.</strong> The <a href="admin.html">Admin GUI</a> is faster for one-off changes. Use datapacks for large-scale modifications that should be shared or version-controlled.</li>
+                    <li><strong>Back up before overriding.</strong> If you override built-in skills, keep a copy of the original values so you can restore them.</li>
+                    <li><strong>Namespace your custom skills.</strong> Use your own namespace (e.g., <code>mypack:skill_name</code>) instead of <code>cobblebase:</code> to avoid conflicts with future updates.</li>
+                </ul>
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

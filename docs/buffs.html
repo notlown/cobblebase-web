@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buffs &amp; Legendaries - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 0; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="jobs.html">Jobs Guide</a>
+                <a href="proficiency.html">Proficiency System</a>
+                <a href="gui.html">GUI Guide</a>
+                <a href="buffs.html" class="active">Buffs &amp; Legendaries</a>
+                <a href="admin.html">Admin Guide</a>
+                <a href="datapacks.html">Datapacks</a>
+                <a href="compatibility.html">Compatibility</a>
+                <a href="faq.html">FAQ</a>
+                <a href="../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
+
+                <h1>Buffs and Legendary Abilities</h1>
+                <p>Cobblebase includes 9 passive buff skills and 3 legendary abilities. These skills apply status effects to players or provide passive benefits to your base.</p>
+
+                <h2>How Buffs Work</h2>
+                <p>Buff skills apply Minecraft status effects to all players within <strong>16 blocks</strong> of the pasture. The buff executor runs on a cooldown cycle, reapplying the effect periodically.</p>
+
+                <h3>Duration and Cooldown Scaling</h3>
+                <p>Both duration and cooldown scale with <a href="proficiency.html">proficiency</a>:</p>
+                <table>
+                    <tr><th>Proficiency</th><th>Duration</th><th>Cooldown</th><th>Uptime</th></tr>
+                    <tr><td>1 (Novice)</td><td>15 seconds</td><td>60 seconds</td><td>~25%</td></tr>
+                    <tr><td>2 (Apprentice)</td><td>~28 seconds</td><td>~45 seconds</td><td>~62%</td></tr>
+                    <tr><td>3 (Skilled)</td><td>~40 seconds</td><td>~30 seconds</td><td>~100%</td></tr>
+                    <tr><td>4 (Expert)</td><td>~55 seconds</td><td>~15 seconds</td><td>100%</td></tr>
+                    <tr><td>5 (Master)</td><td>70 seconds</td><td>0 seconds</td><td>100% (permanent)</td></tr>
+                </table>
+
+                <h3>Prof 5 Global Behavior</h3>
+                <p>At proficiency 5, buffs become <strong>global</strong>. Instead of requiring players to be near the pasture, the buff applies to the <strong>pasture owner anywhere in the world</strong>. The effect is effectively permanent with zero cooldown and 70-second duration, meaning it reapplies before it expires.</p>
+                <p>This makes Prof 5 buff Pokemon extremely valuable -- you get a permanent status effect regardless of where you are.</p>
+
+                <h3>Buff Particles</h3>
+                <p>When a buff is applied, themed particles appear at the pasture origin. Player-side buff particles (speed swirls, haste glitter, etc.) are <strong>disabled</strong> to avoid visual clutter.</p>
+
+                <h3>Buff Logging</h3>
+                <p>Buff applications do <strong>not</strong> appear in the Activity Log to prevent clutter. You can see active buffs in the <a href="gui.html">Buffs tab</a> of the GUI.</p>
+
+                <hr>
+
+                <h2>Passive Buff Skills</h2>
+                <p>All buff skills share a <strong>60-second base cooldown</strong> and <strong>16-block search radius</strong>.</p>
+
+                <h3>Speed Boost</h3>
+                <p>Grants <strong>Speed II</strong> to nearby players, significantly increasing movement speed.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Ninjask</td><td>4</td></tr>
+                    <tr><td>Regieleki</td><td>-</td></tr>
+                    <tr><td>Rapidash</td><td>4</td></tr>
+                    <tr><td>Jolteon</td><td>5</td></tr>
+                    <tr><td>Zeraora</td><td>-</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>12 Pokemon</strong> have Speed Boost (down from 45).</p>
+
+                <h3>Strength Boost</h3>
+                <p>Grants <strong>Strength I</strong> to nearby players, increasing melee damage.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Kartana</td><td>-</td></tr>
+                    <tr><td>Rayquaza</td><td>-</td></tr>
+                    <tr><td>Machamp</td><td>5</td></tr>
+                    <tr><td>Groudon</td><td>-</td></tr>
+                    <tr><td>Regigigas</td><td>-</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>12 Pokemon</strong> have Strength Boost (down from 55).</p>
+
+                <h3>Resistance Boost</h3>
+                <p>Grants <strong>Resistance I</strong> to nearby players, reducing incoming damage.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Regirock</td><td>-</td></tr>
+                    <tr><td>Steelix</td><td>5</td></tr>
+                    <tr><td>Melmetal</td><td>-</td></tr>
+                    <tr><td>Aggron</td><td>4</td></tr>
+                    <tr><td>Shuckle</td><td>-</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>12 Pokemon</strong> have Resistance Boost (down from 58).</p>
+
+                <h3>Night Vision</h3>
+                <p>Grants <strong>Night Vision</strong> to nearby players, allowing clear sight in darkness.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Giratina</td><td>-</td></tr>
+                    <tr><td>Umbreon</td><td>5</td></tr>
+                    <tr><td>Darkrai</td><td>-</td></tr>
+                    <tr><td>Yveltal</td><td>-</td></tr>
+                    <tr><td>Spectrier</td><td>-</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>15 Pokemon</strong> have Night Vision (down from 132).</p>
+
+                <h3>Water Breathing</h3>
+                <p>Grants <strong>Water Breathing</strong> to nearby players, allowing unlimited underwater breathing.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Kyogre</td><td>-</td></tr>
+                    <tr><td>Milotic</td><td>4</td></tr>
+                    <tr><td>Lapras</td><td>5</td></tr>
+                    <tr><td>Vaporeon</td><td>4</td></tr>
+                    <tr><td>Wailord</td><td>-</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>18 Pokemon</strong> have Water Breathing (down from 133).</p>
+
+                <h3>Jump Boost</h3>
+                <p>Grants <strong>Jump Boost I</strong> to nearby players, increasing jump height.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Lopunny</td><td>4</td></tr>
+                    <tr><td>Hitmonlee</td><td>4</td></tr>
+                    <tr><td>Blaziken</td><td>3</td></tr>
+                </table>
+                <p>Only <strong>5 Pokemon</strong> have Jump Boost (unchanged in the rarity overhaul).</p>
+
+                <h3>Haste Boost</h3>
+                <p>Grants <strong>Haste I</strong> to nearby players, increasing mining and attack speed.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Palkia</td><td>-</td></tr>
+                    <tr><td>Dialga</td><td>-</td></tr>
+                    <tr><td>Rayquaza</td><td>-</td></tr>
+                    <tr><td>Mewtwo</td><td>-</td></tr>
+                    <tr><td>Alakazam</td><td>4</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>12 Pokemon</strong> have Haste Boost (down from 53).</p>
+
+                <h3>Saturation</h3>
+                <p>Grants <strong>Saturation</strong> to nearby players, restoring hunger without eating.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Slurpuff</td><td>3</td></tr>
+                    <tr><td>Snorlax</td><td>5</td></tr>
+                    <tr><td>Munchlax</td><td>4</td></tr>
+                    <tr><td>Ting-Lu</td><td>-</td></tr>
+                    <tr><td>Blissey</td><td>-</td></tr>
+                </table>
+                <p>After the rarity overhaul, only <strong>10 Pokemon</strong> have Saturation (down from 27).</p>
+
+                <h3>Aura Boost</h3>
+                <p>Grants <strong>Luck</strong> to nearby players, improving loot quality from all sources (chests, fishing, mob drops).</p>
+                <table>
+                    <tr><th>Proficiency</th><th>Effect</th></tr>
+                    <tr><td>1-2</td><td>Luck I</td></tr>
+                    <tr><td>3-4</td><td>Luck II</td></tr>
+                    <tr><td>5</td><td>Luck III (global)</td></tr>
+                </table>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Victini</td><td>5</td></tr>
+                    <tr><td>Rayquaza</td><td>5</td></tr>
+                    <tr><td>Arceus</td><td>5</td></tr>
+                </table>
+                <p>Aura Boost is classified as a legendary skill and only appears on top-tier Pokemon.</p>
+
+                <hr>
+
+                <h2>Legendary Abilities</h2>
+                <p>These special passive abilities are exclusive to legendary and mythical Pokemon.</p>
+
+                <h3>Lucky Charm</h3>
+                <p>Boosts the <strong>shiny encounter rate</strong> for wild Pokemon near the owner.</p>
+                <table>
+                    <tr><th>Proficiency</th><th>Shiny Multiplier</th><th>Radius</th></tr>
+                    <tr><td>1</td><td>1.4x</td><td>10 blocks</td></tr>
+                    <tr><td>2</td><td>1.8x</td><td>12 blocks</td></tr>
+                    <tr><td>3</td><td>2.2x</td><td>14 blocks</td></tr>
+                    <tr><td>4</td><td>2.6x</td><td>17 blocks</td></tr>
+                    <tr><td>5</td><td>3.0x</td><td>20 blocks</td></tr>
+                </table>
+                <p>The effect follows the <strong>owner</strong>, not the pasture. At Prof 5, this triples the base shiny rate within a 20-block radius.</p>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Arceus</td><td>5</td></tr>
+                    <tr><td>Mew</td><td>5</td></tr>
+                    <tr><td>Jirachi</td><td>4</td></tr>
+                    <tr><td>Victini</td><td>4</td></tr>
+                </table>
+
+                <h3>Growth Aura</h3>
+                <p>Passively <strong>accelerates crop growth</strong> near the pasture. Affects all standard crops, berries, and Cobblemon plants.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>Continuous (0s)</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                </table>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Arceus</td><td>5</td></tr>
+                    <tr><td>Celebi</td><td>5</td></tr>
+                    <tr><td>Shaymin</td><td>4</td></tr>
+                </table>
+
+                <h3>Extinguisher</h3>
+                <p>Automatically <strong>removes fire blocks</strong> and <strong>extinguishes lit campfires</strong> near the base. Scans continuously for fire, soul fire, and lit campfire blocks within the search radius.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>Continuous (0s)</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                </table>
+                <table>
+                    <tr><th>Pokemon</th><th>Proficiency</th></tr>
+                    <tr><td>Wartortle</td><td>3</td></tr>
+                    <tr><td>Muk</td><td>3</td></tr>
+                    <tr><td>Squirtle</td><td>2</td></tr>
+                    <tr><td>Blastoise</td><td>-</td></tr>
+                </table>
+
+                <hr>
+
+                <h2>Buff Stacking</h2>
+                <p>Multiple buff Pokemon of the <strong>same type</strong> do not stack. The highest-proficiency buff wins. For example, if you have both a Prof 3 and Prof 5 Speed Boost Pokemon in the same pasture, only the Prof 5 effect applies.</p>
+                <p>Different buff types <strong>do stack</strong>. You can have Speed Boost, Strength Boost, and Night Vision all active simultaneously from different Pokemon in the same pasture.</p>
+
+                <h2>Recommendations</h2>
+                <ul>
+                    <li><strong>Prioritize Prof 5 buff Pokemon</strong> for the global, permanent effect.</li>
+                    <li><strong>Aura Boost (Luck)</strong> is one of the most impactful buffs -- Luck III significantly improves loot from all sources.</li>
+                    <li><strong>Lucky Charm</strong> is highly sought after for shiny hunting. A Prof 5 Mew or Arceus triples your shiny rate.</li>
+                    <li><strong>Night Vision</strong> eliminates the need for torches during cave exploration.</li>
+                    <li><strong>Saturation</strong> from a Prof 5 Snorlax means you never need to eat.</li>
+                    <li>Combine <strong>Haste Boost</strong> with <strong>Strength Boost</strong> for efficient mining sessions.</li>
+                </ul>
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
