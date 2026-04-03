@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cobblebase Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+        }
+
+        h1 span {
+            color: #f7c948;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #8b949e;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-mc { background-color: #1a3a2a; color: #62B47A; }
+        .badge-cobble { background-color: #3a1a0a; color: #E8532E; }
+        .badge-fabric { background-color: #2a2a1a; color: #DBD0B4; }
+        .badge-neo { background-color: #3a1a0a; color: #F16436; }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .doc-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .doc-card:hover {
+            border-color: #f7c948;
+            transform: translateY(-2px);
+        }
+
+        .doc-card h3 {
+            color: #f0f6fc;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .doc-card p {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+
+        .doc-card.featured {
+            grid-column: 1 / -1;
+            border-color: #f7c948;
+            background-color: #1a1d24;
+        }
+
+        .doc-card.featured h3 {
+            color: #f7c948;
+        }
+
+        .links-section {
+            text-align: center;
+            padding: 32px 0;
+            border-top: 1px solid #30363d;
+        }
+
+        .links-section h2 {
+            color: #f0f6fc;
+            margin-bottom: 16px;
+            font-size: 1.3rem;
+        }
+
+        .links-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .link-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .link-btn:hover {
+            opacity: 0.85;
+        }
+
+        .link-modrinth { background-color: #00AF5C; color: #fff; }
+        .link-discord { background-color: #5865F2; color: #fff; }
+        .link-github { background-color: #30363d; color: #f0f6fc; }
+        .link-kofi { background-color: #FF5E5B; color: #fff; }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 32px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #f7c948;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #8b949e;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px 0;
+            color: #484f58;
+            font-size: 0.8rem;
+            border-top: 1px solid #21262d;
+            margin-top: 32px;
+        }
+
+        footer a {
+            color: #8b949e;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .docs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cobblebase <span>Documentation</span></h1>
+            <p class="subtitle">Palworld-style base management for Cobblemon &mdash; assign jobs, watch Pokemon work, build the ultimate base.</p>
+            <div class="badge-row">
+                <span class="badge badge-mc">Minecraft 1.21.1</span>
+                <span class="badge badge-cobble">Cobblemon 1.7.0+</span>
+                <span class="badge badge-fabric">Fabric</span>
+                <span class="badge badge-neo">NeoForge</span>
+            </div>
+        </header>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">8,426</div>
+                <div class="stat-label">Pokemon Species</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">44</div>
+                <div class="stat-label">Unique Jobs</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">10</div>
+                <div class="stat-label">Categories</div>
+            </div>
+        </div>
+
+        <div class="docs-grid">
+            <a href="getting-started.md" class="doc-card featured">
+                <h3>Getting Started</h3>
+                <p>Installation guide, requirements, configuration, and your first steps with Cobblebase.</p>
+            </a>
+
+            <a href="jobs.md" class="doc-card">
+                <h3>Jobs Guide</h3>
+                <p>Complete reference for all 44 jobs across 10 categories, with descriptions, cooldowns, and example Pokemon.</p>
+            </a>
+
+            <a href="proficiency.md" class="doc-card">
+                <h3>Proficiency System</h3>
+                <p>How proficiency levels 1-5 affect cooldowns, range, loot quality, and special behaviors.</p>
+            </a>
+
+            <a href="gui.md" class="doc-card">
+                <h3>GUI Guide</h3>
+                <p>Navigate the Skills, Buffs, Logs, and Discovery tabs in the Cobblebase interface.</p>
+            </a>
+
+            <a href="buffs.md" class="doc-card">
+                <h3>Buffs &amp; Legendaries</h3>
+                <p>All 9 passive buff skills and 3 legendary abilities, including Prof 5 global behavior.</p>
+            </a>
+
+            <a href="admin.md" class="doc-card">
+                <h3>Admin Guide</h3>
+                <p>In-game species skill editor for server operators. Manage skills, add Fakemon, and balance your server.</p>
+            </a>
+
+            <a href="datapacks.md" class="doc-card">
+                <h3>Datapacks</h3>
+                <p>Create custom datapacks to add skills, modify loot tables, or reassign Pokemon species.</p>
+            </a>
+
+            <a href="compatibility.md" class="doc-card">
+                <h3>Compatibility</h3>
+                <p>Supported Fakemon packs, known mod incompatibilities, and dependency information.</p>
+            </a>
+
+            <a href="faq.md" class="doc-card">
+                <h3>FAQ</h3>
+                <p>Answers to common questions about installation, skills, proficiency, buffs, and troubleshooting.</p>
+            </a>
+        </div>
+
+        <div class="links-section">
+            <h2>Links</h2>
+            <div class="links-row">
+                <a href="https://modrinth.com/project/cobblebase" class="link-btn link-modrinth">Modrinth</a>
+                <a href="https://discord.gg/6As3sVZgVT" class="link-btn link-discord">Discord</a>
+                <a href="https://github.com/notlown/cobblebase" class="link-btn link-github">GitHub</a>
+                <a href="https://ko-fi.com/notlown" class="link-btn link-kofi">Ko-fi</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+        </footer>
+    </div>
+</body>
+</html>
