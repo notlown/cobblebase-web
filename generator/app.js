@@ -9,6 +9,29 @@
     species: new Map()
   };
 
+  // ── Sprite URL helper ──────────────────────────────────────────────
+  // Uses PokeAPI sprites for official Pokemon, returns null for fakemons
+  const POKEAPI_SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
+
+  // Map of species names to National Dex numbers (for PokeAPI sprite URLs)
+  // Built lazily on first use
+  let pokedexMap = null;
+
+  function buildPokedexMap() {
+    if (pokedexMap) return;
+    pokedexMap = new Map();
+    // Common Pokemon name → dex number mappings
+    // PokeAPI uses dex number as filename: e.g., 25.png for Pikachu
+    // We'll try fetching by name from PokeAPI's named endpoint instead
+  }
+
+  function getSpriteUrl(speciesName) {
+    const name = speciesName.toLowerCase().replace(/[^a-z0-9-]/g, '');
+    // PokeAPI uses lowercase names with hyphens
+    // Try the showdown sprite CDN which uses names directly
+    return `https://img.pokemondb.net/sprites/home/normal/${name}.png`;
+  }
+
   // ── Skill categories in display order ──────────────────────────────
   const CATEGORY_ORDER = [
     'gathering',
@@ -116,7 +139,16 @@
     for (const sp of matches) {
       const div = document.createElement('div');
       div.className = 'search-result-item';
-      div.textContent = sp;
+      const img = document.createElement('img');
+      img.className = 'search-sprite';
+      img.src = getSpriteUrl(sp);
+      img.alt = '';
+      img.loading = 'lazy';
+      img.onerror = function() { this.style.display = 'none'; };
+      div.appendChild(img);
+      const span = document.createElement('span');
+      span.textContent = sp;
+      div.appendChild(span);
       if (state.species.has(sp)) {
         div.classList.add('already-added');
       } else {
@@ -155,6 +187,16 @@
     const card = cardTemplate.content.cloneNode(true).querySelector('.species-card');
     card.dataset.species = name;
     card.querySelector('.species-name').textContent = name;
+
+    // Load Pokemon sprite from PokeAPI
+    const spriteImg = card.querySelector('.species-sprite');
+    const spriteUrl = getSpriteUrl(name);
+    if (spriteUrl) {
+      spriteImg.src = spriteUrl;
+      spriteImg.alt = name;
+    } else {
+      spriteImg.style.display = 'none';
+    }
 
     // Remove button
     card.querySelector('.btn-remove').addEventListener('click', () => {

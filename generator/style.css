@@ -175,6 +175,28 @@ main {
   border-bottom: 1px solid var(--border);
 }
 
+.species-sprite {
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.search-sprite {
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+}
+
 .species-name {
   font-size: 1.1rem;
   font-weight: 600;
