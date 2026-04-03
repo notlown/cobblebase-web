@@ -5,18 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cobblebase Datapack Generator</title>
   <meta name="description" content="Create custom Minecraft datapacks for the Cobblebase mod. Configure Pokemon species skills and proficiencies without editing JSON files.">
+  <link rel="icon" type="image/png" href="../cobblebase_icon.png">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
   <header>
     <div class="header-inner">
-      <h1>Cobblebase Datapack Generator</h1>
+      <img src="../cobblebase_header.png" alt="Cobblebase" class="header-banner">
+      <h1>Datapack Generator</h1>
       <p class="subtitle">Create custom species skill datapacks for Cobblemon</p>
     </div>
   </header>
 
   <main>
+    <!-- How it works -->
+    <section class="how-it-works">
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-text">
+            <strong>Add a Species</strong>
+            <span>Search and select any Pokemon or Fakemon</span>
+          </div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-text">
+            <strong>Assign Skills</strong>
+            <span>Toggle skills on/off and set proficiency (1-5 stars)</span>
+          </div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-text">
+            <strong>Download</strong>
+            <span>Get a ready-to-use datapack ZIP for your server</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="toolbar">
       <button id="btn-add-species" class="btn btn-primary">+ Add Species</button>
       <button id="btn-import" class="btn btn-secondary">Import Datapack</button>
@@ -27,8 +58,9 @@
     <section id="species-container">
       <div class="empty-state">
         <div class="empty-icon">&#x1F4E6;</div>
-        <h2>No species configured</h2>
-        <p>Click "Add Species" to start building your datapack.</p>
+        <h2>No species configured yet</h2>
+        <p>Click <strong>"+ Add Species"</strong> to search for a Pokemon and start assigning skills.<br>
+        You can also <strong>"Import Datapack"</strong> to edit an existing one.</p>
       </div>
     </section>
   </main>
@@ -40,7 +72,7 @@
         <h2>Select Species</h2>
         <button class="modal-close">&times;</button>
       </div>
-      <input type="text" id="species-search-input" placeholder="Search species..." autocomplete="off">
+      <input type="text" id="species-search-input" placeholder="Type a Pokemon name to search (e.g. pikachu, gyarados)..." autocomplete="off">
       <div id="species-search-results" class="search-results"></div>
     </div>
   </div>
@@ -74,6 +106,10 @@
       </div>
     </div>
   </template>
+
+  <footer>
+    <p>Cobblebase &mdash; <a href="https://modrinth.com/project/cobblebase">Modrinth</a> &bull; <a href="https://github.com/notlown/cobblebase">GitHub</a> &bull; <a href="https://discord.gg/6As3sVZgVT">Discord</a> &bull; <a href="https://ko-fi.com/notlown">Ko-fi</a></p>
+  </footer>
 
   <div id="toast" class="toast hidden"></div>
 
