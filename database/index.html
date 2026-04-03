@@ -68,7 +68,7 @@ footer{text-align:center;padding:2rem;color:#8b949e;font-size:0.75rem;border-top
 <script>
 (function(){
 const PER_PAGE=50;
-let page=0,filtered=[];
+let page=0,filtered=[],currentMod="cobblemon";
 const search=document.getElementById("search"),skillFilter=document.getElementById("skill-filter"),
 sort=document.getElementById("sort"),modFilter=document.getElementById("mod-filter"),
 tbody=document.getElementById("tbody"),stats=document.getElementById("stats"),pag=document.getElementById("pagination");
@@ -82,7 +82,7 @@ function stars(n){return "★".repeat(n)+"☆".repeat(5-n)}
 function spriteUrl(name){return"https://img.pokemondb.net/sprites/home/normal/"+name.replace(/[^a-z0-9-]/g,"")+".png"}
 
 function applyFilters(){
-const q=search.value.toLowerCase().trim(),sk=skillFilter.value,mod=modFilter.value;
+const q=search.value.toLowerCase().trim(),sk=skillFilter.value;currentMod=modFilter.value;const mod=currentMod;
 filtered=SPECIES_DB.filter(s=>{
 if(mod==="cobblemon"&&s.mod!=="cobblemon")return false;
 if(mod!=="all"&&mod!=="cobblemon"&&s.mod!==mod)return false;
@@ -99,7 +99,7 @@ page=0;render();
 
 function render(){
 const start=page*PER_PAGE,end=Math.min(start+PER_PAGE,filtered.length),slice=filtered.slice(start,end);
-const modLabel=mod==="all"?" (all mods)":mod==="cobblemon"?"":" ("+mod+")";
+const modLabel=currentMod==="all"?" (all mods)":currentMod==="cobblemon"?"":" ("+currentMod+")";
 stats.textContent="Showing "+(start+1)+"-"+end+" of "+filtered.length+" species"+modLabel;
 tbody.innerHTML="";
 slice.forEach(s=>{
