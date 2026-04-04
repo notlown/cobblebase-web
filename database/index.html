@@ -94,6 +94,13 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
 </select>
 <select id="mod-filter"><option value="cobblemon">Cobblemon Only</option><option value="all">All (incl. Fakemons)</option><option value="lively">Lively Mons</option><option value="alatias">Alatias AFP</option><option value="laser">Laser's Pack</option><option value="wilbayan">Wilbayan's</option><option value="gravelmon">Gravelmon</option></select>
 </div>
+<div id="skill-desc" style="max-width:1200px;margin:0.5rem auto;padding:0 1rem;display:none">
+<div style="background:#161b22;border:1px solid #30363d;border-left:3px solid #f7c948;border-radius:6px;padding:10px 16px;font-size:0.9rem;color:#c9d1d9;display:flex;align-items:center;gap:10px">
+<span style="color:#f7c948;font-weight:700;font-size:1rem" id="skill-desc-name"></span>
+<span style="color:#8b949e" id="skill-desc-text"></span>
+<span style="margin-left:auto;color:#484f58;font-size:0.8rem;white-space:nowrap" id="skill-desc-meta"></span>
+</div>
+</div>
 <div class="stats" id="stats">Loading...</div>
 <div class="table-wrap">
 <table><thead><tr><th>Pokemon</th><th>Skills</th><th>Skill Count</th><th>Highest Prof</th><th>Total Prof</th></tr></thead><tbody id="tbody"></tbody></table>
@@ -108,7 +115,64 @@ const PER_PAGE=50;
 let page=0,filtered=[],currentMod="cobblemon",expandedSpecies=null;
 const search=document.getElementById("search"),skillFilter=document.getElementById("skill-filter"),
 sortEl=document.getElementById("sort"),modFilter=document.getElementById("mod-filter"),
-tbody=document.getElementById("tbody"),stats=document.getElementById("stats"),pag=document.getElementById("pagination");
+tbody=document.getElementById("tbody"),stats=document.getElementById("stats"),pag=document.getElementById("pagination"),
+skillDescEl=document.getElementById("skill-desc"),skillDescName=document.getElementById("skill-desc-name"),
+skillDescText=document.getElementById("skill-desc-text"),skillDescMeta=document.getElementById("skill-desc-meta");
+
+var SKILL_INFO={
+"Alchemist":{desc:"Searches the area for evolution items and stones",cd:300,cat:"gathering"},
+"Archeologist":{desc:"Digs for fossils and ancient treasures",cd:300,cat:"gathering"},
+"Architect":{desc:"Searches the area for building materials",cd:300,cat:"gathering"},
+"Armorer":{desc:"Searches the area for battle held items",cd:300,cat:"gathering"},
+"Aura Boost":{desc:"All nearby workers perform jobs faster",cd:0,cat:"legendary"},
+"Botanist":{desc:"Searches the area for seeds and plantable items",cd:300,cat:"gathering"},
+"Brewing Fuel":{desc:"Adds fuel to brewing stands",cd:300,cat:"generation"},
+"Chef":{desc:"Searches the area for food and cooking ingredients",cd:300,cat:"gathering"},
+"Collector":{desc:"Searches the area for Pokeballs of all types",cd:300,cat:"gathering"},
+"Excavator":{desc:"Searches the area for ores and raw minerals",cd:300,cat:"gathering"},
+"Extinguisher":{desc:"Puts out nearby fires",cd:0,cat:"utility"},
+"Fishing":{desc:"Catches fish from nearby water",cd:300,cat:"gathering"},
+"Friend Recruiter":{desc:"Attracts rare wild Pokemon to appear nearby",cd:300,cat:"fairy"},
+"Furnace Fuel":{desc:"Adds fuel to furnaces",cd:300,cat:"generation"},
+"Growth Aura":{desc:"Crops and berries grow faster nearby",cd:0,cat:"legendary"},
+"Guard":{desc:"Repels wild Pokemon, earns XP or loot",cd:300,cat:"combat"},
+"Harvester":{desc:"Harvests crops, berries, apricorns, mints, and more",cd:60,cat:"gathering"},
+"Haste Boost":{desc:"Grants Haste I to nearby players",cd:60,cat:"support"},
+"Healer":{desc:"Heals nearby players with regeneration",cd:0,cat:"support"},
+"Honey Collect":{desc:"Produces honey and honeycomb",cd:300,cat:"gathering"},
+"Irrigator":{desc:"Hydrates nearby farmland",cd:0,cat:"utility"},
+"Item Gatherer":{desc:"Picks up dropped items and sorts them into nearby chests",cd:5,cat:"utility"},
+"Jump Boost":{desc:"Grants Jump Boost I to nearby players",cd:60,cat:"support"},
+"Lava Fill":{desc:"Fills cauldrons with lava",cd:300,cat:"generation"},
+"Lucky Charm":{desc:"Increases shiny rate for wild Pokemon near the owner",cd:0,cat:"legendary"},
+"Mentor":{desc:"Boosts passive XP gain for all Pokemon in the base",cd:0,cat:"support"},
+"Mining":{desc:"Digs for ores, tumblestones, fossils, and gems",cd:300,cat:"gathering"},
+"Night Vision":{desc:"Grants Night Vision to nearby players",cd:60,cat:"support"},
+"Pharmacist":{desc:"Searches the area for healing items and berries",cd:300,cat:"gathering"},
+"Prospector":{desc:"Searches the area for relics and treasure",cd:300,cat:"gathering"},
+"Recruiter":{desc:"Attracts legendary wild Pokemon to spawn near your base",cd:540,cat:"legendary"},
+"Resistance Boost":{desc:"Grants Resistance I to nearby players",cd:60,cat:"support"},
+"Saturation Boost":{desc:"Grants Saturation to nearby players",cd:60,cat:"support"},
+"Scholar":{desc:"Searches the area for XP Candies and Rare Candies",cd:300,cat:"gathering"},
+"Scout":{desc:"Explores the area to discover wild Pokemon, structures, and biomes",cd:300,cat:"utility"},
+"Smith":{desc:"Searches the area for smithing templates and pottery",cd:300,cat:"gathering"},
+"Snow Fill":{desc:"Fills cauldrons with powder snow",cd:300,cat:"generation"},
+"Speed Boost":{desc:"Grants Speed II to nearby players",cd:60,cat:"support"},
+"Strength Boost":{desc:"Grants Strength I to nearby players",cd:60,cat:"support"},
+"Trainer":{desc:"Searches the area for vitamins and training items",cd:300,cat:"gathering"},
+"Water Breathing":{desc:"Grants Water Breathing to nearby players",cd:60,cat:"support"},
+"Water Fill":{desc:"Fills cauldrons with water",cd:300,cat:"generation"}
+};
+
+function updateSkillDesc(){
+var sk=skillFilter.value;
+if(!sk||!SKILL_INFO[sk]){skillDescEl.style.display="none";return}
+var info=SKILL_INFO[sk];
+skillDescEl.style.display="block";
+skillDescName.textContent=sk;
+skillDescText.textContent=info.desc;
+skillDescMeta.textContent=info.cat+(info.cd>0?" \u00b7 "+info.cd+"s cooldown":" \u00b7 passive");
+}
 
 // Precompute totalProf for each species
 SPECIES_DB.forEach(function(s){
@@ -259,6 +323,7 @@ var next=document.createElement("button");next.textContent="Next \u2192";next.di
 // Auto-switch to skill-prof sort when a skill filter is selected
 skillFilter.addEventListener("change",function(){
     if(skillFilter.value&&sortEl.value==="name"){sortEl.value="skill-prof"}
+    updateSkillDesc();
     applyFilters();
 });
 search.addEventListener("input",applyFilters);
