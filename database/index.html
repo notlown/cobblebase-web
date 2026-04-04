@@ -129,12 +129,17 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d;overflow:visible}
 <span style="margin-left:auto;color:#484f58;font-size:0.8rem;white-space:nowrap" id="skill-desc-meta"></span>
 </div>
 </div>
-<div class="editor-bar" id="editor-bar"><div class="editor-bar-inner">
+<div class="editor-bar" id="editor-bar"><div class="editor-bar-inner" style="flex-wrap:wrap">
 <span style="color:#f7c948;font-weight:700">Editor Mode</span>
 <span style="color:#8b949e" id="edit-count">0 changes</span>
 <button onclick="exportChanges()">Export JSON</button>
-<button onclick="submitToDiscord()">Submit to Discord</button>
 <button class="reset-btn" onclick="resetChanges()">Reset All</button>
+</div>
+<div class="editor-bar-inner" style="margin-top:6px;flex-wrap:wrap;gap:8px">
+<input type="text" id="submit-name" placeholder="Your name" maxlength="32" style="background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:6px 10px;border-radius:6px;font-size:0.85rem;width:140px">
+<input type="text" id="submit-comment" placeholder="Comment (optional)" maxlength="200" style="background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:6px 10px;border-radius:6px;font-size:0.85rem;flex:1;min-width:150px">
+<button onclick="submitToDiscord()" id="submit-btn">Submit to Discord</button>
+<span id="submit-status" style="color:#8b949e;font-size:0.8rem"></span>
 </div></div>
 <div class="stats" id="stats">Loading...</div>
 <div class="table-wrap">
@@ -173,7 +178,7 @@ var SKILL_INFO={
 "Guard":{desc:"Repels wild Pokemon, earns XP or loot",cd:300,cat:"combat"},
 "Harvester":{desc:"Harvests crops, berries, apricorns, mints, and more",cd:60,cat:"gathering"},
 "Haste Boost":{desc:"Grants Haste I near base, owner-only beyond 40 blocks",cd:60,cat:"support"},
-"Healer":{desc:"Heals injured Pokemon in the pasture",cd:0,cat:"support"},
+"Healer":{desc:"Heals injured Pokemon in your team",cd:0,cat:"support"},
 "Honey Collect":{desc:"Produces honey and honeycomb",cd:300,cat:"gathering"},
 "Irrigator":{desc:"Hydrates nearby farmland",cd:0,cat:"utility"},
 "Item Gatherer":{desc:"Picks up dropped items and sorts them into nearby chests",cd:5,cat:"utility"},
@@ -286,34 +291,96 @@ var blob=new Blob([content],{type:"application/json"});
 var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();URL.revokeObjectURL(a.href);
 }
 
+// Store original state for diff computation
+var originalState={};
+SPECIES_DB.forEach(function(s){
+originalState[s.name]=s.skills.map(function(sk){return{name:sk.name,prof:sk.prof}});
+});
+
+var WEBHOOK_DEV="https://discord.com/api/webhooks/1489934162046619818/RvvwNLSUouIXd7q3YZZaM8QzmbW_kRa5p9_77fueYFgRM5XaV9FkzKEfU5EKkwJ2Dk15";
+var WEBHOOK_COMMUNITY="https://discord.com/api/webhooks/1489937209262870589/YD94RaGw-qcyaYxmMCt6WdJojP0PldzWX92KdUAL2F2rLdu5J2OPIaR3hcxm6GJSiXCy";
+var lastSubmitTime=0;
+
+function sanitize(str){return String(str||"").replace(/[<>@&`\\]/g,"").trim().substring(0,200)}
+
+function computeDiff(speciesName){
+var orig=originalState[speciesName]||[];
+var curr=modifications[speciesName]||[];
+var origMap={};orig.forEach(function(s){origMap[s.name]=s.prof});
+var currMap={};curr.forEach(function(s){currMap[s.name]=s.prof});
+var added=[],removed=[],changed=[];
+curr.forEach(function(s){
+if(!(s.name in origMap))added.push(s.name+" \u2605"+s.prof);
+else if(origMap[s.name]!==s.prof)changed.push(s.name+" \u2605"+origMap[s.name]+" \u2192 \u2605"+s.prof);
+});
+orig.forEach(function(s){if(!(s.name in currMap))removed.push(s.name)});
+return{added:added,removed:removed,changed:changed};
+}
+
 window.submitToDiscord=function(){
 var keys=Object.keys(modifications);
 if(keys.length===0)return;
-var username=prompt("Your name (for credit in the submission):");
-if(!username)return;
-var lines=[];
+var now=Date.now();
+var statusEl=document.getElementById("submit-status");
+if(now-lastSubmitTime<180000){
+var wait=Math.ceil((180000-(now-lastSubmitTime))/1000);
+statusEl.textContent="Wait "+wait+"s before submitting again";statusEl.style.color="#f44336";return;
+}
+var username=sanitize(document.getElementById("submit-name").value);
+var comment=sanitize(document.getElementById("submit-comment").value);
+if(!username||username.length<2){statusEl.textContent="Enter your name (min 2 chars)";statusEl.style.color="#f44336";return}
+statusEl.textContent="Submitting...";statusEl.style.color="#f7c948";
+document.getElementById("submit-btn").disabled=true;
+
+// Build diff lines for community channel
+var diffLines=[];
 keys.forEach(function(name){
-var skills=modifications[name];
-var skillList=skills.map(function(sk){return sk.name+" ("+sk.prof+")"}).join(", ");
-lines.push("**"+name+"**: "+skillList);
+var diff=computeDiff(name);
+var parts=[];
+if(diff.added.length)parts.push("\u2795 "+diff.added.join(", "));
+if(diff.changed.length)parts.push("\u270F\uFE0F "+diff.changed.join(", "));
+if(diff.removed.length)parts.push("\u274C "+diff.removed.join(", "));
+if(parts.length)diffLines.push("**"+name+"**\n"+parts.join("\n"));
 });
-var body=JSON.stringify({
+
+// Community channel: human-readable diff only
+var communityBody=JSON.stringify({
 username:"Species Editor",
 embeds:[{
-title:"Skill Change Submission",
-description:lines.join("\n"),
+title:"\uD83D\uDCDD Skill Change Proposal",
+description:diffLines.join("\n\n").substring(0,3900),
 color:16238920,
-footer:{text:"Submitted by "+username},
+footer:{text:"by "+username},
 timestamp:new Date().toISOString(),
-fields:[{name:"Raw JSON",value:"```json\n"+JSON.stringify(keys.map(function(name){return buildSpeciesJson(name,modifications[name])}),null,1).substring(0,1000)+"\n```"}]
+fields:comment?[{name:"Comment",value:comment}]:[]
 }]
 });
-fetch("https://discord.com/api/webhooks/1489934162046619818/RvvwNLSUouIXd7q3YZZaM8QzmbW_kRa5p9_77fueYFgRM5XaV9FkzKEfU5EKkwJ2Dk15",{
-method:"POST",headers:{"Content-Type":"application/json"},body:body
-}).then(function(r){
-if(r.ok)alert("Submitted! Your changes have been sent to the Cobblebase Discord for review.");
-else alert("Failed to submit. Try Export JSON instead.");
-}).catch(function(){alert("Failed to submit. Try Export JSON instead.")});
+
+// Dev channel: full JSON for implementation
+var devBody=JSON.stringify({
+username:"Species Editor",
+embeds:[{
+title:"Skill Submission ("+keys.length+" species)",
+description:"by **"+username+"**"+(comment?" — "+comment:""),
+color:16238920,
+timestamp:new Date().toISOString(),
+fields:[{name:"Changes",value:diffLines.join("\n").substring(0,900)},{name:"JSON",value:"```json\n"+JSON.stringify(keys.map(function(name){return buildSpeciesJson(name,modifications[name])}),null,1).substring(0,900)+"\n```"}]
+}]
+});
+
+Promise.all([
+fetch(WEBHOOK_COMMUNITY,{method:"POST",headers:{"Content-Type":"application/json"},body:communityBody}),
+fetch(WEBHOOK_DEV,{method:"POST",headers:{"Content-Type":"application/json"},body:devBody})
+]).then(function(results){
+if(results[0].ok&&results[1].ok){
+lastSubmitTime=Date.now();
+statusEl.textContent="\u2705 Submitted! Check #skill-discussion on Discord";statusEl.style.color="#4caf50";
+}else{statusEl.textContent="Failed. Try Export JSON instead.";statusEl.style.color="#f44336"}
+document.getElementById("submit-btn").disabled=false;
+}).catch(function(){
+statusEl.textContent="Network error. Try Export JSON.";statusEl.style.color="#f44336";
+document.getElementById("submit-btn").disabled=false;
+});
 };
 
 window.resetChanges=function(){
