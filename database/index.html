@@ -36,7 +36,9 @@ tr:hover{background:#161b22}
 .species-name{text-transform:capitalize;font-weight:600;font-size:1rem}
 .fakemon-badge{font-size:0.7rem;background:#30363d;color:#8b949e;padding:2px 6px;border-radius:3px;margin-left:6px}
 .skill-tags{display:grid;grid-template-columns:repeat(4,1fr);gap:3px 6px}
-.skill-tag{font-size:0.8rem;padding:3px 8px;border-radius:4px;background:#21262d;color:#c9d1d9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.skill-tag{font-size:0.8rem;padding:3px 8px;border-radius:4px;background:#21262d;color:#c9d1d9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center}
+.skill-tag .sk-name{overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
+.skill-tag .stars{flex-shrink:0}
 .skill-tag .stars{color:#f7c948;margin-left:4px;letter-spacing:0.5px}
 .skill-tag.highlighted{box-shadow:0 0 8px 2px #f7c94888,inset 0 0 0 1px #f7c948;font-weight:700}
 .skill-tag .best-icon{margin-left:3px;font-size:0.75rem}
@@ -69,9 +71,23 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
 .detail-skills-grid{display:flex;flex-wrap:wrap;gap:6px;padding-left:11px}
 .detail-skill{background:#21262d;border:1px solid #30363d;border-radius:5px;padding:5px 12px;font-size:0.85rem;display:flex;align-items:center;gap:6px}
 .detail-skill .ds-name{color:#c9d1d9}
-.detail-skill .ds-stars{color:#f7c948;letter-spacing:1px}
+.detail-skill .ds-stars{color:#f7c948;letter-spacing:1px;cursor:pointer}
 .detail-skill.highlighted{box-shadow:0 0 8px 2px #f7c94888,inset 0 0 0 1px #f7c948}
 .detail-skill.highlighted .ds-name{color:#f7c948;font-weight:700}
+.detail-skill .ds-remove{color:#f44336;cursor:pointer;font-size:0.9rem;margin-left:4px;opacity:0.5;transition:opacity 0.2s}
+.detail-skill .ds-remove:hover{opacity:1}
+.clickable-star{cursor:pointer;transition:transform 0.1s}.clickable-star:hover{transform:scale(1.3)}
+.add-skill-btn{background:#21262d;border:1px dashed #30363d;border-radius:5px;padding:5px 12px;font-size:0.85rem;color:#8b949e;cursor:pointer;transition:border-color 0.2s,color 0.2s}
+.add-skill-btn:hover{border-color:#f7c948;color:#f7c948}
+.modified-badge{font-size:0.65rem;background:#f7c948;color:#0d1117;padding:1px 5px;border-radius:3px;margin-left:6px;font-weight:700}
+.editor-bar{max-width:1200px;margin:0.5rem auto;padding:0 1rem;display:none}
+.editor-bar-inner{background:#161b22;border:1px solid #30363d;border-left:3px solid #f7c948;border-radius:6px;padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:0.9rem}
+.editor-bar button{background:#f7c948;color:#0d1117;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.85rem}
+.editor-bar button:hover{opacity:0.85}
+.editor-bar button.reset-btn{background:#f44336;color:#fff}
+.add-skill-dropdown{position:absolute;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:4px;z-index:100;max-height:200px;overflow-y:auto;min-width:180px;box-shadow:0 4px 12px rgba(0,0,0,0.5)}
+.add-skill-dropdown div{padding:4px 10px;cursor:pointer;font-size:0.82rem;border-radius:4px;color:#c9d1d9}
+.add-skill-dropdown div:hover{background:#21262d;color:#f7c948}
 .detail-layout{display:flex;gap:24px}
 .detail-profile{min-width:180px;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px;background:#0d1117;border-radius:8px;border:1px solid #21262d}
 .detail-profile img{width:120px;height:120px;image-rendering:auto;border-radius:8px}
@@ -114,6 +130,12 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
 <span style="margin-left:auto;color:#484f58;font-size:0.8rem;white-space:nowrap" id="skill-desc-meta"></span>
 </div>
 </div>
+<div class="editor-bar" id="editor-bar"><div class="editor-bar-inner">
+<span style="color:#f7c948;font-weight:700">Editor Mode</span>
+<span style="color:#8b949e" id="edit-count">0 changes</span>
+<button onclick="exportChanges()">Export JSON</button>
+<button class="reset-btn" onclick="resetChanges()">Reset All</button>
+</div></div>
 <div class="stats" id="stats">Loading...</div>
 <div class="table-wrap">
 <table><thead><tr><th>Pokemon</th><th>Skills</th><th>Skill Count</th><th>Highest Prof</th><th>Total Prof</th></tr></thead><tbody id="tbody"></tbody></table>
@@ -177,6 +199,99 @@ var SKILL_INFO={
 "Water Fill":{desc:"Fills cauldrons with water",cd:300,cat:"generation"}
 };
 
+// === SKILL ID MAPPING (name -> id for export) ===
+var SKILL_IDS={
+"Alchemist":"cobblebase:finder_evo","Archeologist":"cobblebase:archeologist","Architect":"cobblebase:finder_bui",
+"Armorer":"cobblebase:finder_held","Aura Boost":"cobblebase:aura_boost","Botanist":"cobblebase:finder_see",
+"Brewing Fuel":"cobblebase:brew_fuel","Chef":"cobblebase:finder_food","Collector":"cobblebase:finder_bal",
+"Excavator":"cobblebase:finder_ore","Extinguisher":"cobblebase:extinguisher","Fishing":"cobblebase:fishing",
+"Friend Recruiter":"cobblebase:friend_recruiter","Furnace Fuel":"cobblebase:furnace_fuel",
+"Growth Aura":"cobblebase:growth_aura","Guard":"cobblebase:guard","Harvester":"cobblebase:harvester",
+"Haste Boost":"cobblebase:haste_boost","Healer":"cobblebase:healer","Honey Collect":"cobblebase:honey_collect",
+"Irrigator":"cobblebase:irrigator","Item Gatherer":"cobblebase:gatherer","Jump Boost":"cobblebase:jump_boost",
+"Lava Fill":"cobblebase:lava_fill","Lucky Charm":"cobblebase:lucky_charm","Mentor":"cobblebase:mentor",
+"Mining":"cobblebase:mining","Night Vision":"cobblebase:night_vision","Pharmacist":"cobblebase:finder_hea",
+"Prospector":"cobblebase:finder_treasure","Recruiter":"cobblebase:recruiter",
+"Resistance Boost":"cobblebase:resistance_boost","Saturation Boost":"cobblebase:saturation_boost",
+"Scholar":"cobblebase:finder_exp","Scout":"cobblebase:scout","Smith":"cobblebase:finder_smith",
+"Snow Fill":"cobblebase:snow_fill","Speed Boost":"cobblebase:speed_boost",
+"Strength Boost":"cobblebase:strength_boost","Trainer":"cobblebase:finder_stat",
+"Water Breathing":"cobblebase:water_breathing","Water Fill":"cobblebase:water_fill"
+};
+
+// === EDITOR STATE ===
+var modifications={};// species name -> modified skills array
+var editorBar=document.getElementById("editor-bar"),editCount=document.getElementById("edit-count");
+
+function updateEditorBar(){
+var count=Object.keys(modifications).length;
+editorBar.style.display=count>0?"block":"none";
+editCount.textContent=count+" change"+(count!==1?"s":"");
+}
+
+function modifySpecies(s,newSkills){
+s.skills=newSkills;
+s.count=newSkills.length;
+s.maxProf=newSkills.length>0?Math.max.apply(null,newSkills.map(function(x){return x.prof})):0;
+s.totalProf=0;newSkills.forEach(function(sk){s.totalProf+=sk.prof});
+modifications[s.name]=newSkills;
+updateEditorBar();
+}
+
+function changeProf(s,skillName,newProf){
+var newSkills=s.skills.map(function(sk){
+if(sk.name===skillName)return{id:sk.id,name:sk.name,cat:sk.cat,prof:newProf};
+return sk;
+});
+modifySpecies(s,newSkills);
+}
+
+function removeSkill(s,skillName){
+var newSkills=s.skills.filter(function(sk){return sk.name!==skillName});
+modifySpecies(s,newSkills);
+}
+
+function addSkill(s,skillName){
+if(s.skills.some(function(sk){return sk.name===skillName}))return;
+var id=SKILL_IDS[skillName]||"cobblebase:unknown";
+var cat=SKILL_INFO[skillName]?SKILL_INFO[skillName].cat:"utility";
+var newSkills=s.skills.slice();
+newSkills.push({id:id,name:skillName,cat:cat,prof:1});
+modifySpecies(s,newSkills);
+}
+
+// Export as species JSON files
+window.exportChanges=function(){
+var keys=Object.keys(modifications);
+if(keys.length===0)return;
+if(keys.length===1){
+// Single file download
+var name=keys[0];
+var data=buildSpeciesJson(name,modifications[name]);
+downloadFile(name+".json",JSON.stringify(data,null,2));
+}else{
+// Multiple: download as single combined file
+var all={};
+keys.forEach(function(name){all[name]=buildSpeciesJson(name,modifications[name])});
+downloadFile("cobblebase_species_edits.json",JSON.stringify(all,null,2));
+}
+};
+
+function buildSpeciesJson(name,skills){
+return{species:name,skills:skills.map(function(sk){return{skillId:sk.id||SKILL_IDS[sk.name]||"cobblebase:unknown",proficiency:sk.prof}})};
+}
+
+function downloadFile(filename,content){
+var blob=new Blob([content],{type:"application/json"});
+var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();URL.revokeObjectURL(a.href);
+}
+
+window.resetChanges=function(){
+if(!confirm("Reset all "+Object.keys(modifications).length+" changes?"))return;
+// Reload page to restore original data
+location.reload();
+};
+
 function updateSkillDesc(){
 var sk=skillFilter.value;
 if(!sk||!SKILL_INFO[sk]){skillDescEl.style.display="none";return}
@@ -237,25 +352,71 @@ var sortedSkills=s.skills.slice().sort(function(a,b){return a.name.localeCompare
 sortedSkills.forEach(function(sk){if(!groups[sk.cat])groups[sk.cat]=[];groups[sk.cat].push(sk)});
 var catOrder=["gathering","combat","support","utility","generation","legendary","fairy"];
 var activeFilter=skillFilter.value;
-function buildCatSection(cat,skills){
+function buildCatSection(cat,skills,s,tr,detailTr,panel){
 var catDiv=document.createElement("div");catDiv.className="detail-cat";
 var header=document.createElement("div");header.className="detail-cat-header "+cat;header.textContent=cat+" ("+skills.length+")";
 catDiv.appendChild(header);
 var grid=document.createElement("div");grid.className="detail-skills-grid";
+var dMinProf=Math.min.apply(null,s.skills.map(function(x){return x.prof}));
 skills.forEach(function(sk){
 var item=document.createElement("div");item.className="detail-skill";
 if(activeFilter&&sk.name===activeFilter)item.className+=" highlighted";
-var dMinProf=Math.min.apply(null,s.skills.map(function(x){return x.prof}));
 var mark="";
 if(sk.prof===s.maxProf){mark=" <span style='color:#4caf50;font-size:0.7rem'>\u25B2</span>";item.style.background="#4caf5018";item.style.borderColor="#4caf5044"}
 else if(sk.prof===dMinProf&&s.skills.length>1){mark=" <span style='color:#f44336;font-size:0.7rem'>\u25BC</span>";item.style.background="#f4433618";item.style.borderColor="#f4433644"}
-item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+stars(sk.prof)+"</span>"+mark;
+// Clickable stars for editing proficiency
+var starsHtml="";
+for(var i=1;i<=5;i++){
+var filled=i<=sk.prof;
+starsHtml+="<span class='clickable-star' data-prof='"+i+"' data-skill='"+sk.name+"' style='color:"+(filled?"#f7c948":"#30363d")+"'>\u2605</span>";
+}
+item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+starsHtml+"</span>"+mark
++"<span class='ds-remove' title='Remove skill'>\u2716</span>";
+// Star click handlers
+item.querySelectorAll(".clickable-star").forEach(function(star){
+star.addEventListener("click",function(e){
+e.stopPropagation();
+changeProf(s,this.getAttribute("data-skill"),parseInt(this.getAttribute("data-prof")));
+toggleDetail(tr,detailTr,panel,s);// re-render detail
+applyFilters();// refresh table
+});
+});
+// Remove button handler
+item.querySelector(".ds-remove").addEventListener("click",function(e){
+e.stopPropagation();
+removeSkill(s,sk.name);
+toggleDetail(tr,detailTr,panel,s);
+applyFilters();
+});
 grid.appendChild(item);
 });
 catDiv.appendChild(grid);return catDiv;
 }
-catOrder.forEach(function(cat){if(groups[cat])skillsSection.appendChild(buildCatSection(cat,groups[cat]))});
-Object.keys(groups).forEach(function(cat){if(catOrder.indexOf(cat)===-1)skillsSection.appendChild(buildCatSection(cat,groups[cat]))});
+catOrder.forEach(function(cat){if(groups[cat])skillsSection.appendChild(buildCatSection(cat,groups[cat],s,tr,detailTr,panel))});
+Object.keys(groups).forEach(function(cat){if(catOrder.indexOf(cat)===-1)skillsSection.appendChild(buildCatSection(cat,groups[cat],s,tr,detailTr,panel))});
+// Add Skill button
+var addBtn=document.createElement("div");addBtn.className="add-skill-btn";addBtn.textContent="+ Add Skill";
+addBtn.style.cssText="display:inline-block;margin-top:8px;position:relative";
+addBtn.addEventListener("click",function(e){
+e.stopPropagation();
+var existing=document.querySelector(".add-skill-dropdown");
+if(existing){existing.remove();return}
+var dropdown=document.createElement("div");dropdown.className="add-skill-dropdown";
+var existingSkills=s.skills.map(function(sk){return sk.name});
+Object.keys(SKILL_INFO).sort().forEach(function(name){
+if(existingSkills.indexOf(name)!==-1)return;
+var opt=document.createElement("div");opt.textContent=name;
+opt.addEventListener("click",function(ev){
+ev.stopPropagation();dropdown.remove();
+addSkill(s,name);
+toggleDetail(tr,detailTr,panel,s);
+applyFilters();
+});
+dropdown.appendChild(opt);
+});
+addBtn.appendChild(dropdown);
+});
+skillsSection.appendChild(addBtn);
 layout.appendChild(skillsSection);panel.appendChild(layout);
 tr.classList.add("expanded");
 requestAnimationFrame(function(){panel.classList.add("open")});
@@ -302,6 +463,7 @@ spriteWrap.appendChild(img);cellWrap.appendChild(spriteWrap);
 var infoWrap=document.createElement("div");infoWrap.className="pokemon-info";
 var span=document.createElement("span");span.className="species-name";span.textContent=s.name;infoWrap.appendChild(span);
 if(s.mod!=="cobblemon"){var b=document.createElement("span");b.className="fakemon-badge";b.textContent=s.mod;infoWrap.appendChild(b)}
+if(modifications[s.name]){var mb=document.createElement("span");mb.className="modified-badge";mb.textContent="EDITED";infoWrap.appendChild(mb)}
 cellWrap.appendChild(infoWrap);nameCell.appendChild(cellWrap)
 tr.appendChild(nameCell);
 // Skills cell — sorted alphabetically
@@ -317,7 +479,7 @@ else if(sk.prof===minProf&&s.skills.length>1)tag.className+=" worst-skill";
 var mark="";
 if(sk.prof===s.maxProf)mark="<span class='best-icon' style='color:#4caf50'>\u25B2</span>";
 else if(sk.prof===minProf&&s.skills.length>1)mark="<span class='best-icon' style='color:#f44336'>\u25BC</span>";
-tag.innerHTML=sk.name+"<span class='stars'>"+stars(sk.prof)+"</span>"+mark;
+tag.innerHTML="<span class='sk-name'>"+sk.name+"</span><span class='stars'>"+stars(sk.prof)+"</span>"+mark;
 tags.appendChild(tag);
 });
 skillCell.appendChild(tags);tr.appendChild(skillCell);
@@ -357,6 +519,8 @@ search.addEventListener("input",applyFilters);
 sortEl.addEventListener("change",applyFilters);
 modFilter.addEventListener("change",applyFilters);
 applyFilters();
+// Close dropdown on outside click
+document.addEventListener("click",function(){var d=document.querySelector(".add-skill-dropdown");if(d)d.remove()});
 })();
 </script>
 <script src="../navbar.js"></script>
