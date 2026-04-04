@@ -56,7 +56,7 @@ tr.species-row{cursor:pointer;transition:background 0.2s}
 tr.species-row.expanded{background:#161b22}
 tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
 .detail-panel{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease;padding:0 12px;background:#161b22;border-radius:0 0 8px 8px}
-.detail-panel.open{max-height:800px;padding:12px}
+.detail-panel.open{max-height:2000px;padding:12px}
 .detail-close{float:right;background:none;border:1px solid #30363d;color:#8b949e;border-radius:4px;padding:2px 10px;cursor:pointer;font-size:0.8rem}
 .detail-close:hover{color:#c9d1d9;border-color:#8b949e}
 .detail-cat{margin-bottom:10px}
@@ -77,17 +77,12 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
 .detail-skill .ds-remove{color:#f44336;cursor:pointer;font-size:0.9rem;margin-left:4px;opacity:0.5;transition:opacity 0.2s}
 .detail-skill .ds-remove:hover{opacity:1}
 .clickable-star{cursor:pointer;transition:transform 0.1s,color 0.1s}.clickable-star:hover{transform:scale(1.3)}
-.add-skill-btn{background:#21262d;border:1px dashed #30363d;border-radius:5px;padding:5px 12px;font-size:0.85rem;color:#8b949e;cursor:pointer;transition:border-color 0.2s,color 0.2s}
-.add-skill-btn:hover{border-color:#f7c948;color:#f7c948}
 .modified-badge{font-size:0.65rem;background:#f7c948;color:#0d1117;padding:1px 5px;border-radius:3px;margin-left:6px;font-weight:700}
 .editor-bar{max-width:1200px;margin:0.5rem auto;padding:0 1rem;display:none}
 .editor-bar-inner{background:#161b22;border:1px solid #30363d;border-left:3px solid #f7c948;border-radius:6px;padding:10px 16px;display:flex;align-items:center;gap:12px;font-size:0.9rem}
 .editor-bar button{background:#f7c948;color:#0d1117;border:none;padding:6px 16px;border-radius:6px;cursor:pointer;font-weight:600;font-size:0.85rem}
 .editor-bar button:hover{opacity:0.85}
 .editor-bar button.reset-btn{background:#f44336;color:#fff}
-.add-skill-dropdown{position:absolute;background:#161b22;border:1px solid #30363d;border-radius:6px;padding:4px;z-index:100;max-height:200px;overflow-y:auto;min-width:180px;box-shadow:0 4px 12px rgba(0,0,0,0.5)}
-.add-skill-dropdown div{padding:4px 10px;cursor:pointer;font-size:0.82rem;border-radius:4px;color:#c9d1d9}
-.add-skill-dropdown div:hover{background:#21262d;color:#f7c948}
 .detail-layout{display:flex;gap:24px}
 .detail-profile{min-width:180px;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px;background:#0d1117;border-radius:8px;border:1px solid #21262d}
 .detail-profile img{width:120px;height:120px;image-rendering:auto;border-radius:8px}
@@ -360,45 +355,63 @@ var pStats=document.createElement("div");pStats.className="detail-profile-stats"
 pStats.innerHTML=s.count+" Skills<br>Highest: <span>"+stars(s.maxProf)+"</span><br>Total Prof: <span>"+s.totalProf+"</span>"
 +(s.mod!=="cobblemon"?"<br>Pack: "+s.mod:"");
 profile.appendChild(pStats);layout.appendChild(profile);
-// Right: skills by category
+// Right: ALL skills by category (owned = normal, unowned = faded)
 var skillsSection=document.createElement("div");skillsSection.className="detail-skills-section";
-var groups={};
-var sortedSkills=s.skills.slice().sort(function(a,b){return a.name.localeCompare(b.name)});
-sortedSkills.forEach(function(sk){if(!groups[sk.cat])groups[sk.cat]=[];groups[sk.cat].push(sk)});
+var ownedMap={};
+s.skills.forEach(function(sk){ownedMap[sk.name]=sk});
 var catOrder=["gathering","combat","support","utility","generation","legendary","fairy"];
 var activeFilter=skillFilter.value;
-function buildCatSection(cat,skills,s,tr,detailTr,panel){
+var dMinProf=s.skills.length>0?Math.min.apply(null,s.skills.map(function(x){return x.prof})):0;
+
+// Group ALL skills by category
+var allByCat={};
+Object.keys(SKILL_INFO).sort().forEach(function(name){
+var cat=SKILL_INFO[name].cat;
+if(!allByCat[cat])allByCat[cat]=[];
+allByCat[cat].push(name);
+});
+
+catOrder.forEach(function(cat){
+if(!allByCat[cat])return;
+var ownedCount=allByCat[cat].filter(function(n){return !!ownedMap[n]}).length;
 var catDiv=document.createElement("div");catDiv.className="detail-cat";
-var header=document.createElement("div");header.className="detail-cat-header "+cat;header.textContent=cat+" ("+skills.length+")";
+var header=document.createElement("div");header.className="detail-cat-header "+cat;
+header.textContent=cat+" ("+ownedCount+"/"+allByCat[cat].length+")";
 catDiv.appendChild(header);
 var grid=document.createElement("div");grid.className="detail-skills-grid";
-var dMinProf=Math.min.apply(null,s.skills.map(function(x){return x.prof}));
-skills.forEach(function(sk){
+
+allByCat[cat].forEach(function(skillName){
+var owned=ownedMap[skillName];
+var prof=owned?owned.prof:0;
 var item=document.createElement("div");item.className="detail-skill";
-if(activeFilter&&sk.name===activeFilter)item.className+=" highlighted";
+if(!owned)item.style.opacity="0.25";
+if(activeFilter&&skillName===activeFilter)item.className+=" highlighted";
 var mark="";
-if(sk.prof===s.maxProf){mark=" <span style='color:#4caf50;font-size:0.7rem'>\u25B2</span>";item.style.background="#4caf5018";item.style.borderColor="#4caf5044"}
-else if(sk.prof===dMinProf&&s.skills.length>1){mark=" <span style='color:#f44336;font-size:0.7rem'>\u25BC</span>";item.style.background="#f4433618";item.style.borderColor="#f4433644"}
-// Clickable stars for editing proficiency
+if(owned&&prof===s.maxProf){mark=" <span style='color:#4caf50;font-size:0.7rem'>\u25B2</span>";item.style.background="#4caf5018";item.style.borderColor="#4caf5044"}
+else if(owned&&prof===dMinProf&&s.skills.length>1){mark=" <span style='color:#f44336;font-size:0.7rem'>\u25BC</span>";item.style.background="#f4433618";item.style.borderColor="#f4433644"}
+
+// Clickable stars
 var starsHtml="";
 for(var i=1;i<=5;i++){
-var filled=i<=sk.prof;
-starsHtml+="<span class='clickable-star' data-prof='"+i+"' data-skill='"+sk.name+"' style='color:"+(filled?"#f7c948":"#30363d")+"'>\u2605</span>";
+starsHtml+="<span class='clickable-star' data-prof='"+i+"' data-skill='"+skillName+"' style='color:"+(i<=prof?"#f7c948":"#30363d")+"'>\u2605</span>";
 }
-item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+starsHtml+"</span>"+mark
-+"<span class='ds-remove' title='Remove skill'>\u2716</span>";
+item.innerHTML="<span class='ds-name'>"+skillName+"</span><span class='ds-stars'>"+starsHtml+"</span>"+mark
++(owned?"<span class='ds-remove' title='Remove skill'>\u2716</span>":"");
+
+// Star hover — show full opacity on hover for unowned
+item.addEventListener("mouseenter",function(){if(!owned)this.style.opacity="0.7"});
+item.addEventListener("mouseleave",function(){if(!ownedMap[skillName])this.style.opacity="0.25"});
+
 // Star hover preview
 var starsContainer=item.querySelector(".ds-stars");
 starsContainer.addEventListener("mouseleave",function(){
-// Restore actual stars on mouse leave
-var actualProf=sk.prof;
+var curProf=ownedMap[skillName]?ownedMap[skillName].prof:0;
 this.querySelectorAll(".clickable-star").forEach(function(st,idx){
-st.style.color=(idx<actualProf)?"#f7c948":"#30363d";
+st.style.color=(idx<curProf)?"#f7c948":"#30363d";
 });
 });
-// Star click + hover handlers
 item.querySelectorAll(".clickable-star").forEach(function(star){
-star.addEventListener("mouseenter",function(e){
+star.addEventListener("mouseenter",function(){
 var hoverProf=parseInt(this.getAttribute("data-prof"));
 this.parentElement.querySelectorAll(".clickable-star").forEach(function(st,idx){
 st.style.color=(idx<hoverProf)?"#f7c948":"#30363d";
@@ -407,49 +420,32 @@ st.style.color=(idx<hoverProf)?"#f7c948":"#30363d";
 star.addEventListener("click",function(e){
 e.stopPropagation();
 var newProf=parseInt(this.getAttribute("data-prof"));
-changeProf(s,this.getAttribute("data-skill"),newProf);
-// Update sk.prof so mouseleave restores correctly
-sk.prof=newProf;
+var skName=this.getAttribute("data-skill");
+if(ownedMap[skName]){
+changeProf(s,skName,newProf);
+}else{
+addSkill(s,skName);
+// Set prof after adding (addSkill defaults to 1)
+if(newProf>1)changeProf(s,skName,newProf);
+}
 rebuildDetailContent(panel,s,tr,detailTr);
 applyFilters();
 });
 });
-// Remove button handler
-item.querySelector(".ds-remove").addEventListener("click",function(e){
+// Remove handler
+var removeBtn=item.querySelector(".ds-remove");
+if(removeBtn){
+removeBtn.addEventListener("click",function(e){
 e.stopPropagation();
-removeSkill(s,sk.name);
+removeSkill(s,skillName);
 rebuildDetailContent(panel,s,tr,detailTr);
 applyFilters();
 });
+}
 grid.appendChild(item);
 });
-catDiv.appendChild(grid);return catDiv;
-}
-catOrder.forEach(function(cat){if(groups[cat])skillsSection.appendChild(buildCatSection(cat,groups[cat],s,tr,detailTr,panel))});
-Object.keys(groups).forEach(function(cat){if(catOrder.indexOf(cat)===-1)skillsSection.appendChild(buildCatSection(cat,groups[cat],s,tr,detailTr,panel))});
-// Add Skill button
-var addBtn=document.createElement("div");addBtn.className="add-skill-btn";addBtn.textContent="+ Add Skill";
-addBtn.style.cssText="display:inline-block;margin-top:8px;position:relative";
-addBtn.addEventListener("click",function(e){
-e.stopPropagation();
-var existing=document.querySelector(".add-skill-dropdown");
-if(existing){existing.remove();return}
-var dropdown=document.createElement("div");dropdown.className="add-skill-dropdown";
-var existingSkills=s.skills.map(function(sk){return sk.name});
-Object.keys(SKILL_INFO).sort().forEach(function(name){
-if(existingSkills.indexOf(name)!==-1)return;
-var opt=document.createElement("div");opt.textContent=name;
-opt.addEventListener("click",function(ev){
-ev.stopPropagation();dropdown.remove();
-addSkill(s,name);
-rebuildDetailContent(panel,s,tr,detailTr);
-applyFilters();
+catDiv.appendChild(grid);skillsSection.appendChild(catDiv);
 });
-dropdown.appendChild(opt);
-});
-addBtn.appendChild(dropdown);
-});
-skillsSection.appendChild(addBtn);
 layout.appendChild(skillsSection);panel.appendChild(layout);
 }
 
@@ -549,8 +545,6 @@ search.addEventListener("input",applyFilters);
 sortEl.addEventListener("change",applyFilters);
 modFilter.addEventListener("change",applyFilters);
 applyFilters();
-// Close dropdown on outside click
-document.addEventListener("click",function(){var d=document.querySelector(".add-skill-dropdown");if(d)d.remove()});
 })();
 </script>
 <script src="../navbar.js"></script>
