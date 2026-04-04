@@ -76,7 +76,7 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
 .detail-skill.highlighted .ds-name{color:#f7c948;font-weight:700}
 .detail-skill .ds-remove{color:#f44336;cursor:pointer;font-size:0.9rem;margin-left:4px;opacity:0.5;transition:opacity 0.2s}
 .detail-skill .ds-remove:hover{opacity:1}
-.clickable-star{cursor:pointer;transition:transform 0.1s}.clickable-star:hover{transform:scale(1.3)}
+.clickable-star{cursor:pointer;transition:transform 0.1s,color 0.1s}.clickable-star:hover{transform:scale(1.3)}
 .add-skill-btn{background:#21262d;border:1px dashed #30363d;border-radius:5px;padding:5px 12px;font-size:0.85rem;color:#8b949e;cursor:pointer;transition:border-color 0.2s,color 0.2s}
 .add-skill-btn:hover{border-color:#f7c948;color:#f7c948}
 .modified-badge{font-size:0.65rem;background:#f7c948;color:#0d1117;padding:1px 5px;border-radius:3px;margin-left:6px;font-weight:700}
@@ -324,12 +324,27 @@ function getFilteredSkillProf(s){
     return 0;
 }
 
+function rebuildDetailContent(panel,s,tr,detailTr){
+// Keep panel open, just rebuild inner content
+var wasOpen=panel.classList.contains("open");
+panel.innerHTML="";
+buildDetailInner(panel,s,tr,detailTr);
+if(wasOpen)panel.classList.add("open");
+}
+
 function toggleDetail(tr,detailTr,panel,s){
 var isOpen=panel.classList.contains("open");
 var prevOpen=tbody.querySelector(".detail-panel.open");
 if(prevOpen){prevOpen.classList.remove("open");prevOpen.closest("tr").previousElementSibling.classList.remove("expanded")}
 if(isOpen){expandedSpecies=null;return}
 panel.innerHTML="";
+buildDetailInner(panel,s,tr,detailTr);
+tr.classList.add("expanded");
+requestAnimationFrame(function(){panel.classList.add("open")});
+expandedSpecies=s.name;
+}
+
+function buildDetailInner(panel,s,tr,detailTr){
 var closeBtn=document.createElement("button");closeBtn.className="detail-close";closeBtn.textContent="Close";
 closeBtn.addEventListener("click",function(e){e.stopPropagation();panel.classList.remove("open");tr.classList.remove("expanded");expandedSpecies=null});
 panel.appendChild(closeBtn);
@@ -372,20 +387,38 @@ starsHtml+="<span class='clickable-star' data-prof='"+i+"' data-skill='"+sk.name
 }
 item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+starsHtml+"</span>"+mark
 +"<span class='ds-remove' title='Remove skill'>\u2716</span>";
-// Star click handlers
+// Star hover preview
+var starsContainer=item.querySelector(".ds-stars");
+starsContainer.addEventListener("mouseleave",function(){
+// Restore actual stars on mouse leave
+var actualProf=sk.prof;
+this.querySelectorAll(".clickable-star").forEach(function(st,idx){
+st.style.color=(idx<actualProf)?"#f7c948":"#30363d";
+});
+});
+// Star click + hover handlers
 item.querySelectorAll(".clickable-star").forEach(function(star){
+star.addEventListener("mouseenter",function(e){
+var hoverProf=parseInt(this.getAttribute("data-prof"));
+this.parentElement.querySelectorAll(".clickable-star").forEach(function(st,idx){
+st.style.color=(idx<hoverProf)?"#f7c948":"#30363d";
+});
+});
 star.addEventListener("click",function(e){
 e.stopPropagation();
-changeProf(s,this.getAttribute("data-skill"),parseInt(this.getAttribute("data-prof")));
-toggleDetail(tr,detailTr,panel,s);// re-render detail
-applyFilters();// refresh table
+var newProf=parseInt(this.getAttribute("data-prof"));
+changeProf(s,this.getAttribute("data-skill"),newProf);
+// Update sk.prof so mouseleave restores correctly
+sk.prof=newProf;
+rebuildDetailContent(panel,s,tr,detailTr);
+applyFilters();
 });
 });
 // Remove button handler
 item.querySelector(".ds-remove").addEventListener("click",function(e){
 e.stopPropagation();
 removeSkill(s,sk.name);
-toggleDetail(tr,detailTr,panel,s);
+rebuildDetailContent(panel,s,tr,detailTr);
 applyFilters();
 });
 grid.appendChild(item);
@@ -409,7 +442,7 @@ var opt=document.createElement("div");opt.textContent=name;
 opt.addEventListener("click",function(ev){
 ev.stopPropagation();dropdown.remove();
 addSkill(s,name);
-toggleDetail(tr,detailTr,panel,s);
+rebuildDetailContent(panel,s,tr,detailTr);
 applyFilters();
 });
 dropdown.appendChild(opt);
@@ -418,9 +451,6 @@ addBtn.appendChild(dropdown);
 });
 skillsSection.appendChild(addBtn);
 layout.appendChild(skillsSection);panel.appendChild(layout);
-tr.classList.add("expanded");
-requestAnimationFrame(function(){panel.classList.add("open")});
-expandedSpecies=s.name;
 }
 
 function applyFilters(){
