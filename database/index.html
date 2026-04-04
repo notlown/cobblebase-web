@@ -39,7 +39,9 @@ tr:hover{background:#161b22}
 .skill-tag{font-size:0.8rem;padding:3px 8px;border-radius:4px;background:#21262d;color:#c9d1d9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .skill-tag .stars{color:#f7c948;margin-left:4px;letter-spacing:0.5px}
 .skill-tag.highlighted{background:#f7c94822;border:1px solid #f7c948;color:#f7c948;font-weight:600}
-.skill-tag .best-icon{color:#4caf50;margin-left:3px;font-size:0.75rem}
+.skill-tag .best-icon{margin-left:3px;font-size:0.75rem}
+.skill-tag.best-skill{background:#4caf5018;border:1px solid #4caf5044}
+.skill-tag.worst-skill{background:#f4433618;border:1px solid #f4433644}
 .cat-gathering{border-left:2px solid #4caf50}.cat-generation{border-left:2px solid #ff9800}.cat-combat{border-left:2px solid #f44336}
 .cat-support{border-left:2px solid #e91e9e}.cat-utility{border-left:2px solid #2196f3}.cat-legendary{border-left:2px solid #ffd700}.cat-fairy{border-left:2px solid #f0abfc}
 .pagination{max-width:1200px;margin:1rem auto;padding:0 1rem;display:flex;justify-content:center;gap:0.5rem}
@@ -243,8 +245,11 @@ var grid=document.createElement("div");grid.className="detail-skills-grid";
 skills.forEach(function(sk){
 var item=document.createElement("div");item.className="detail-skill";
 if(activeFilter&&sk.name===activeFilter)item.className+=" highlighted";
-var bestMark=sk.prof===s.maxProf?" <span style='color:#4caf50;font-size:0.7rem'>\u25B2</span>":"";
-item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+stars(sk.prof)+"</span>"+bestMark;
+var dMinProf=Math.min.apply(null,s.skills.map(function(x){return x.prof}));
+var mark="";
+if(sk.prof===s.maxProf){mark=" <span style='color:#4caf50;font-size:0.7rem'>\u25B2</span>";item.style.background="#4caf5018";item.style.borderColor="#4caf5044"}
+else if(sk.prof===dMinProf&&s.skills.length>1){mark=" <span style='color:#f44336;font-size:0.7rem'>\u25BC</span>";item.style.background="#f4433618";item.style.borderColor="#f4433644"}
+item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+stars(sk.prof)+"</span>"+mark;
 grid.appendChild(item);
 });
 catDiv.appendChild(grid);return catDiv;
@@ -303,11 +308,16 @@ tr.appendChild(nameCell);
 var skillCell=document.createElement("td");
 var tags=document.createElement("div");tags.className="skill-tags";
 var sortedSkills=s.skills.slice().sort(function(a,b){return a.name.localeCompare(b.name)});
+var minProf=Math.min.apply(null,s.skills.map(function(x){return x.prof}));
 sortedSkills.forEach(function(sk){
 var tag=document.createElement("span");tag.className="skill-tag cat-"+sk.cat;
 if(activeFilter&&sk.name===activeFilter)tag.className+=" highlighted";
-var bestMark=sk.prof===s.maxProf?"<span class='best-icon'>\u25B2</span>":"";
-tag.innerHTML=sk.name+"<span class='stars'>"+stars(sk.prof)+"</span>"+bestMark;
+if(sk.prof===s.maxProf)tag.className+=" best-skill";
+else if(sk.prof===minProf&&s.skills.length>1)tag.className+=" worst-skill";
+var mark="";
+if(sk.prof===s.maxProf)mark="<span class='best-icon' style='color:#4caf50'>\u25B2</span>";
+else if(sk.prof===minProf&&s.skills.length>1)mark="<span class='best-icon' style='color:#f44336'>\u25BC</span>";
+tag.innerHTML=sk.name+"<span class='stars'>"+stars(sk.prof)+"</span>"+mark;
 tags.appendChild(tag);
 });
 skillCell.appendChild(tags);tr.appendChild(skillCell);
