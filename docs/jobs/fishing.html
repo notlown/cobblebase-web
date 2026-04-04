@@ -65,6 +65,8 @@
             .main { margin-left: 0; }
             .content { padding: 24px 16px; }
         }
+        .db-callout { background-color: #1c2128; border: 1px solid #f7c948; border-left: 4px solid #f7c948; border-radius: 6px; padding: 16px 20px; margin: 20px 0; }
+        .db-callout a { color: #f7c948; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -129,7 +131,6 @@
                     <tr><td>Search Radius</td><td>10 blocks</td></tr>
                     <tr><td>Requires</td><td>Water nearby</td></tr>
                     <tr><td>Treasure Chance</td><td>5% per roll</td></tr>
-                    <tr><td>Example Pokemon</td><td>Gyarados, Blastoise, Kyogre</td></tr>
                 </table>
 
                 <h2>Proficiency Drop Chances</h2>
@@ -146,13 +147,17 @@
                         <tr><th>Category</th><th>Items</th><th>Notes</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>Fish (common)</td><td>Cod, Salmon, Tropical Fish, Pufferfish</td><td>95% of the time</td></tr>
-                        <tr><td>Treasure (rare)</td><td>Enchanted Books, Name Tags, Saddles, Nautilus Shells, Bows, Fishing Rods</td><td>5% treasure roll</td></tr>
-                        <tr><td>Junk</td><td>Leather Boots, Bowls, String, Sticks, Lily Pads, Ink Sacs, Tripwire Hooks</td><td>Mixed into regular pool</td></tr>
+                        <tr><td>Fish (common)</td><td><img src="../../icons/items/cod.png" width="24" height="24" class="item-icon" alt="Cod"> Cod, <img src="../../icons/items/salmon.png" width="24" height="24" class="item-icon" alt="Salmon"> Salmon, <img src="../../icons/items/tropical_fish.png" width="24" height="24" class="item-icon" alt="Tropical Fish"> Tropical Fish, <img src="../../icons/items/pufferfish.png" width="24" height="24" class="item-icon" alt="Pufferfish"> Pufferfish</td><td>95% of the time</td></tr>
+                        <tr><td>Treasure (rare)</td><td><img src="../../icons/items/enchanted_book.png" width="24" height="24" class="item-icon" alt="Enchanted Book"> Enchanted Books, <img src="../../icons/items/name_tag.png" width="24" height="24" class="item-icon" alt="Name Tag"> Name Tags, <img src="../../icons/items/saddle.png" width="24" height="24" class="item-icon" alt="Saddle"> Saddles, <img src="../../icons/items/nautilus_shell.png" width="24" height="24" class="item-icon" alt="Nautilus Shell"> Nautilus Shells, <img src="../../icons/items/bow.png" width="24" height="24" class="item-icon" alt="Bow"> Bows, <img src="../../icons/items/fishing_rod.png" width="24" height="24" class="item-icon" alt="Fishing Rod"> Fishing Rods</td><td>5% treasure roll</td></tr>
+                        <tr><td>Junk</td><td><img src="../../icons/items/leather_boots.png" width="24" height="24" class="item-icon" alt="Leather Boots"> Leather Boots, <img src="../../icons/items/bowl.png" width="24" height="24" class="item-icon" alt="Bowl"> Bowls, <img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"> String, <img src="../../icons/items/stick.png" width="24" height="24" class="item-icon" alt="Stick"> Sticks, Lily Pads, <img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"> Ink Sacs, Tripwire Hooks</td><td>Mixed into regular pool</td></tr>
                     </tbody>
                 </table>
 
 
+
+                <div class="db-callout">
+                    <p>Want to know which Pokémon can learn this skill? Check our <a href="../../database/index.html">Species Database</a> — filter by skill to see all compatible species.</p>
+                </div>
                 <footer>
                     <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
                 </footer>

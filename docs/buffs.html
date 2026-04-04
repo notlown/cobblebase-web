@@ -19,6 +19,14 @@
         .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .sidebar-group { margin: 0; }
+        .sidebar-group-title { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; color: #8b949e; font-size: 0.85rem; font-weight: 600; cursor: pointer; user-select: none; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-group-title:hover { color: #c9d1d9; background-color: #1c2128; }
+        .sidebar-arrow { font-size: 0.7rem; transition: transform 0.2s; }
+        .sidebar-group.open .sidebar-arrow { transform: rotate(90deg); }
+        .sidebar-group-links { display: none; }
+        .sidebar-group.open .sidebar-group-links { display: block; }
+        .sidebar-group-links a { padding-left: 36px !important; font-size: 0.85rem !important; }
         .main { margin-left: 260px; flex: 1; }
         .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
         .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
@@ -54,6 +62,36 @@
             <nav>
                 <a href="getting-started.html">Getting Started</a>
                 <a href="jobs.html">Jobs Guide</a>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Gathering Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                        <a href="jobs/mining.html">Mining</a>
+                        <a href="jobs/fishing.html">Fishing</a>
+                        <a href="jobs/honey-collect.html">Honey Collect</a>
+                        <a href="jobs/archeologist.html">Archeologist</a>
+                    </div>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Finder Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                        <a href="jobs/finder-alchemist.html">Alchemist</a>
+                        <a href="jobs/finder-pharmacist.html">Pharmacist</a>
+                        <a href="jobs/finder-collector.html">Collector</a>
+                        <a href="jobs/finder-chef.html">Chef</a>
+                        <a href="jobs/finder-trainer.html">Trainer</a>
+                        <a href="jobs/finder-armorer.html">Armorer</a>
+                        <a href="jobs/finder-prospector.html">Prospector</a>
+                        <a href="jobs/finder-smith.html">Smith</a>
+                        <a href="jobs/finder-excavator.html">Excavator</a>
+                        <a href="jobs/finder-scholar.html">Scholar</a>
+                        <a href="jobs/finder-botanist.html">Botanist</a>
+                        <a href="jobs/finder-architect.html">Architect</a>
+                    </div>
+                </div>
                 <a href="proficiency.html">Proficiency System</a>
                 <a href="gui.html">GUI Guide</a>
                 <a href="buffs.html" class="active">Buffs &amp; Legendaries</a>
