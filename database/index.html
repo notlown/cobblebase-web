@@ -332,41 +332,48 @@ if(!username||username.length<2){statusEl.textContent="Enter your name (min 2 ch
 statusEl.textContent="Submitting...";statusEl.style.color="#f7c948";
 document.getElementById("submit-btn").disabled=true;
 
-// Build diff lines for community channel
-var diffLines=[];
+// Build per-species embeds for community channel (max 10 embeds per message)
+var communityEmbeds=[];
+var devEmbeds=[];
 keys.forEach(function(name){
 var diff=computeDiff(name);
-var parts=[];
-if(diff.added.length)parts.push("\u2795 "+diff.added.join(", "));
-if(diff.changed.length)parts.push("\u270F\uFE0F "+diff.changed.join(", "));
-if(diff.removed.length)parts.push("\u274C "+diff.removed.join(", "));
-if(parts.length)diffLines.push("**"+name+"**\n"+parts.join("\n"));
+var lines=[];
+if(diff.added.length)diff.added.forEach(function(a){lines.push("\u2795  "+a)});
+if(diff.changed.length)diff.changed.forEach(function(c){lines.push("\u270F\uFE0F  "+c)});
+if(diff.removed.length)diff.removed.forEach(function(r){lines.push("\u274C  ~~"+r+"~~")});
+if(!lines.length)return;
+var spriteUrl="https://img.pokemondb.net/sprites/home/normal/"+name.replace(/[^a-z0-9-]/g,"")+".png";
+communityEmbeds.push({
+title:name.charAt(0).toUpperCase()+name.slice(1),
+description:lines.join("\n"),
+color:16238920,
+thumbnail:{url:spriteUrl}
+});
+// Dev embed with JSON
+var specJson=buildSpeciesJson(name,modifications[name]);
+devEmbeds.push({
+title:name,
+description:lines.join("\n")+"\n```json\n"+JSON.stringify(specJson,null,1).substring(0,800)+"\n```",
+color:16238920,
+thumbnail:{url:spriteUrl}
+});
 });
 
-// Community channel: human-readable diff only
-var communityBody=JSON.stringify({
-username:"Species Editor",
-embeds:[{
+// Header embed with username + comment
+var headerEmbed={
 title:"\uD83D\uDCDD Skill Change Proposal",
-description:diffLines.join("\n\n").substring(0,3900),
+description:"**"+keys.length+" species** modified by **"+username+"**"+(comment?"\n\n\uD83D\uDCAC "+comment:""),
 color:16238920,
-footer:{text:"by "+username},
-timestamp:new Date().toISOString(),
-fields:comment?[{name:"Comment",value:comment}]:[]
-}]
-});
+timestamp:new Date().toISOString()
+};
 
-// Dev channel: full JSON for implementation
-var devBody=JSON.stringify({
-username:"Species Editor",
-embeds:[{
-title:"Skill Submission ("+keys.length+" species)",
-description:"by **"+username+"**"+(comment?" — "+comment:""),
-color:16238920,
-timestamp:new Date().toISOString(),
-fields:[{name:"Changes",value:diffLines.join("\n").substring(0,900)},{name:"JSON",value:"```json\n"+JSON.stringify(keys.map(function(name){return buildSpeciesJson(name,modifications[name])}),null,1).substring(0,900)+"\n```"}]
-}]
-});
+// Community: header + per-species embeds (max 10 total)
+var cEmbeds=[headerEmbed].concat(communityEmbeds.slice(0,9));
+var communityBody=JSON.stringify({username:"Species Editor",embeds:cEmbeds});
+
+// Dev: header + per-species with JSON
+var dEmbeds=[headerEmbed].concat(devEmbeds.slice(0,9));
+var devBody=JSON.stringify({username:"Species Editor",embeds:dEmbeds});
 
 Promise.all([
 fetch(WEBHOOK_COMMUNITY,{method:"POST",headers:{"Content-Type":"application/json"},body:communityBody}),
