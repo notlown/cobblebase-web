@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../navbar.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; } body { padding-top: 56px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding-top: 56px; }
         a { color: #58a6ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .layout { display: flex; min-height: 100vh; }
@@ -19,6 +19,16 @@
         .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .sidebar-group { margin: 0; }
+        .sidebar-group-title { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; color: #8b949e; font-size: 0.85rem; font-weight: 600; cursor: pointer; user-select: none; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-group-title:hover { color: #c9d1d9; background-color: #1c2128; }
+        .sidebar-arrow { font-size: 0.7rem; transition: transform 0.2s; }
+        .sidebar-group.open .sidebar-arrow { transform: rotate(90deg); }
+        .sidebar-group-links { display: none; }
+        .sidebar-group.open .sidebar-group-links { display: block; }
+        .sidebar-group-links a { padding-left: 36px !important; font-size: 0.85rem !important; }
+        .loot-link { display: inline-block; margin-top: 4px; margin-bottom: 16px; font-size: 0.9rem; color: #f7c948; }
+        .loot-link:hover { color: #ffdf7f; }
         .main { margin-left: 260px; flex: 1; }
         .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
         .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
@@ -58,6 +68,36 @@
             <nav>
                 <a href="getting-started.html">Getting Started</a>
                 <a href="jobs.html" class="active">Jobs Guide</a>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Gathering Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                        <a href="jobs/mining.html">Mining</a>
+                        <a href="jobs/fishing.html">Fishing</a>
+                        <a href="jobs/honey-collect.html">Honey Collect</a>
+                        <a href="jobs/archeologist.html">Archeologist</a>
+                    </div>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Finder Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                        <a href="jobs/finder-alchemist.html">Alchemist</a>
+                        <a href="jobs/finder-pharmacist.html">Pharmacist</a>
+                        <a href="jobs/finder-collector.html">Collector</a>
+                        <a href="jobs/finder-chef.html">Chef</a>
+                        <a href="jobs/finder-trainer.html">Trainer</a>
+                        <a href="jobs/finder-armorer.html">Armorer</a>
+                        <a href="jobs/finder-prospector.html">Prospector</a>
+                        <a href="jobs/finder-smith.html">Smith</a>
+                        <a href="jobs/finder-excavator.html">Excavator</a>
+                        <a href="jobs/finder-scholar.html">Scholar</a>
+                        <a href="jobs/finder-botanist.html">Botanist</a>
+                        <a href="jobs/finder-architect.html">Architect</a>
+                    </div>
+                </div>
                 <a href="proficiency.html">Proficiency System</a>
                 <a href="gui.html">GUI Guide</a>
                 <a href="buffs.html">Buffs &amp; Legendaries</a>
@@ -100,6 +140,7 @@
                     <tr><td>Requires</td><td>Water nearby</td></tr>
                     <tr><td>Example Pokemon</td><td>Gyarados, Blastoise, Kyogre</td></tr>
                 </table>
+                <p><a href="jobs/fishing.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>&#x26CF;&#xFE0F; Mining</h3>
                 <p>Digs for ores, fossils, gems, and tumblestones. Produces <strong>1 drop per cooldown cycle</strong> -- no burst looting. Loot is divided into four tiers:</p>
@@ -116,6 +157,7 @@
                     <tr><td>Search Radius</td><td>10 blocks</td></tr>
                     <tr><td>Example Pokemon</td><td>Steelix, Excadrill, Ting-Lu</td></tr>
                 </table>
+                <p><a href="jobs/mining.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>&#x1F36F; Honey Collect</h3>
                 <p>Produces honey bottles, honeycomb, and honey blocks. No beehive needed -- the Pokemon produces honey on its own. Loot reduced: 40% chance for 1 comb, 15% chance for 2 combs.</p>
@@ -125,6 +167,7 @@
                     <tr><td>Search Radius</td><td>10 blocks</td></tr>
                     <tr><td>Example Pokemon</td><td>Vespiquen, Beedrill, Combee</td></tr>
                 </table>
+                <p><a href="jobs/honey-collect.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>&#x1F3DB;&#xFE0F; Archeologist</h3>
                 <p>Excavates ancient relics and artifacts including prismarine, nautilus shells, and other treasures.</p>
@@ -134,6 +177,7 @@
                     <tr><td>Search Radius</td><td>10 blocks</td></tr>
                     <tr><td>Example Pokemon</td><td>Nidoking, Steelix, Nidoqueen</td></tr>
                 </table>
+                <p><a href="jobs/archeologist.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <hr>
 
@@ -149,6 +193,7 @@
                     <tr><td>Rare</td><td>Dawn Stone, Shiny Stone</td></tr>
                     <tr><td>Ultra Rare</td><td>Ability Patch</td></tr>
                 </table>
+                <p><a href="jobs/finder-alchemist.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Pharmacist</h3>
                 <p>Finds healing items and berries.</p>
@@ -159,6 +204,7 @@
                     <tr><td>Rare</td><td>Max Revive, Full Restore</td></tr>
                     <tr><td>Ultra Rare</td><td>Sacred Ash</td></tr>
                 </table>
+                <p><a href="jobs/finder-pharmacist.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Architect</h3>
                 <p>Finds building materials.</p>
@@ -169,6 +215,7 @@
                     <tr><td>Rare</td><td>Crying Obsidian</td></tr>
                     <tr><td>Ultra Rare</td><td>End Stone, Purpur Block</td></tr>
                 </table>
+                <p><a href="jobs/finder-architect.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Excavator</h3>
                 <p>Finds ores and raw minerals.</p>
@@ -179,6 +226,7 @@
                     <tr><td>Rare</td><td>Diamond, Emerald</td></tr>
                     <tr><td>Ultra Rare</td><td>Ancient Debris</td></tr>
                 </table>
+                <p><a href="jobs/finder-excavator.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>&#x1F33F; Botanist</h3>
                 <p>Finds seeds, plants, and mulch.</p>
@@ -190,6 +238,7 @@
                     <tr><td>Ultra Rare</td><td>Pitcher Pod</td></tr>
                 </table>
                 <p>Includes mulch variants: Growth Mulch, Rich Mulch, Surprise Mulch, Loamy Mulch.</p>
+                <p><a href="jobs/finder-botanist.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Collector</h3>
                 <p>Finds Pokeballs of all types.</p>
@@ -200,6 +249,7 @@
                     <tr><td>Rare</td><td>Timer Ball, Dusk Ball</td></tr>
                     <tr><td>Ultra Rare</td><td>Master Ball, Beast Ball, Dream Ball</td></tr>
                 </table>
+                <p><a href="jobs/finder-collector.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Scholar</h3>
                 <p>Finds XP Candies and Rare Candies.</p>
@@ -210,6 +260,7 @@
                     <tr><td>Rare</td><td>Exp Candy L, Exp Candy XL</td></tr>
                     <tr><td>Ultra Rare</td><td>Rare Candy</td></tr>
                 </table>
+                <p><a href="jobs/finder-scholar.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>&#x1F373; Chef</h3>
                 <p>Finds food and cooking ingredients.</p>
@@ -220,6 +271,7 @@
                     <tr><td>Rare</td><td>Golden Apple, Lava Cookie</td></tr>
                     <tr><td>Ultra Rare</td><td>Enchanted Golden Apple</td></tr>
                 </table>
+                <p><a href="jobs/finder-chef.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Trainer</h3>
                 <p>Finds vitamins and training items.</p>
@@ -230,6 +282,7 @@
                     <tr><td>Rare</td><td>HP Up, Carbos</td></tr>
                     <tr><td>Ultra Rare</td><td>Ability Patch</td></tr>
                 </table>
+                <p><a href="jobs/finder-trainer.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Armorer</h3>
                 <p>Finds battle held items.</p>
@@ -240,6 +293,7 @@
                     <tr><td>Rare</td><td>Life Orb, Expert Belt</td></tr>
                     <tr><td>Ultra Rare</td><td>Focus Sash</td></tr>
                 </table>
+                <p><a href="jobs/finder-armorer.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Prospector</h3>
                 <p>Finds relics and treasure.</p>
@@ -250,6 +304,7 @@
                     <tr><td>Rare</td><td>Diamond</td></tr>
                     <tr><td>Ultra Rare</td><td>Netherite Ingot</td></tr>
                 </table>
+                <p><a href="jobs/finder-prospector.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <h3>Smith</h3>
                 <p>Finds smithing templates and pottery.</p>
@@ -260,6 +315,7 @@
                     <tr><td>Rare</td><td>Rare Armor Trims</td></tr>
                     <tr><td>Ultra Rare</td><td>Netherite Upgrade Smithing Template</td></tr>
                 </table>
+                <p><a href="jobs/finder-smith.html" class="loot-link">View full loot table &rarr;</a></p>
 
                 <hr>
 

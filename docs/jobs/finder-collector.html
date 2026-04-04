@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collector - Loot Table - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../../cobblebase_icon.png">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding-top: 56px; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 56px; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .sidebar-group { margin: 0; }
+        .sidebar-group-title { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; color: #8b949e; font-size: 0.85rem; font-weight: 600; cursor: pointer; user-select: none; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-group-title:hover { color: #c9d1d9; background-color: #1c2128; }
+        .sidebar-arrow { font-size: 0.7rem; transition: transform 0.2s; }
+        .sidebar-group.open .sidebar-arrow { transform: rotate(90deg); }
+        .sidebar-group-links { display: none; }
+        .sidebar-group.open .sidebar-group-links { display: block; }
+        .sidebar-group-links a { padding-left: 36px !important; font-size: 0.85rem !important; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        .breadcrumb { margin-bottom: 16px; color: #8b949e; font-size: 0.9rem; }
+        .breadcrumb a { color: #8b949e; }
+        .breadcrumb a:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
+        .item-icon { vertical-align: middle; margin-right: 6px; image-rendering: pixelated; }
+        .tier-common { color: #7ee787; }
+        .tier-uncommon { color: #58a6ff; }
+        .tier-rare { color: #d2a8ff; }
+        .tier-ultra-rare { color: #f7c948; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 24px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="../index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="../getting-started.html">Getting Started</a>
+                <a href="../jobs.html">Jobs Guide</a>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Gathering Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                <a href="mining.html">Mining</a>
+                <a href="fishing.html">Fishing</a>
+                <a href="honey-collect.html">Honey Collect</a>
+                <a href="archeologist.html">Archeologist</a>
+                    </div>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Finder Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                <a href="finder-alchemist.html">Alchemist</a>
+                <a href="finder-pharmacist.html">Pharmacist</a>
+                <a href="finder-collector.html" class="active">Collector</a>
+                <a href="finder-chef.html">Chef</a>
+                <a href="finder-trainer.html">Trainer</a>
+                <a href="finder-armorer.html">Armorer</a>
+                <a href="finder-prospector.html">Prospector</a>
+                <a href="finder-smith.html">Smith</a>
+                <a href="finder-excavator.html">Excavator</a>
+                <a href="finder-scholar.html">Scholar</a>
+                <a href="finder-botanist.html">Botanist</a>
+                <a href="finder-architect.html">Architect</a>
+                    </div>
+                </div>
+                <a href="../proficiency.html">Proficiency System</a>
+                <a href="../gui.html">GUI Guide</a>
+                <a href="../buffs.html">Buffs &amp; Legendaries</a>
+                <a href="../admin.html">Admin Guide</a>
+                <a href="../datapacks.html">Datapacks</a>
+                <a href="../compatibility.html">Compatibility</a>
+                <a href="../faq.html">FAQ</a>
+                <a href="../../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <div class="breadcrumb"><a href="../jobs.html">Jobs Guide</a> &rarr; Collector</div>
+
+                <h1>Collector - Loot Table</h1>
+                <p>Finds Pokeballs of all types. From basic Poke Balls to rare Apricorn balls and even the legendary Master Ball.</p>
+
+                <h2>Properties</h2>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>300 seconds (5 min)</td></tr>
+                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Job Type</td><td>Finder</td></tr>
+                    <tr><td>Example Pokemon</td><td>Ambipom, Furret, Munchlax</td></tr>
+                </table>
+
+                <h2>Proficiency Drop Chances</h2>
+                <p>The tier rolled each cycle depends on your Pokemon's proficiency level. Higher proficiency shifts the odds toward rarer tiers.</p>
+                <table>
+                    <tr><th>Proficiency</th><th><span class="tier-common">Common</span></th><th><span class="tier-uncommon">Uncommon</span></th><th><span class="tier-rare">Rare</span></th><th><span class="tier-ultra-rare">Ultra Rare</span></th></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> (1)</td><td>80%</td><td>15%</td><td>4%</td><td>1%</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span> (2)</td><td>65%</td><td>25%</td><td>8%</td><td>2%</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> (3)</td><td>50%</td><td>30%</td><td>15%</td><td>5%</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (4)</td><td>30%</td><td>35%</td><td>25%</td><td>10%</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (5)</td><td>15%</td><td>30%</td><td>35%</td><td>20%</td></tr>
+                </table>
+
+                <h2>Loot Tables</h2>
+                <p>Each tier has its own pool of items. When a tier is rolled, one entry is chosen from that pool based on weight. The <strong>Drop Chance</strong> column shows the probability of getting that specific item <em>within</em> the tier.</p>
+
+                <h3 style="color:#7ee787;">Common</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Quantity</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="../../icons/items/poke_ball.png" width="24" height="24" class="item-icon" alt="Poke Ball"> Poke Ball</td>
+                            <td>2-3</td>
+                            <td>15</td>
+                            <td>33.3%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/great_ball.png" width="24" height="24" class="item-icon" alt="Great Ball"> Great Ball</td>
+                            <td>1</td>
+                            <td>10</td>
+                            <td>22.2%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/citrine_ball.png" width="24" height="24" class="item-icon" alt="Citrine Ball"> Citrine Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.1%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/verdant_ball.png" width="24" height="24" class="item-icon" alt="Verdant Ball"> Verdant Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.1%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/azure_ball.png" width="24" height="24" class="item-icon" alt="Azure Ball"> Azure Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.1%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/roseate_ball.png" width="24" height="24" class="item-icon" alt="Roseate Ball"> Roseate Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.1%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color:#58a6ff;">Uncommon</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Quantity</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="../../icons/items/ultra_ball.png" width="24" height="24" class="item-icon" alt="Ultra Ball"> Ultra Ball</td>
+                            <td>1</td>
+                            <td>10</td>
+                            <td>25.0%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/net_ball.png" width="24" height="24" class="item-icon" alt="Net Ball"> Net Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>12.5%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/dive_ball.png" width="24" height="24" class="item-icon" alt="Dive Ball"> Dive Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>12.5%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/nest_ball.png" width="24" height="24" class="item-icon" alt="Nest Ball"> Nest Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>12.5%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/repeat_ball.png" width="24" height="24" class="item-icon" alt="Repeat Ball"> Repeat Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>12.5%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/timer_ball.png" width="24" height="24" class="item-icon" alt="Timer Ball"> Timer Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>12.5%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/quick_ball.png" width="24" height="24" class="item-icon" alt="Quick Ball"> Quick Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>12.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color:#d2a8ff;">Rare</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Quantity</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="../../icons/items/dusk_ball.png" width="24" height="24" class="item-icon" alt="Dusk Ball"> Dusk Ball</td>
+                            <td>1</td>
+                            <td>8</td>
+                            <td>18.2%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/luxury_ball.png" width="24" height="24" class="item-icon" alt="Luxury Ball"> Luxury Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.4%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/premier_ball.png" width="24" height="24" class="item-icon" alt="Premier Ball"> Premier Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.4%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/heal_ball.png" width="24" height="24" class="item-icon" alt="Heal Ball"> Heal Ball</td>
+                            <td>1</td>
+                            <td>5</td>
+                            <td>11.4%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/fast_ball.png" width="24" height="24" class="item-icon" alt="Fast Ball"> Fast Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/level_ball.png" width="24" height="24" class="item-icon" alt="Level Ball"> Level Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/moon_ball.png" width="24" height="24" class="item-icon" alt="Moon Ball"> Moon Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/love_ball.png" width="24" height="24" class="item-icon" alt="Love Ball"> Love Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/friend_ball.png" width="24" height="24" class="item-icon" alt="Friend Ball"> Friend Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/heavy_ball.png" width="24" height="24" class="item-icon" alt="Heavy Ball"> Heavy Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/lure_ball.png" width="24" height="24" class="item-icon" alt="Lure Ball"> Lure Ball</td>
+                            <td>1</td>
+                            <td>3</td>
+                            <td>6.8%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="color:#f7c948;">Ultra Rare</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Quantity</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="../../icons/items/master_ball.png" width="24" height="24" class="item-icon" alt="Master Ball"> Master Ball</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>12.5%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/beast_ball.png" width="24" height="24" class="item-icon" alt="Beast Ball"> Beast Ball</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>25.0%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/dream_ball.png" width="24" height="24" class="item-icon" alt="Dream Ball"> Dream Ball</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>25.0%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/park_ball.png" width="24" height="24" class="item-icon" alt="Park Ball"> Park Ball</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>25.0%</td>
+                        </tr>
+                        <tr>
+                            <td><img src="../../icons/items/cherish_ball.png" width="24" height="24" class="item-icon" alt="Cherish Ball"> Cherish Ball</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td>12.5%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="../../navbar.js"></script>
+    <script>
+        // Auto-open sidebar group containing the active link
+        document.querySelectorAll('.sidebar-group-links a.active').forEach(function(a) {
+            a.closest('.sidebar-group').classList.add('open');
+        });
+    </script>
+</body>
+</html>
