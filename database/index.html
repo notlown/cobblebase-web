@@ -360,8 +360,9 @@ thumbnail:{url:spriteUrl}
 });
 
 // Header embed with username + comment
+var submissionId="#"+Math.random().toString(36).substring(2,6).toUpperCase();
 var headerEmbed={
-title:"\uD83D\uDCDD Skill Change Proposal",
+title:"\uD83D\uDCDD Skill Change Proposal  \u2014  "+submissionId,
 description:"**"+keys.length+" species** modified by **"+username+"**"+(comment?"\n\n\uD83D\uDCAC "+comment:""),
 color:16238920,
 timestamp:new Date().toISOString()
