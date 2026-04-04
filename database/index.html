@@ -338,9 +338,9 @@ var devEmbeds=[];
 keys.forEach(function(name){
 var diff=computeDiff(name);
 var lines=[];
-if(diff.added.length)diff.added.forEach(function(a){lines.push("\u2795  "+a)});
-if(diff.changed.length)diff.changed.forEach(function(c){lines.push("\u270F\uFE0F  "+c)});
-if(diff.removed.length)diff.removed.forEach(function(r){lines.push("\u274C  ~~"+r+"~~")});
+if(diff.added.length)diff.added.forEach(function(a){lines.push("\uD83D\uDFE2 **Added:** "+a)});
+if(diff.changed.length)diff.changed.forEach(function(c){lines.push("\uD83D\uDFE1 **Changed:** "+c)});
+if(diff.removed.length)diff.removed.forEach(function(r){lines.push("\uD83D\uDD34 **Removed:** "+r)});
 if(!lines.length)return;
 var spriteUrl="https://img.pokemondb.net/sprites/home/normal/"+name.replace(/[^a-z0-9-]/g,"")+".png";
 communityEmbeds.push({
