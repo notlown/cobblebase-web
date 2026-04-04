@@ -431,10 +431,50 @@ function getFilteredSkillProf(s){
 
 function rebuildDetailContent(panel,s,tr,detailTr){
 // Keep panel open, just rebuild inner content
-var wasOpen=panel.classList.contains("open");
 panel.innerHTML="";
 buildDetailInner(panel,s,tr,detailTr);
-if(wasOpen)panel.classList.add("open");
+panel.classList.add("open");
+tr.classList.add("expanded");
+// Update the table row cells without full re-render
+updateRowCells(tr,s);
+updateEditorBar();
+}
+
+function updateRowCells(tr,s){
+var cells=tr.querySelectorAll("td");
+if(cells.length<5)return;
+// Update skills cell (index 1)
+var skillCell=cells[1];
+var tags=document.createElement("div");tags.className="skill-tags";
+var activeFilter=skillFilter.value;
+var sortedSkills=s.skills.slice().sort(function(a,b){return a.name.localeCompare(b.name)});
+var minProf=s.skills.length>0?Math.min.apply(null,s.skills.map(function(x){return x.prof})):0;
+sortedSkills.forEach(function(sk){
+var tag=document.createElement("span");tag.className="skill-tag cat-"+sk.cat;
+var tipInfo=SKILL_INFO[sk.name];
+if(tipInfo)tag.setAttribute("data-tip",tipInfo.desc);
+if(activeFilter&&sk.name===activeFilter)tag.className+=" highlighted";
+if(sk.prof===s.maxProf)tag.className+=" best-skill";
+else if(sk.prof===minProf&&s.skills.length>1)tag.className+=" worst-skill";
+var mark="";
+if(sk.prof===s.maxProf)mark="<span class='best-icon' style='color:#4caf50'>\u25B2</span>";
+else if(sk.prof===minProf&&s.skills.length>1)mark="<span class='best-icon' style='color:#f44336'>\u25BC</span>";
+tag.innerHTML="<span class='sk-name'>"+sk.name+"</span><span class='stars'>"+stars(sk.prof)+"</span>"+mark;
+tags.appendChild(tag);
+});
+skillCell.innerHTML="";skillCell.appendChild(tags);
+// Update count, highest prof, total prof
+cells[2].textContent=s.count;
+cells[3].innerHTML="<span style='color:#f7c948'>"+stars(s.maxProf)+"</span>";
+cells[4].textContent=s.totalProf;
+// Update modified badge in name cell
+var nameInfo=cells[0].querySelector(".pokemon-info");
+if(nameInfo){
+var existingBadge=nameInfo.querySelector(".modified-badge");
+if(!existingBadge&&modifications[s.name]){
+var mb=document.createElement("span");mb.className="modified-badge";mb.textContent="EDITED";nameInfo.appendChild(mb);
+}
+}
 }
 
 function toggleDetail(tr,detailTr,panel,s){
@@ -541,7 +581,6 @@ addSkill(s,skName);
 if(newProf>1)changeProf(s,skName,newProf);
 }
 rebuildDetailContent(panel,s,tr,detailTr);
-applyFilters();
 });
 });
 // Remove handler
@@ -551,7 +590,6 @@ removeBtn.addEventListener("click",function(e){
 e.stopPropagation();
 removeSkill(s,skillName);
 rebuildDetailContent(panel,s,tr,detailTr);
-applyFilters();
 });
 }
 grid.appendChild(item);
