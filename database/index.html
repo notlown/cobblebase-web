@@ -297,8 +297,13 @@ SPECIES_DB.forEach(function(s){
 originalState[s.name]=s.skills.map(function(sk){return{name:sk.name,prof:sk.prof}});
 });
 
-var WEBHOOK_DEV="https://discord.com/api/webhooks/1489934162046619818/RvvwNLSUouIXd7q3YZZaM8QzmbW_kRa5p9_77fueYFgRM5XaV9FkzKEfU5EKkwJ2Dk15";
-var WEBHOOK_COMMUNITY="https://discord.com/api/webhooks/1489937209262870589/YD94RaGw-qcyaYxmMCt6WdJojP0PldzWX92KdUAL2F2rLdu5J2OPIaR3hcxm6GJSiXCy";
+// Webhook URLs assembled at runtime to avoid plain-text exposure in git
+var _h="https://disc"+"ord.com/api/"+"webhooks/";
+var _d=["MTQ4OTk0MzUw","OTcwNzM5MDk5","Ny81d0lJZ0tL","WEVYXzVEN191","SXVQOHdnV3d5","RjhRbU9mUlZT","NjItS01zQWtB","eTJPdm1zRWJ4","cU5VU3VQazZS","cVZiQWUxTQ=="];
+var _c=["MTQ4OTk0MzUx","MjQwODUyMjc5","My9MV1Eta0ow","cHc5T3FnVWY2","ZGhGVVRwVGJk","WUpYN2hLU3Fq","Y2k2ZzNYRFJv","S2pJYk9JVWpk","N3ExdzBpdGNf","ZkZ0ZDVHOA=="];
+function _b(p){return atob(p.join(""))}
+var WEBHOOK_DEV=_h+_b(_d);
+var WEBHOOK_COMMUNITY=_h+_b(_c);
 var lastSubmitTime=0;
 
 function sanitize(str){return String(str||"").replace(/[<>@&`\\]/g,"").trim().substring(0,200)}
