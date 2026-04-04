@@ -29,7 +29,10 @@ th .sort-arrow{font-size:0.7rem;margin-left:4px;opacity:0.5}
 th.sorted .sort-arrow{opacity:1}
 td{padding:8px 12px;border-bottom:1px solid #21262d;font-size:0.95rem;vertical-align:top}
 tr:hover{background:#161b22}
-.sprite{width:36px;height:36px;image-rendering:pixelated;vertical-align:middle;margin-right:8px}
+.pokemon-cell{display:flex;align-items:center;gap:8px}
+.sprite-wrap{width:36px;height:36px;min-width:36px;overflow:hidden;border-radius:4px;background:#161b22;flex-shrink:0}
+.sprite-wrap img{width:48px;height:48px;margin:-6px;image-rendering:pixelated;display:block}
+.pokemon-info{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .species-name{text-transform:capitalize;font-weight:600;font-size:1rem}
 .fakemon-badge{font-size:0.7rem;background:#30363d;color:#8b949e;padding:2px 6px;border-radius:3px;margin-left:6px}
 .skill-tags{display:grid;grid-template-columns:repeat(4,1fr);gap:3px 6px}
@@ -278,10 +281,14 @@ slice.forEach(function(s){
 var tr=document.createElement("tr");tr.className="species-row";
 // Pokemon name cell
 var nameCell=document.createElement("td");
-var img=document.createElement("img");img.className="sprite";img.src=spriteUrl(s.name);img.alt="";img.loading="lazy";img.onerror=function(){this.style.display="none"};
-nameCell.appendChild(img);
-var span=document.createElement("span");span.className="species-name";span.textContent=s.name;nameCell.appendChild(span);
-if(s.mod!=="cobblemon"){var b=document.createElement("span");b.className="fakemon-badge";b.textContent=s.mod;nameCell.appendChild(b)}
+var cellWrap=document.createElement("div");cellWrap.className="pokemon-cell";
+var spriteWrap=document.createElement("div");spriteWrap.className="sprite-wrap";
+var img=document.createElement("img");img.src=spriteUrl(s.name);img.alt="";img.loading="lazy";img.onerror=function(){this.parentElement.style.display="none"};
+spriteWrap.appendChild(img);cellWrap.appendChild(spriteWrap);
+var infoWrap=document.createElement("div");infoWrap.className="pokemon-info";
+var span=document.createElement("span");span.className="species-name";span.textContent=s.name;infoWrap.appendChild(span);
+if(s.mod!=="cobblemon"){var b=document.createElement("span");b.className="fakemon-badge";b.textContent=s.mod;infoWrap.appendChild(b)}
+cellWrap.appendChild(infoWrap);nameCell.appendChild(cellWrap)
 tr.appendChild(nameCell);
 // Skills cell — sorted alphabetically
 var skillCell=document.createElement("td");
