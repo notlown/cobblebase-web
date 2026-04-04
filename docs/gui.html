@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -43,6 +43,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
     </style>
 </head>
@@ -68,7 +69,7 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>GUI Guide</h1>
+                <h1>&#x1F5A5;&#xFE0F; GUI Guide</h1>
                 <p>Cobblebase adds a tabbed management interface to the Pasture Block. This guide covers all four tabs and how to use them effectively.</p>
 
                 <h2>Opening the GUI</h2>
@@ -77,10 +78,11 @@
                     <li>Click the <strong>"Cobblebase"</strong> button to open the management screen.</li>
                 </ol>
                 <p>The GUI uses a dark theme with 0.75x font scaling for a compact, information-dense layout.</p>
+                <p><strong>&#x1F512; Pasture Lock:</strong> Only the <strong>owner</strong> of the pasture can open the Cobblebase GUI. Other players cannot access or modify your base assignments.</p>
 
                 <hr>
 
-                <h2>Skills Tab</h2>
+                <h2>&#x1F3AE; Skills Tab</h2>
                 <p>The Skills tab is your primary management interface. It shows every Pokemon in the pasture along with their available jobs.</p>
 
                 <h3>Layout</h3>
@@ -89,9 +91,17 @@
                     <li><strong>Pokemon sprite</strong> -- top-aligned icon for the species</li>
                     <li><strong>Pokemon name and level</strong> -- displayed next to the sprite</li>
                     <li><strong>Aura icon</strong> -- if the Pokemon has a buff skill, a small icon appears between the name and skill buttons</li>
-                    <li><strong>Auto button</strong> -- a narrow button in its own column that enables automatic skill selection</li>
-                    <li><strong>Skill buttons</strong> -- color-coded buttons for each available skill, with proficiency stars</li>
+                    <li><strong>Idle button</strong> -- a narrow button in its own column that sets the Pokemon to idle mode (does nothing, only passive buffs run)</li>
+                    <li><strong>Skill buttons</strong> -- color-coded buttons for each available skill, with proficiency stars <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></li>
                 </ul>
+
+                <h3>&#x1F507; Mute Button</h3>
+                <p>A mute toggle button appears in the <strong>top-right corner</strong> of the GUI. Click to switch between:</p>
+                <ul>
+                    <li><strong>&#x1F50A;</strong> -- Pokemon cry sounds enabled (default volume: 30)</li>
+                    <li><strong>&#x1F507;</strong> -- Pokemon cry sounds muted</li>
+                </ul>
+                <p>Cry sounds are rate-limited to a maximum of 1 cry per 60 seconds per Pokemon, even when unmuted.</p>
 
                 <h3>Row Height</h3>
                 <p>Rows use dynamic height based on how many skills a Pokemon has:</p>
@@ -101,37 +111,37 @@
                 </ul>
 
                 <h3>Assigning Skills</h3>
-                <p><strong>Auto mode:</strong> Click the "Auto" button to let Cobblebase automatically select the best skill for the Pokemon based on its highest proficiency.</p>
+                <p><strong>Idle mode:</strong> Click the "Idle" button to put the Pokemon in idle mode. The Pokemon does nothing -- only passive buffs continue to run.</p>
                 <p><strong>Manual mode:</strong> Click any specific skill button to assign that job. The button highlights to show the active assignment.</p>
                 <p>Skill assignments persist across sessions and server restarts.</p>
 
                 <h3>Skill Button Colors</h3>
                 <p>Skills are color-coded by category:</p>
                 <ul>
-                    <li>Gathering skills use harvest/nature colors</li>
-                    <li>Combat skills use red tones</li>
-                    <li>Support skills use healing/green colors</li>
-                    <li>Environmental skills use elemental colors (fire, water, ice)</li>
-                    <li>Legendary skills use special/gold colors</li>
+                    <li>&#x1F33E; Gathering skills use harvest/nature colors</li>
+                    <li>&#x2694;&#xFE0F; Combat skills use red tones</li>
+                    <li>&#x1F49A; Support skills use healing/green colors</li>
+                    <li>&#x1F30D; Environmental skills use elemental colors (&#x1F525; fire, &#x1F4A7; water, &#x2744;&#xFE0F; ice)</li>
+                    <li>&#x1F31F; Legendary skills use special/gold colors</li>
                 </ul>
 
                 <hr>
 
-                <h2>Buffs Tab</h2>
+                <h2>&#x2728; Buffs Tab</h2>
                 <p>The Buffs tab shows all currently active jobs and effects for this pasture.</p>
 
                 <h3>What It Shows</h3>
                 <ul>
                     <li>Every Pokemon currently assigned to a job</li>
                     <li>The job name and category, color-coded</li>
-                    <li>Proficiency stars (1-5) for each active skill</li>
+                    <li>Proficiency stars (<span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> to <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>) for each active skill</li>
                     <li>Active buff effects and their status</li>
                 </ul>
                 <p>This tab gives you an at-a-glance overview of your entire base's productivity.</p>
 
                 <hr>
 
-                <h2>Logs Tab</h2>
+                <h2>&#x1F4DC; Logs Tab</h2>
                 <p>The Logs tab shows a chronological activity log of everything your Pokemon have been doing.</p>
 
                 <h3>Columns</h3>
@@ -147,10 +157,10 @@
                 <h3>Rarity Color Coding</h3>
                 <table>
                     <tr><th>Color</th><th>Rarity</th></tr>
-                    <tr><td>Gray</td><td>Common</td></tr>
-                    <tr><td>Green</td><td>Uncommon</td></tr>
-                    <tr><td>Blue</td><td>Rare</td></tr>
-                    <tr><td>Gold</td><td>Ultra Rare</td></tr>
+                    <tr><td style="color:#8b949e;">Gray</td><td>Common</td></tr>
+                    <tr><td style="color:#3fb950;">Green</td><td>Uncommon</td></tr>
+                    <tr><td style="color:#58a6ff;">Blue</td><td>Rare</td></tr>
+                    <tr><td style="color:#f7c948;">Gold</td><td>Ultra Rare</td></tr>
                 </table>
 
                 <h3>Filtering</h3>
@@ -172,7 +182,7 @@
 
                 <hr>
 
-                <h2>Discovery Tab</h2>
+                <h2>&#x1F9ED; Discovery Tab</h2>
                 <p>The Discovery tab (also called Scout tab) shows permanent discoveries made by <a href="jobs.html">Scout</a> Pokemon.</p>
 
                 <h3>What It Shows</h3>
@@ -196,9 +206,9 @@
                 <h3>Discovery Types</h3>
                 <table>
                     <tr><th>Type</th><th>Unlocked At</th><th>Examples</th></tr>
-                    <tr><td>Wild Pokemon</td><td>Prof 1+</td><td>Any wild Pokemon in range</td></tr>
-                    <tr><td>Structures</td><td>Prof 3+</td><td>Villages, Mineshafts, Ruined Portals, Shipwrecks, Ocean Ruins</td></tr>
-                    <tr><td>Biomes</td><td>Prof 4+</td><td>Mushroom Fields, Ice Spikes, Cherry Grove, Deep Dark, Lush Caves</td></tr>
+                    <tr><td>Wild Pokemon</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span>+</td><td>Any wild Pokemon in range</td></tr>
+                    <tr><td>Structures</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>+</td><td>Villages, Mineshafts, Ruined Portals, Shipwrecks, Ocean Ruins</td></tr>
+                    <tr><td>Biomes</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>+</td><td>Mushroom Fields, Ice Spikes, Cherry Grove, Deep Dark, Lush Caves</td></tr>
                 </table>
 
                 <h3>Persistence</h3>
@@ -211,13 +221,15 @@
 
                 <hr>
 
-                <h2>Tips</h2>
+                <h2>&#x1F4A1; Tips</h2>
                 <ul>
-                    <li><strong>Use Auto for most Pokemon.</strong> It picks the highest-proficiency skill, which is almost always optimal.</li>
+                    <li><strong>Use Idle sparingly.</strong> Idle mode does nothing -- only set it if you want to pause a Pokemon's job while keeping passive buffs active.</li>
                     <li><strong>Check Logs regularly.</strong> Ultra Rare drops can be easy to miss if you are not watching.</li>
                     <li><strong>Filter by Rare+</strong> to quickly spot valuable finds without scrolling through common results.</li>
                     <li><strong>Multiple Scouts</strong> with different proficiency levels can discover different things in the same area.</li>
                     <li><strong>The Buffs tab is read-only.</strong> To change assignments, switch to the Skills tab.</li>
+                    <li><strong>&#x1F507; Mute if needed.</strong> If cry sounds are distracting, use the mute button in the top-right corner.</li>
+                    <li><strong>&#x1F512; Your base is safe.</strong> Only you (the pasture owner) can open and modify your Cobblebase GUI.</li>
                 </ul>
 
                 <footer>

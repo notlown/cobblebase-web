@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -43,6 +43,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
     </style>
 </head>
@@ -68,109 +69,117 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>Proficiency System</h1>
+                <h1>&#x2B50; Proficiency System</h1>
                 <p>Every Pokemon in Cobblebase has a proficiency level (1-5) for each of its skills. Proficiency determines how effectively a Pokemon performs its assigned job -- affecting cooldowns, range, loot quality, and special behavior.</p>
 
                 <h2>Proficiency Levels</h2>
                 <table>
-                    <tr><th>Level</th><th>Title</th><th>Cooldown Multiplier</th><th>Description</th></tr>
-                    <tr><td>1</td><td>Novice</td><td>1.67x (slower)</td><td>Base rates, small range</td></tr>
-                    <tr><td>2</td><td>Apprentice</td><td>1.33x</td><td>Slightly improved</td></tr>
-                    <tr><td>3</td><td>Skilled</td><td>1.00x (normal)</td><td>Standard performance</td></tr>
-                    <tr><td>4</td><td>Expert</td><td>0.67x (faster)</td><td>Better loot tiers, wider range</td></tr>
-                    <tr><td>5</td><td>Master</td><td>0.33x (fastest)</td><td>Best rates, maximum range</td></tr>
+                    <tr><th>Level</th><th>Stars</th><th>Title</th><th>Cooldown Multiplier</th><th>Description</th></tr>
+                    <tr><td>1</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>Novice</td><td>1.67x (slower)</td><td>Base rates, small range</td></tr>
+                    <tr><td>2</td><td><span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span></td><td>Apprentice</td><td>1.33x</td><td>Slightly improved</td></tr>
+                    <tr><td>3</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>Skilled</td><td>1.00x (normal)</td><td>Standard performance</td></tr>
+                    <tr><td>4</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td><td>Expert</td><td>0.67x (faster)</td><td>Better loot tiers, wider range</td></tr>
+                    <tr><td>5</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>Master</td><td>0.33x (fastest)</td><td>Best rates, maximum range</td></tr>
                 </table>
 
                 <h2>Cooldown Formula</h2>
                 <p>The effective cooldown for any skill is calculated as:</p>
                 <pre><code>Effective Cooldown = Base Cooldown x Cooldown Multiplier</code></pre>
-                <p>For example, Mining has a base cooldown of 300 seconds:</p>
+                <p>Since v1.3.0, all standard jobs use a <strong>300-second base cooldown</strong>. Here is how proficiency affects them:</p>
                 <table>
-                    <tr><th>Proficiency</th><th>Multiplier</th><th>Effective Cooldown</th></tr>
-                    <tr><td>1 (Novice)</td><td>1.67x</td><td>501 seconds (~8.4 min)</td></tr>
-                    <tr><td>2 (Apprentice)</td><td>1.33x</td><td>399 seconds (~6.7 min)</td></tr>
-                    <tr><td>3 (Skilled)</td><td>1.00x</td><td>300 seconds (5 min)</td></tr>
-                    <tr><td>4 (Expert)</td><td>0.67x</td><td>201 seconds (~3.4 min)</td></tr>
-                    <tr><td>5 (Master)</td><td>0.33x</td><td>99 seconds (~1.7 min)</td></tr>
+                    <tr><th>Proficiency</th><th>Stars</th><th>Multiplier</th><th>Effective Cooldown</th></tr>
+                    <tr><td>1 (Novice)</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>1.67x</td><td>501 seconds (~8.4 min)</td></tr>
+                    <tr><td>2 (Apprentice)</td><td><span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span></td><td>1.33x</td><td>399 seconds (~6.7 min)</td></tr>
+                    <tr><td>3 (Skilled)</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>1.00x</td><td>300 seconds (5 min)</td></tr>
+                    <tr><td>4 (Expert)</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td><td>0.67x</td><td>201 seconds (~3.4 min)</td></tr>
+                    <tr><td>5 (Master)</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>0.33x</td><td>99 seconds (~1.7 min)</td></tr>
                 </table>
-                <p>A Prof 5 Pokemon completes jobs roughly <strong>5 times faster</strong> than a Prof 1 Pokemon.</p>
+                <p>A <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> Pokemon completes jobs roughly <strong>5 times faster</strong> than a <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> Pokemon.</p>
+
+                <h3>Special Cooldowns</h3>
+                <p>Some jobs have different base cooldowns:</p>
+                <table>
+                    <tr><th>Job</th><th>Base Cooldown</th><th><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></th><th><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></th><th><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></th></tr>
+                    <tr><td>Harvester</td><td>60s</td><td>~100s</td><td>60s</td><td>~20s</td></tr>
+                    <tr><td>Legendary Recruiter</td><td>540s</td><td>~15 min</td><td>9 min</td><td>~3 min</td></tr>
+                </table>
 
                 <h2>Effects Beyond Cooldowns</h2>
                 <p>Proficiency also affects several other aspects of each skill:</p>
 
-                <h3>Loot Quality</h3>
-                <p>Higher proficiency increases the chance of rolling higher loot tiers. A Prof 5 Miner is more likely to find diamonds and ancient debris, while a Prof 1 Miner mostly pulls up tumblestones and raw copper.</p>
+                <h3>&#x1F4CE; Loot Quality</h3>
+                <p>Higher proficiency increases the chance of rolling higher loot tiers. A <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> Miner is more likely to find diamonds and ancient debris, while a <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> Miner mostly pulls up tumblestones and raw copper. Note: all loot table item counts have been halved in v1.3.0.</p>
 
-                <h3>Range</h3>
+                <h3>&#x1F4CF; Range</h3>
                 <p>Several skills scale their effective radius with proficiency:</p>
                 <table>
-                    <tr><th>Skill</th><th>Prof 1 Range</th><th>Prof 5 Range</th></tr>
+                    <tr><th>Skill</th><th><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> Range</th><th><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> Range</th></tr>
                     <tr><td>Item Gatherer</td><td>5 blocks</td><td>12 blocks</td></tr>
                     <tr><td>Scout</td><td>50 blocks</td><td>200 blocks</td></tr>
                     <tr><td>Lucky Charm</td><td>10 blocks</td><td>20 blocks</td></tr>
                 </table>
 
-                <h3>Buff Duration and Behavior</h3>
+                <h3>&#x2728; Buff Duration and Behavior</h3>
                 <p>Passive <a href="buffs.html">buff skills</a> scale heavily with proficiency:</p>
                 <table>
-                    <tr><th>Proficiency</th><th>Duration</th><th>Cooldown</th></tr>
-                    <tr><td>1</td><td>15 seconds</td><td>60 seconds</td></tr>
-                    <tr><td>3</td><td>~40 seconds</td><td>~30 seconds</td></tr>
-                    <tr><td>5</td><td>70 seconds (effectively permanent)</td><td>0 seconds</td></tr>
+                    <tr><th>Proficiency</th><th>Stars</th><th>Duration</th><th>Cooldown</th></tr>
+                    <tr><td>1</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>15 seconds</td><td>60 seconds</td></tr>
+                    <tr><td>3</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>~40 seconds</td><td>~30 seconds</td></tr>
+                    <tr><td>5</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>70 seconds (effectively permanent)</td><td>0 seconds</td></tr>
                 </table>
-                <p>At Prof 5, buffs become <strong>global</strong> -- they apply to the owner anywhere in the world, not just near the pasture.</p>
+                <p>At <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>, buffs become <strong>global</strong> -- they apply to the owner anywhere in the world, not just near the pasture.</p>
 
-                <h3>Healer Scaling</h3>
+                <h3>&#x1F49A; Healer Scaling</h3>
                 <p>The Healer skill restores a percentage of each Pokemon's max HP per tick:</p>
                 <table>
-                    <tr><th>Proficiency</th><th>Healing per Tick</th></tr>
-                    <tr><td>1</td><td>5% max HP</td></tr>
-                    <tr><td>3</td><td>15% max HP</td></tr>
-                    <tr><td>5</td><td>25% max HP</td></tr>
+                    <tr><th>Proficiency</th><th>Stars</th><th>Healing per Tick</th></tr>
+                    <tr><td>1</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>5% max HP</td></tr>
+                    <tr><td>3</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>15% max HP</td></tr>
+                    <tr><td>5</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>25% max HP</td></tr>
                 </table>
 
-                <h3>Mentor Scaling</h3>
+                <h3>&#x1F4DA; Mentor Scaling</h3>
                 <p>The Mentor provides a passive XP boost to all Pokemon in the pasture:</p>
                 <table>
-                    <tr><th>Proficiency</th><th>XP Boost</th></tr>
-                    <tr><td>1</td><td>+20%</td></tr>
-                    <tr><td>3</td><td>+60%</td></tr>
-                    <tr><td>5</td><td>+100% (double XP)</td></tr>
+                    <tr><th>Proficiency</th><th>Stars</th><th>XP Boost</th></tr>
+                    <tr><td>1</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>+20%</td></tr>
+                    <tr><td>3</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>+60%</td></tr>
+                    <tr><td>5</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>+100% (double XP)</td></tr>
                 </table>
                 <p>The highest-proficiency Mentor wins. Multiple Mentors do not stack.</p>
 
-                <h3>Scout Discovery Types</h3>
+                <h3>&#x1F9ED; Scout Discovery Types</h3>
                 <p>The Scout unlocks new discovery categories at higher proficiency:</p>
                 <table>
-                    <tr><th>Proficiency</th><th>Discovers</th></tr>
-                    <tr><td>1-2</td><td>Wild Pokemon only</td></tr>
-                    <tr><td>3</td><td>+ Structures (Villages, Mineshafts, etc.)</td></tr>
-                    <tr><td>4-5</td><td>+ Rare Biomes (Mushroom Fields, Deep Dark, etc.)</td></tr>
+                    <tr><th>Proficiency</th><th>Stars</th><th>Discovers</th></tr>
+                    <tr><td>1-2</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> - <span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span></td><td>Wild Pokemon only</td></tr>
+                    <tr><td>3</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>+ Structures (Villages, Mineshafts, etc.)</td></tr>
+                    <tr><td>4-5</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> - <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>+ Rare Biomes (Mushroom Fields, Deep Dark, etc.)</td></tr>
                 </table>
 
-                <h3>Friend Recruiter Rarity</h3>
+                <h3>&#x1F91D; Friend Recruiter Rarity</h3>
                 <p>Higher proficiency increases the chance of spawning rarer Pokemon:</p>
                 <table>
-                    <tr><th>Proficiency</th><th>Ultra-Rare Chance</th></tr>
-                    <tr><td>1</td><td>0.2%</td></tr>
-                    <tr><td>3</td><td>0.3%</td></tr>
-                    <tr><td>5</td><td>0.4%</td></tr>
+                    <tr><th>Proficiency</th><th>Stars</th><th>Ultra-Rare Chance</th></tr>
+                    <tr><td>1</td><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>0.2%</td></tr>
+                    <tr><td>3</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>0.3%</td></tr>
+                    <tr><td>5</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>0.4%</td></tr>
                 </table>
 
-                <h3>Lucky Charm Scaling</h3>
-                <p>The shiny rate multiplier scales from 1.4x at Prof 1 to 3.0x at Prof 5.</p>
+                <h3>&#x1F31F; Lucky Charm Scaling</h3>
+                <p>The shiny rate multiplier scales from 1.4x at <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> to 3.0x at <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>.</p>
 
                 <h2>Species Proficiency</h2>
                 <p>Each Pokemon species has its own proficiency level for each skill it possesses. These are pre-assigned in the species data files and reflect the identity and lore of each Pokemon.</p>
                 <p>For example:</p>
                 <ul>
-                    <li><strong>Gyarados</strong> has Fishing Prof 5 -- it is a master fisher.</li>
-                    <li><strong>Magikarp</strong> has Fishing Prof 1 -- it struggles.</li>
-                    <li><strong>Alakazam</strong> has Mentor Prof 5 -- the ultimate teacher.</li>
+                    <li><strong>Gyarados</strong> has Fishing <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> -- it is a master fisher.</li>
+                    <li><strong>Magikarp</strong> has Fishing <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> -- it struggles.</li>
+                    <li><strong>Alakazam</strong> has Mentor <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> -- the ultimate teacher.</li>
                 </ul>
                 <p>Proficiency is fixed per species and cannot be leveled up through gameplay. It is part of each Pokemon's identity.</p>
 
-                <h2>Customizing Proficiency</h2>
+                <h2>&#x1F6E0;&#xFE0F; Customizing Proficiency</h2>
                 <p>Server admins can modify proficiency levels for any species through:</p>
                 <ol>
                     <li><strong>Admin GUI</strong> (<code>/cobblebase admin</code>) -- Click the proficiency stars in the skill editor to set 1-5 for any skill on any species. See the <a href="admin.html">Admin Guide</a>.</li>
@@ -181,7 +190,7 @@
                 <p>For Fakemon packs without hand-crafted assignments, proficiency is determined by Base Stat Total (BST):</p>
                 <table>
                     <tr><th>BST Range</th><th>Proficiency Bonus</th><th>Tier</th></tr>
-                    <tr><td>600+</td><td>Prof 5, legendary skills</td><td>Legendary</td></tr>
+                    <tr><td>600+</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>, legendary skills</td><td>Legendary</td></tr>
                     <tr><td>570+</td><td>High proficiency, Aura Boost</td><td>Pseudo-Legendary</td></tr>
                     <tr><td>530+</td><td>+2 proficiency bonus</td><td>Strong</td></tr>
                     <tr><td>480+</td><td>+1 proficiency bonus</td><td>Above Average</td></tr>
