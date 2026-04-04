@@ -41,6 +41,26 @@ tr:hover{background:#161b22}
 .pagination button.active{background:#f7c948;color:#0d1117;border-color:#f7c948;font-weight:600}
 .pagination button:disabled{opacity:0.3;cursor:default}
 footer{text-align:center;padding:2rem;color:#8b949e;font-size:0.75rem;border-top:1px solid #21262d;margin-top:2rem}
+tr.species-row{cursor:pointer;transition:background 0.2s}
+tr.species-row.expanded{background:#161b22}
+tr.detail-row td{padding:0;border-bottom:1px solid #21262d}
+.detail-panel{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease;padding:0 12px;background:#161b22;border-radius:0 0 8px 8px}
+.detail-panel.open{max-height:800px;padding:12px}
+.detail-close{float:right;background:none;border:1px solid #30363d;color:#8b949e;border-radius:4px;padding:2px 10px;cursor:pointer;font-size:0.8rem}
+.detail-close:hover{color:#c9d1d9;border-color:#8b949e}
+.detail-cat{margin-bottom:10px}
+.detail-cat-header{font-size:0.8rem;font-weight:700;padding:4px 8px;margin-bottom:4px;border-left:3px solid #30363d;border-radius:2px;text-transform:capitalize}
+.detail-cat-header.gathering{border-color:#4caf50;color:#4caf50}
+.detail-cat-header.combat{border-color:#f44336;color:#f44336}
+.detail-cat-header.support{border-color:#e91e9e;color:#e91e9e}
+.detail-cat-header.utility{border-color:#2196f3;color:#2196f3}
+.detail-cat-header.legendary{border-color:#ffd700;color:#ffd700}
+.detail-cat-header.generation{border-color:#ff9800;color:#ff9800}
+.detail-cat-header.fairy{border-color:#f0abfc;color:#f0abfc}
+.detail-skills-grid{display:flex;flex-wrap:wrap;gap:6px;padding-left:11px}
+.detail-skill{background:#21262d;border:1px solid #30363d;border-radius:5px;padding:4px 10px;font-size:0.78rem;display:flex;align-items:center;gap:6px}
+.detail-skill .ds-name{color:#c9d1d9}
+.detail-skill .ds-stars{color:#f7c948;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -68,7 +88,7 @@ footer{text-align:center;padding:2rem;color:#8b949e;font-size:0.75rem;border-top
 <script>
 (function(){
 const PER_PAGE=50;
-let page=0,filtered=[],currentMod="cobblemon";
+let page=0,filtered=[],currentMod="cobblemon",expandedSpecies=null;
 const search=document.getElementById("search"),skillFilter=document.getElementById("skill-filter"),
 sort=document.getElementById("sort"),modFilter=document.getElementById("mod-filter"),
 tbody=document.getElementById("tbody"),stats=document.getElementById("stats"),pag=document.getElementById("pagination");
@@ -80,6 +100,54 @@ SPECIES_DB.forEach(s=>s.skills.forEach(sk=>skillNames.add(sk.name)));
 
 function stars(n){return "★".repeat(n)+"☆".repeat(5-n)}
 function spriteUrl(name){return"https://img.pokemondb.net/sprites/home/normal/"+name.replace(/[^a-z0-9-]/g,"")+".png"}
+
+function toggleDetail(tr,detailTr,panel,s){
+const isOpen=panel.classList.contains("open");
+// Close any currently open panel
+const prevOpen=tbody.querySelector(".detail-panel.open");
+if(prevOpen){prevOpen.classList.remove("open");prevOpen.closest("tr").previousElementSibling.classList.remove("expanded")}
+if(isOpen){expandedSpecies=null;return}
+// Build panel content
+panel.innerHTML="";
+const closeBtn=document.createElement("button");closeBtn.className="detail-close";closeBtn.textContent="Close";
+closeBtn.addEventListener("click",function(e){e.stopPropagation();panel.classList.remove("open");tr.classList.remove("expanded");expandedSpecies=null});
+panel.appendChild(closeBtn);
+// Group skills by category
+const groups={};
+s.skills.forEach(function(sk){if(!groups[sk.cat])groups[sk.cat]=[];groups[sk.cat].push(sk)});
+const catOrder=["gathering","combat","support","utility","generation","legendary","fairy"];
+catOrder.forEach(function(cat){
+if(!groups[cat])return;
+const catDiv=document.createElement("div");catDiv.className="detail-cat";
+const header=document.createElement("div");header.className="detail-cat-header "+cat;header.textContent=cat+" ("+groups[cat].length+")";
+catDiv.appendChild(header);
+const grid=document.createElement("div");grid.className="detail-skills-grid";
+groups[cat].forEach(function(sk){
+const item=document.createElement("div");item.className="detail-skill";
+item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+stars(sk.prof)+"</span>";
+grid.appendChild(item);
+});
+catDiv.appendChild(grid);panel.appendChild(catDiv);
+});
+// Handle any categories not in catOrder
+Object.keys(groups).forEach(function(cat){
+if(catOrder.indexOf(cat)===-1){
+const catDiv=document.createElement("div");catDiv.className="detail-cat";
+const header=document.createElement("div");header.className="detail-cat-header";header.textContent=cat+" ("+groups[cat].length+")";
+catDiv.appendChild(header);
+const grid=document.createElement("div");grid.className="detail-skills-grid";
+groups[cat].forEach(function(sk){
+const item=document.createElement("div");item.className="detail-skill";
+item.innerHTML="<span class='ds-name'>"+sk.name+"</span><span class='ds-stars'>"+stars(sk.prof)+"</span>";
+grid.appendChild(item);
+});
+catDiv.appendChild(grid);panel.appendChild(catDiv);
+}
+});
+tr.classList.add("expanded");
+requestAnimationFrame(function(){panel.classList.add("open")});
+expandedSpecies=s.name;
+}
 
 function applyFilters(){
 const q=search.value.toLowerCase().trim(),sk=skillFilter.value;currentMod=modFilter.value;const mod=currentMod;
@@ -101,9 +169,9 @@ function render(){
 const start=page*PER_PAGE,end=Math.min(start+PER_PAGE,filtered.length),slice=filtered.slice(start,end);
 const modLabel=currentMod==="all"?" (all mods)":currentMod==="cobblemon"?"":" ("+currentMod+")";
 stats.textContent="Showing "+(start+1)+"-"+end+" of "+filtered.length+" species"+modLabel;
-tbody.innerHTML="";
+tbody.innerHTML="";expandedSpecies=null;
 slice.forEach(s=>{
-const tr=document.createElement("tr");
+const tr=document.createElement("tr");tr.className="species-row";
 const nameCell=document.createElement("td");
 const img=document.createElement("img");img.className="sprite";img.src=spriteUrl(s.name);img.alt="";img.loading="lazy";img.onerror=function(){this.style.display="none"};
 nameCell.appendChild(img);
@@ -121,6 +189,11 @@ skillCell.appendChild(tags);tr.appendChild(skillCell);
 const countCell=document.createElement("td");countCell.textContent=s.count;tr.appendChild(countCell);
 const profCell=document.createElement("td");profCell.innerHTML="<span style='color:#f7c948'>"+stars(s.maxProf)+"</span>";tr.appendChild(profCell);
 tbody.appendChild(tr);
+const detailTr=document.createElement("tr");detailTr.className="detail-row";
+const detailTd=document.createElement("td");detailTd.colSpan=4;
+const panel=document.createElement("div");panel.className="detail-panel";
+detailTd.appendChild(panel);detailTr.appendChild(detailTd);tbody.appendChild(detailTr);
+tr.addEventListener("click",function(){toggleDetail(tr,detailTr,panel,s)});
 });
 renderPagination();
 }
