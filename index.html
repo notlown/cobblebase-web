@@ -3,11 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cobblebase</title>
+    <title>Cobblebase - Palworld-style Base Management for Cobblemon</title>
     <link rel="icon" type="image/png" href="cobblebase_icon.png">
-    <meta http-equiv="refresh" content="0; url=docs/index.html">
+    <link rel="canonical" href="https://cobblebase.com/">
+    <meta name="description" content="Cobblebase adds Palworld-style base management to Cobblemon. Assign 44 unique jobs to 8,426 Pokemon species, use the Admin GUI, and support Fakemon packs. Available for Fabric and NeoForge.">
+    <meta name="keywords" content="Cobblebase, Cobblemon, Minecraft mod, Palworld, base management, Pokemon jobs, Fabric, NeoForge, Fakemon">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Cobblebase - Palworld-style Base Management for Cobblemon">
+    <meta property="og:description" content="Assign 44 unique jobs to 8,426 Pokemon species. Admin GUI, Fakemon support, Fabric & NeoForge.">
+    <meta property="og:image" content="https://cobblebase.com/cobblebase_header.png">
+    <meta property="og:url" content="https://cobblebase.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Cobblebase">
+
+    <!-- Twitter / Discord -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cobblebase - Palworld-style Base Management for Cobblemon">
+    <meta name="twitter:description" content="Assign 44 unique jobs to 8,426 Pokemon species. Admin GUI, Fakemon support, Fabric & NeoForge.">
+    <meta name="twitter:image" content="https://cobblebase.com/cobblebase_header.png">
+
+    <link rel="stylesheet" href="navbar.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            line-height: 1.6;
+            padding-top: 56px;
+        }
+
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 64px 24px 48px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-banner {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 14px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            color: #f0f6fc;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span { color: #f7c948; }
+
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: #8b949e;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-mc { background: #1a3a2a; color: #62B47A; }
+        .badge-cobble { background: #3a1a0a; color: #E8532E; }
+        .badge-fabric { background: #2a2a1a; color: #DBD0B4; }
+        .badge-neo { background: #3a1a0a; color: #F16436; }
+
+        /* CTA Buttons */
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .cta-btn:hover {
+            opacity: 0.88;
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .cta-modrinth { background: #00AF5C; color: #fff; }
+        .cta-curseforge { background: #F16436; color: #fff; }
+        .cta-github { background: #30363d; color: #f0f6fc; }
+        .cta-discord { background: #5865F2; color: #fff; }
+        .cta-kofi { background: #FF5E5B; color: #fff; }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            padding: 40px 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat { text-align: center; }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #f7c948;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #8b949e;
+        }
+
+        /* Features */
+        .features {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 1.6rem;
+            color: #f0f6fc;
+            margin-bottom: 32px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .feature-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 24px;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .feature-card:hover {
+            border-color: #f7c948;
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card h3 {
+            color: #f0f6fc;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .feature-card p {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+
+        /* Explore Section */
+        .explore {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 48px;
+        }
+
+        .explore h2 {
+            text-align: center;
+            font-size: 1.6rem;
+            color: #f0f6fc;
+            margin-bottom: 32px;
+        }
+
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .explore-card {
+            display: block;
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 28px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .explore-card:hover {
+            border-color: #f7c948;
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        .explore-card h3 {
+            color: #f7c948;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .explore-card p {
+            color: #8b949e;
+            font-size: 0.85rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 28px 24px;
+            color: #484f58;
+            font-size: 0.8rem;
+            border-top: 1px solid #21262d;
+            margin-top: 16px;
+        }
+
+        footer a { color: #8b949e; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.8rem; }
+            .hero-tagline { font-size: 1rem; }
+            .stats { gap: 24px; }
+            .stat-number { font-size: 1.5rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .explore-grid { grid-template-columns: 1fr; }
+            .cta-btn { width: 100%; justify-content: center; }
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting to <a href="docs/index.html">Cobblebase Documentation</a>...</p>
+    <!-- Hero -->
+    <section class="hero">
+        <img src="cobblebase_header.png" alt="Cobblebase banner" class="hero-banner">
+        <h1>Cobble<span>base</span></h1>
+        <p class="hero-tagline">Palworld-style base management for Cobblemon &mdash; assign jobs, watch Pokemon work, build the ultimate base.</p>
+
+        <div class="badge-row">
+            <span class="badge badge-mc">Minecraft 1.21.1</span>
+            <span class="badge badge-cobble">Cobblemon 1.7.0+</span>
+            <span class="badge badge-fabric">Fabric</span>
+            <span class="badge badge-neo">NeoForge</span>
+        </div>
+
+        <div class="cta-row">
+            <a href="https://modrinth.com/project/cobblebase" class="cta-btn cta-modrinth">Modrinth</a>
+            <a href="https://www.curseforge.com/minecraft/mc-mods/cobblebase" class="cta-btn cta-curseforge">CurseForge</a>
+            <a href="https://github.com/notlown/cobblebase/releases" class="cta-btn cta-github">GitHub Releases</a>
+        </div>
+        <div class="cta-row">
+            <a href="https://discord.gg/6As3sVZgVT" class="cta-btn cta-discord">Discord</a>
+            <a href="https://ko-fi.com/notlown" class="cta-btn cta-kofi">Ko-fi</a>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stat">
+            <div class="stat-number">44</div>
+            <div class="stat-label">Unique Jobs</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">8,426</div>
+            <div class="stat-label">Pokemon Species</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Categories</div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">&#9874;</div>
+                <h3>44 Jobs</h3>
+                <p>From mining and farming to guarding and scouting &mdash; every Pokemon species has unique skills assigned across 10 categories.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#127760;</div>
+                <h3>8,426 Species</h3>
+                <p>Every Cobblemon species is covered out of the box, plus popular Fakemon packs like Gravelmon, Lively Mons, and more.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128736;</div>
+                <h3>Admin GUI</h3>
+                <p>Full in-game species skill editor for server operators. Manage skills, add Fakemon, and balance your server without touching JSON.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#127912;</div>
+                <h3>Fakemon Support</h3>
+                <p>Built-in compatibility with Lively Mons, Alatias AFP, Laser's Pack, Wilbayan's, and Gravelmon. Custom datapacks supported too.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore -->
+    <section class="explore">
+        <h2>Explore</h2>
+        <div class="explore-grid">
+            <a href="docs/index.html" class="explore-card">
+                <h3>Documentation</h3>
+                <p>Getting started, jobs, proficiency, GUI, buffs, admin guide, datapacks, FAQ, and more.</p>
+            </a>
+            <a href="database/index.html" class="explore-card">
+                <h3>Species Database</h3>
+                <p>Browse all 8,426 species with their skill assignments, proficiency levels, and Fakemon info.</p>
+            </a>
+            <a href="generator/index.html" class="explore-card">
+                <h3>Datapack Generator</h3>
+                <p>Create custom species skill datapacks visually &mdash; no JSON editing required.</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+    </footer>
+
+    <script src="navbar.js"></script>
 </body>
 </html>
