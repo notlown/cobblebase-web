@@ -11,9 +11,9 @@
   --text-primary: #e8eaf0;
   --text-secondary: #9ca3b8;
   --text-muted: #6b7280;
-  --accent: #6c7fd8;
-  --accent-hover: #8594e8;
-  --accent-glow: rgba(108, 127, 216, 0.25);
+  --accent: #f7c948;
+  --accent-hover: #f9d96e;
+  --accent-glow: rgba(247, 201, 72, 0.25);
   --danger: #e05555;
   --danger-hover: #f06666;
   --success: #4ade80;
@@ -49,15 +49,16 @@ body {
 header {
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border);
-  padding: 1.5rem 1rem;
+  padding: 0 0 1.5rem;
   text-align: center;
 }
 
 .header-banner {
-  max-width: 100%;
-  max-height: 120px;
+  width: 100%;
+  max-height: 200px;
   margin-bottom: 0.5rem;
-  border-radius: var(--radius-md);
+  border-radius: 0;
+  object-fit: cover;
 }
 
 /* How it works steps */
@@ -91,8 +92,8 @@ header {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--accent);
-  color: #000;
+  background: #f7c948;
+  color: #0d1117;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,7 +138,7 @@ footer {
 }
 
 footer a {
-  color: var(--accent);
+  color: #f7c948;
   text-decoration: none;
 }
 
@@ -154,6 +155,7 @@ header h1 {
   font-size: 1.6rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+  color: #f7c948;
 }
 
 .subtitle {
@@ -206,12 +208,14 @@ main {
 .btn-primary {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: #0d1117;
+  font-weight: 600;
 }
 
 .btn-primary:hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
+  color: #0d1117;
 }
 
 .btn-accent {

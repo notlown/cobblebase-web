@@ -6,12 +6,12 @@
     <title>Cobblebase - Palworld-style Base Management for Cobblemon</title>
     <link rel="icon" type="image/png" href="cobblebase_icon.png">
     <link rel="canonical" href="https://cobblebase.com/">
-    <meta name="description" content="Cobblebase adds Palworld-style base management to Cobblemon. Assign 44 unique jobs to 8,426 Pokemon species, use the Admin GUI, and support Fakemon packs. Available for Fabric and NeoForge.">
+    <meta name="description" content="Cobblebase adds Palworld-style base management to Cobblemon. Assign 43 unique jobs to 8,426 Pokemon species, use the Admin GUI, and support Fakemon packs. Available for Fabric and NeoForge.">
     <meta name="keywords" content="Cobblebase, Cobblemon, Minecraft mod, Palworld, base management, Pokemon jobs, Fabric, NeoForge, Fakemon">
 
     <!-- Open Graph -->
     <meta property="og:title" content="Cobblebase - Palworld-style Base Management for Cobblemon">
-    <meta property="og:description" content="Assign 44 unique jobs to 8,426 Pokemon species. Admin GUI, Fakemon support, Fabric & NeoForge.">
+    <meta property="og:description" content="Assign 43 unique jobs to 8,426 Pokemon species. Admin GUI, Fakemon support, Fabric & NeoForge.">
     <meta property="og:image" content="https://cobblebase.com/cobblebase_header.png">
     <meta property="og:url" content="https://cobblebase.com/">
     <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
     <!-- Twitter / Discord -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Cobblebase - Palworld-style Base Management for Cobblemon">
-    <meta name="twitter:description" content="Assign 44 unique jobs to 8,426 Pokemon species. Admin GUI, Fakemon support, Fabric & NeoForge.">
+    <meta name="twitter:description" content="Assign 43 unique jobs to 8,426 Pokemon species. Admin GUI, Fakemon support, Fabric & NeoForge.">
     <meta name="twitter:image" content="https://cobblebase.com/cobblebase_header.png">
 
     <link rel="stylesheet" href="navbar.css">
@@ -41,16 +41,23 @@
         /* Hero */
         .hero {
             text-align: center;
-            padding: 64px 24px 48px;
-            max-width: 900px;
+            padding: 0 0 48px;
+            max-width: 100%;
             margin: 0 auto;
         }
 
+        .hero-text {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 0;
+        }
+
         .hero-banner {
-            max-width: 100%;
-            max-height: 180px;
-            border-radius: 14px;
+            width: 100%;
+            max-height: 280px;
+            border-radius: 0;
             margin-bottom: 24px;
+            object-fit: cover;
         }
 
         .hero h1 {
@@ -273,6 +280,7 @@
     <!-- Hero -->
     <section class="hero">
         <img src="cobblebase_header.png" alt="Cobblebase banner" class="hero-banner">
+        <div class="hero-text">
         <h1>Cobble<span>base</span></h1>
         <p class="hero-tagline">Palworld-style base management for Cobblemon &mdash; assign jobs, watch Pokemon work, build the ultimate base.</p>
 
@@ -292,12 +300,13 @@
             <a href="https://discord.gg/6As3sVZgVT" class="cta-btn cta-discord">Discord</a>
             <a href="https://ko-fi.com/notlown" class="cta-btn cta-kofi">Ko-fi</a>
         </div>
+        </div>
     </section>
 
     <!-- Stats -->
     <section class="stats">
         <div class="stat">
-            <div class="stat-number">44</div>
+            <div class="stat-number">43</div>
             <div class="stat-label">Unique Jobs</div>
         </div>
         <div class="stat">
@@ -315,8 +324,8 @@
         <h2>Features</h2>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon">&#9874;</div>
-                <h3>44 Jobs</h3>
+                <div class="feature-icon">&#9874;&#65039;</div>
+                <h3>43 Jobs</h3>
                 <p>From mining and farming to guarding and scouting &mdash; every Pokemon species has unique skills assigned across 10 categories.</p>
             </div>
             <div class="feature-card">
@@ -325,7 +334,7 @@
                 <p>Every Cobblemon species is covered out of the box, plus popular Fakemon packs like Gravelmon, Lively Mons, and more.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon">&#128736;</div>
+                <div class="feature-icon">&#128736;&#65039;</div>
                 <h3>Admin GUI</h3>
                 <p>Full in-game species skill editor for server operators. Manage skills, add Fakemon, and balance your server without touching JSON.</p>
             </div>
