@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -44,6 +44,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .main { margin-left: 0; }
@@ -77,11 +78,11 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>Getting Started</h1>
+                <h1>&#x1F680; Getting Started</h1>
 
                 <p>This guide walks you through installing Cobblebase and getting your first Pokemon base up and running.</p>
 
-                <h2>Requirements</h2>
+                <h2>&#x1F4E6; Requirements</h2>
 
                 <table>
                     <tr><th>Dependency</th><th>Version</th></tr>
@@ -116,21 +117,23 @@
 
                 <h3>2. Open the Cobblebase GUI</h3>
                 <p>Right-click the Pasture Block to open it. You will see a <strong>"Cobblebase"</strong> button in the Pasture Block UI. Click it to open the management interface.</p>
+                <p>&#x1F512; On multiplayer servers, only the pasture owner can open the Cobblebase GUI.</p>
 
                 <h3>3. Assign Jobs</h3>
                 <p>In the <strong>Skills</strong> tab, you will see each Pokemon in your pasture along with their available skills. You have two options:</p>
                 <ul>
-                    <li><strong>Auto</strong> -- The mod automatically picks the best skill for each Pokemon based on proficiency.</li>
-                    <li><strong>Manual</strong> -- Click a specific skill button to assign that job.</li>
+                    <li><strong>Idle</strong> -- The Pokemon does nothing. Only passive buffs remain active.</li>
+                    <li><strong>Manual</strong> -- Click a specific skill button to assign that job. Look for the highest proficiency stars <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> for the best performance.</li>
                 </ul>
 
                 <h3>4. Watch Your Pokemon Work</h3>
                 <p>Once assigned, Pokemon begin performing their jobs on cooldown-based cycles. They will harvest crops, mine ores, guard your base, find items, and more -- all automatically.</p>
+                <p>&#x1F507; Use the mute button in the top-right corner if cry sounds are distracting.</p>
 
                 <h3>5. Check Your Logs</h3>
                 <p>Switch to the <strong>Logs</strong> tab to see what your Pokemon have been doing. Filter by rarity to quickly find valuable discoveries.</p>
 
-                <h2>Configuration</h2>
+                <h2>&#x2699;&#xFE0F; Configuration</h2>
                 <p>Press <strong>K</strong> (default keybind) to open the Cloth Config settings screen. Key options include:</p>
 
                 <table>
@@ -159,7 +162,7 @@ cd cobblebase
                     <li>Learn about all <a href="jobs.html">43 jobs</a> your Pokemon can perform</li>
                     <li>Understand the <a href="proficiency.html">proficiency system</a> that scales performance</li>
                     <li>Explore the <a href="gui.html">GUI</a> tabs for managing your base</li>
-                    <li>Check <a href="compatibility.html">compatibility</a> with Fakemon packs</li>
+                    <li>Check <a href="compatibility.html">compatibility</a> with Fakemon packs (8,426 species supported)</li>
                 </ul>
 
                 <footer>

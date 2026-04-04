@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -43,6 +43,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
     </style>
 </head>
@@ -68,15 +69,18 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>Frequently Asked Questions</h1>
+                <h1>&#x2753; Frequently Asked Questions</h1>
 
                 <h2>General</h2>
 
                 <h3>What is Cobblebase?</h3>
                 <p>Cobblebase is a Minecraft mod for Cobblemon that transforms the Pasture Block into a Palworld-style base. Your Pokemon get assigned jobs, work automatically, and produce resources, apply buffs, guard your base, and more.</p>
 
+                <h3>How many species does Cobblebase support?</h3>
+                <p><strong>8,426 species</strong> have built-in skill assignments, including 996 official Cobblemon species and 7,430 Fakemon from 5 supported packs. See the <a href="compatibility.html">Compatibility page</a> for details.</p>
+
                 <h3>Does Cobblebase work on servers?</h3>
-                <p>Yes. Cobblebase works on both singleplayer and multiplayer servers. All data (skill assignments, logs, discoveries) is stored server-side and persists across restarts.</p>
+                <p>Yes. Cobblebase works on both singleplayer and multiplayer servers. All data (skill assignments, logs, discoveries) is stored server-side and persists across restarts. In multiplayer, each pasture is locked to its owner -- only you can open and modify your Cobblebase GUI.</p>
 
                 <h3>Does it work with Fabric and NeoForge?</h3>
                 <p>Yes. Cobblebase has separate builds for both Fabric and NeoForge. Make sure to download the correct version for your mod loader.</p>
@@ -106,19 +110,23 @@
                 <ol>
                     <li>Right-click a Pasture Block</li>
                     <li>Click the <strong>"Cobblebase"</strong> button</li>
-                    <li>In the Skills tab, click a skill button next to the Pokemon you want to assign, or click <strong>Idle</strong> to put the Pokemon in idle mode (only passive buffs run)</li>
+                    <li>In the Skills tab, click a skill button next to the Pokemon you want to assign, or click <strong>Idle</strong> to put it in idle mode</li>
                 </ol>
 
                 <h3>What does "Idle" do?</h3>
-                <p>Idle mode means the Pokemon does nothing -- no active jobs run. Only passive buffs (aura effects) continue to work. To make your Pokemon work, assign a specific skill instead.</p>
+                <p>Idle mode means the Pokemon does nothing -- only passive buffs continue to run. Use it when you want to pause a Pokemon's job without unassigning it.</p>
+
+                <h3>What happened to the "Auto" button?</h3>
+                <p>In v1.3.0, "Auto" was renamed to <strong>"Idle"</strong>. Idle does nothing -- it is a true idle state where only passive buffs remain active. To assign the best skill, simply click the skill with the highest proficiency stars.</p>
 
                 <h3>My Pokemon is not doing anything. Why?</h3>
                 <p>Check these common issues:</p>
                 <ul>
-                    <li><strong>Is the Pokemon assigned to a job?</strong> Open the Skills tab and verify a skill is selected.</li>
-                    <li><strong>Is the skill on cooldown?</strong> Some skills have long cooldowns (Mining: 5 min, Finder jobs: 4 min, Legendary Recruiter: 10 min). Wait for the cooldown to expire.</li>
+                    <li><strong>Is the Pokemon assigned to a job?</strong> Open the Skills tab and verify a skill is selected (not Idle).</li>
+                    <li><strong>Is the skill on cooldown?</strong> Most skills have a 300-second base cooldown (5 min at <span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>, ~8 min at <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span>). Legendary Recruiter has a 540-second base cooldown. Wait for the cooldown to expire.</li>
                     <li><strong>Does the skill require something nearby?</strong> Fishing requires water within the search radius. Furnace Fuel needs a furnace. Cauldron fills need an empty cauldron.</li>
                     <li><strong>Is the skill category disabled?</strong> Check Cloth Config settings -- skill categories can be individually toggled off.</li>
+                    <li><strong>Is the Pokemon stuck?</strong> In v1.3.0, stuck detection auto-teleports Pokemon after 15 seconds of not moving. If a Pokemon gets stuck in leaves, it will automatically drop to the ground.</li>
                 </ul>
 
                 <h3>Can I change a Pokemon's proficiency?</h3>
@@ -128,18 +136,21 @@
                 <p>For official Cobblemon species (996 Pokemon), every skill assignment is hand-crafted based on the Pokemon's identity and lore. A Charizard gets Lava Fill and Guard, not because it is a Fire type, but because those fit its character.</p>
                 <p>For <a href="compatibility.html">Fakemon packs</a>, skills are auto-assigned based on typing, base stats, and BST tiers.</p>
 
+                <h3>What happened to Diving?</h3>
+                <p>The Diving job was <strong>removed in v1.3.0</strong>. It will return in an improved form in a future update. Water-type Pokemon still have access to Fishing and Water Fill.</p>
+
                 <hr>
 
                 <h2>Proficiency</h2>
 
                 <h3>How does proficiency affect cooldowns?</h3>
-                <p>See the <a href="proficiency.html">Proficiency Guide</a> for the full formula. In short: Prof 1 is 1.67x slower than base, Prof 3 is normal speed, and Prof 5 is 0.33x (about 5 times faster than Prof 1).</p>
+                <p>See the <a href="proficiency.html">Proficiency Guide</a> for the full formula. All standard jobs use a 300-second base cooldown. <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> is 1.67x slower (~8 min), <span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> is normal speed (5 min), and <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> is 0.33x (~1.7 min).</p>
 
                 <h3>What does Prof 5 do for buffs?</h3>
-                <p>At proficiency 5, buff skills become <strong>global</strong> -- they apply to the pasture owner anywhere in the world, not just near the pasture. The effect is also effectively permanent with zero cooldown. See the <a href="buffs.html">Buffs Guide</a>.</p>
+                <p>At <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>, buff skills become <strong>global</strong> -- they apply to the pasture owner anywhere in the world, not just near the pasture. The effect is also effectively permanent with zero cooldown. See the <a href="buffs.html">Buffs Guide</a>.</p>
 
                 <h3>Is there a way to level up proficiency?</h3>
-                <p>No. Proficiency is a fixed attribute of each Pokemon species. A Magikarp with Fishing Prof 1 will always be Prof 1. To get higher proficiency, you need to find or catch a Pokemon species with higher proficiency for that skill.</p>
+                <p>No. Proficiency is a fixed attribute of each Pokemon species. A Magikarp with Fishing <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> will always be <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span>. To get higher proficiency, you need to find or catch a Pokemon species with higher proficiency for that skill.</p>
 
                 <hr>
 
@@ -153,7 +164,20 @@
                 <p>Buff particles on players are intentionally disabled to reduce visual clutter. You can see active buffs in the <a href="gui.html">Buffs tab</a> and through the standard Minecraft effect icons.</p>
 
                 <h3>How do I get permanent buffs?</h3>
-                <p>You need a Pokemon with <strong>proficiency 5</strong> for the buff skill you want. At Prof 5, the buff has zero cooldown and 70-second duration, making it effectively permanent and global. These Pokemon are rare -- check the <a href="buffs.html">Buffs Guide</a> for which Pokemon have each buff.</p>
+                <p>You need a Pokemon with <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> for the buff skill you want. At <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>, the buff has zero cooldown and 70-second duration, making it effectively permanent and global. These Pokemon are rare -- check the <a href="buffs.html">Buffs Guide</a> for which Pokemon have each buff.</p>
+
+                <hr>
+
+                <h2>Multiplayer</h2>
+
+                <h3>Can other players access my pasture?</h3>
+                <p>No. Since v1.3.0, pastures are <strong>owner-locked</strong>. Only the owner of the pasture can open the Cobblebase GUI. Other players cannot view or modify your skill assignments.</p>
+
+                <h3>Do I see notifications from other players' Pokemon?</h3>
+                <p>No. Recruiter and Scout notifications are <strong>owner-only</strong>. Only the pasture owner receives chat messages about recruited Pokemon or discovered locations.</p>
+
+                <h3>Can I mute Pokemon cry sounds?</h3>
+                <p>Yes. There is an in-GUI <strong>mute button</strong> in the top-right corner of the Cobblebase screen. Cry sounds are also rate-limited to 1 per 60 seconds per Pokemon, with a default volume of 30.</p>
 
                 <hr>
 
@@ -178,14 +202,17 @@
                 <h3>The GUI is blurry</h3>
                 <p>This was a known bug in earlier versions caused by Minecraft 1.21+'s Gaussian blur shader. It is fixed in version 1.2.0 and later. Update to the latest version.</p>
 
-                <h3>Selected skills reset when I switch tabs</h3>
+                <h3>&#x2705; Selected skills reset when I switch tabs</h3>
                 <p>Fixed in version 1.3.0. Update to the latest version.</p>
 
-                <h3>A Pokemon named Farfetch'd crashes the GUI</h3>
+                <h3>&#x2705; A Pokemon named Farfetch'd crashes the GUI</h3>
                 <p>Fixed in version 1.3.0. Species names with special characters (apostrophes, accents) are now handled correctly.</p>
 
+                <h3>&#x2705; Items duplicating</h3>
+                <p>The item dupe glitch was fixed in v1.3.0. Gatherer now claims items immediately on targeting, preventing other systems from picking up the same item.</p>
+
                 <h3>Items are dropping on the ground instead of going into chests</h3>
-                <p>Most loot-producing skills drop items on the ground for the Gatherer to pick up and sort into chests. Only Fishing deposits directly into chests. Make sure:</p>
+                <p>Most loot-producing skills (Archeologist, Honey Collect, all Finders) deposit items into nearby chests automatically. Make sure:</p>
                 <ul>
                     <li>There are chests within the search radius (default: 10 blocks)</li>
                     <li>The chests have available inventory space</li>
@@ -194,7 +221,10 @@
                 <p>If no valid chest is found, items drop on the ground as a fallback.</p>
 
                 <h3>Lucky Charm does not seem to work</h3>
-                <p>Lucky Charm applies to the <strong>owner</strong> of the pasture, not to all players. It boosts the shiny rate for wild Pokemon that spawn near you. The effect is passive and has no visual indicator -- you need to encounter wild Pokemon to notice the difference. At Prof 5, the shiny rate is 3x the base rate.</p>
+                <p>Lucky Charm applies to the <strong>owner</strong> of the pasture, not to all players. It boosts the shiny rate for wild Pokemon that spawn near you. The effect is passive and has no visual indicator -- you need to encounter wild Pokemon to notice the difference. At <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>, the shiny rate is 3x the base rate.</p>
+
+                <h3>My Pokemon is stuck in a tree</h3>
+                <p>In v1.3.0, <strong>leaves escape</strong> was added -- Pokemon stuck in tree canopies automatically drop to the ground. Additionally, <strong>stuck detection</strong> auto-teleports Pokemon that have not moved for 15 seconds.</p>
 
                 <footer>
                     <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>

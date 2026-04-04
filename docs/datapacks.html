@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -43,6 +43,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
     </style>
 </head>
@@ -68,7 +69,7 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>Datapacks</h1>
+                <h1>&#x1F4E6; Datapacks</h1>
                 <p>Cobblebase is fully customizable via Minecraft datapacks. You can add new skills, modify loot tables, or reassign Pokemon species without touching any code.</p>
 
                 <h2>Overview</h2>
@@ -106,7 +107,7 @@
   "name": "My Custom Skill",
   "description": "What this skill does",
   "category": "gathering",
-  "cooldownSeconds": 120,
+  "cooldownSeconds": 300,
   "searchRadius": 10,
   "executor": "harvester",
   "effectType": "default",
@@ -115,6 +116,7 @@
   "requiresNearby": true,
   "xpReward": 50
 }</code></pre>
+                <p><em>Note: Since v1.3.0, the standard base cooldown is 300 seconds for most jobs.</em></p>
 
                 <h3>Field Reference</h3>
                 <table>
@@ -136,13 +138,13 @@
                 <h3>Categories</h3>
                 <table>
                     <tr><th>Category</th><th>Description</th></tr>
-                    <tr><td><code>gathering</code></td><td>Resource collection skills</td></tr>
-                    <tr><td><code>combat</code></td><td>Fighting and defense</td></tr>
-                    <tr><td><code>support</code></td><td>Healing and buff skills</td></tr>
-                    <tr><td><code>generation</code></td><td>Block/fuel generation (furnace, cauldron, brewing)</td></tr>
-                    <tr><td><code>utility</code></td><td>Utility skills (gathering items, irrigating, scouting)</td></tr>
-                    <tr><td><code>fairy</code></td><td>Recruiting skills</td></tr>
-                    <tr><td><code>legendary</code></td><td>Legendary-exclusive abilities</td></tr>
+                    <tr><td><code>gathering</code></td><td>&#x1F33E; Resource collection skills</td></tr>
+                    <tr><td><code>combat</code></td><td>&#x2694;&#xFE0F; Fighting and defense</td></tr>
+                    <tr><td><code>support</code></td><td>&#x1F49A; Healing and buff skills</td></tr>
+                    <tr><td><code>generation</code></td><td>&#x1F30D; Block/fuel generation (furnace, cauldron, brewing)</td></tr>
+                    <tr><td><code>utility</code></td><td>&#x1F4E6; Utility skills (gathering items, irrigating, scouting)</td></tr>
+                    <tr><td><code>fairy</code></td><td>&#x1F91D; Recruiting skills</td></tr>
+                    <tr><td><code>legendary</code></td><td>&#x1F31F; Legendary-exclusive abilities</td></tr>
                 </table>
 
                 <h3>Executors</h3>
@@ -175,12 +177,12 @@
                 <table>
                     <tr><th>Effect Type</th><th>Visual</th></tr>
                     <tr><td><code>default</code></td><td>Standard particles</td></tr>
-                    <tr><td><code>harvest</code></td><td>Green/nature particles</td></tr>
-                    <tr><td><code>water</code></td><td>Blue water particles</td></tr>
-                    <tr><td><code>fire</code></td><td>Fire/orange particles</td></tr>
-                    <tr><td><code>combat</code></td><td>Red combat particles</td></tr>
-                    <tr><td><code>heal</code></td><td>Pink/green heal particles</td></tr>
-                    <tr><td><code>special</code></td><td>Gold/sparkle particles</td></tr>
+                    <tr><td><code>harvest</code></td><td>&#x1F33F; Green/nature particles</td></tr>
+                    <tr><td><code>water</code></td><td>&#x1F4A7; Blue water particles</td></tr>
+                    <tr><td><code>fire</code></td><td>&#x1F525; Fire/orange particles</td></tr>
+                    <tr><td><code>combat</code></td><td>&#x2694;&#xFE0F; Red combat particles</td></tr>
+                    <tr><td><code>heal</code></td><td>&#x1F49A; Pink/green heal particles</td></tr>
+                    <tr><td><code>special</code></td><td>&#x2728; Gold/sparkle particles</td></tr>
                 </table>
 
                 <h2>Skill Definition Examples</h2>
@@ -191,7 +193,7 @@
   "name": "Mushroom Forager",
   "description": "Forages for mushrooms in dark areas",
   "category": "gathering",
-  "cooldownSeconds": 60,
+  "cooldownSeconds": 300,
   "searchRadius": 15,
   "executor": "harvester",
   "effectType": "harvest"
@@ -203,7 +205,7 @@
   "name": "Campfire Lighter",
   "description": "Lights nearby campfires",
   "category": "generation",
-  "cooldownSeconds": 45,
+  "cooldownSeconds": 300,
   "searchRadius": 10,
   "executor": "furnace_fuel",
   "effectType": "fire"
@@ -262,9 +264,8 @@
                 </ol>
                 <p>This means datapacks override built-in data, and the Admin GUI overrides everything.</p>
 
-                <h2>Tips</h2>
+                <h2>&#x1F4A1; Tips</h2>
                 <ul>
-                    <li><strong>Test with Dev Mode.</strong> Enable Dev Mode in Cloth Config settings to set all cooldowns to 5 seconds, making it easy to verify your datapack changes.</li>
                     <li><strong>Use the Admin GUI for quick edits.</strong> The <a href="admin.html">Admin GUI</a> is faster for one-off changes. Use datapacks for large-scale modifications that should be shared or version-controlled.</li>
                     <li><strong>Back up before overriding.</strong> If you override built-in skills, keep a copy of the original values so you can restore them.</li>
                     <li><strong>Namespace your custom skills.</strong> Use your own namespace (e.g., <code>mypack:skill_name</code>) instead of <code>cobblebase:</code> to avoid conflicts with future updates.</li>

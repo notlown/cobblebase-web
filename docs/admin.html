@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -43,6 +43,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
     </style>
 </head>
@@ -68,7 +69,7 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>Admin GUI Guide</h1>
+                <h1>&#x1F6E0;&#xFE0F; Admin GUI Guide</h1>
                 <p>The Admin GUI allows server operators to manage skill assignments for any Pokemon species directly in-game -- no JSON editing or server restarts needed. This is especially powerful for adding support for Fakemon mods that do not have built-in skill assignments.</p>
 
                 <h2>Opening the Admin GUI</h2>
@@ -94,29 +95,29 @@
                     <li><strong>Species name</strong> at the top</li>
                     <li><strong>3-column skill grid</strong> organized by category</li>
                     <li><strong>Checkbox</strong> for each skill to toggle it on or off</li>
-                    <li><strong>Proficiency stars</strong> (1-5) that you can click to set the proficiency level</li>
+                    <li><strong>Proficiency stars</strong> (<span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> to <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>) that you can click to set the proficiency level</li>
                 </ul>
 
                 <h2>Managing Skills</h2>
 
-                <h3>Toggling Skills</h3>
+                <h3>&#x2705; Toggling Skills</h3>
                 <p>Click the <strong>checkbox</strong> next to any skill to enable or disable it for the selected species. Changes take effect <strong>immediately</strong> -- no restart required.</p>
 
-                <h3>Setting Proficiency</h3>
-                <p>Click the <strong>star icons</strong> (1-5) next to any enabled skill to set its proficiency level:</p>
+                <h3>&#x2B50; Setting Proficiency</h3>
+                <p>Click the <strong>star icons</strong> (<span class="prof-stars">&#9733;</span> to <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>) next to any enabled skill to set its proficiency level:</p>
                 <ul>
-                    <li>1 star = Novice</li>
-                    <li>2 stars = Apprentice</li>
-                    <li>3 stars = Skilled</li>
-                    <li>4 stars = Expert</li>
-                    <li>5 stars = Master</li>
+                    <li><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> = Novice</li>
+                    <li><span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span> = Apprentice</li>
+                    <li><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> = Skilled</li>
+                    <li><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> = Expert</li>
+                    <li><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> = Master</li>
                 </ul>
                 <p>See the <a href="proficiency.html">Proficiency Guide</a> for how each level affects performance.</p>
 
                 <h3>Resetting to Default</h3>
                 <p>Click the <strong>"Reset to Default"</strong> button to revert a species to its built-in skill assignments. This removes any custom overrides you have made for that species.</p>
 
-                <h2>Adding Fakemon</h2>
+                <h2>&#x1F9E9; Adding Fakemon</h2>
                 <p>If you have a Fakemon mod installed and a species does not appear in the species list:</p>
                 <ol>
                     <li>Type the Fakemon's name in the <strong>search bar</strong></li>
@@ -134,12 +135,12 @@
                 <h3>Override Behavior</h3>
                 <p>Custom assignments <strong>fully override</strong> built-in data for a species. If you toggle a single skill for a Pokemon, all of its skills (including the ones you did not change) are saved in the override file.</p>
 
-                <h2>Use Cases</h2>
+                <h2>&#x1F4A1; Use Cases</h2>
 
                 <h3>Balancing Skills for Your Server</h3>
                 <p>If you think a Pokemon's proficiency is too high or too low for your server's balance, use the Admin GUI to adjust it. For example:</p>
                 <ul>
-                    <li>Lower Arceus from Prof 5 to Prof 3 on Legendary Recruiter to reduce legendary spawns</li>
+                    <li>Lower Arceus from <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> to <span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> on Legendary Recruiter to reduce legendary spawns</li>
                     <li>Increase a less common Pokemon's Guard proficiency to make it more useful</li>
                 </ul>
 
@@ -161,10 +162,10 @@
 
                 <h2>Tips</h2>
                 <ul>
-                    <li><strong>Changes are live.</strong> If a Pokemon is currently assigned to a job and you remove that skill, the Pokemon will stop working immediately.</li>
+                    <li><strong>&#x26A1; Changes are live.</strong> If a Pokemon is currently assigned to a job and you remove that skill, the Pokemon will stop working immediately.</li>
                     <li><strong>Override file is per-world.</strong> Different worlds can have different skill configurations.</li>
                     <li><strong>Back up your overrides.</strong> If you have spent time configuring many species, back up <code>cobblebase_species_overrides.json</code> before wiping your world.</li>
-                    <li><strong>The Admin GUI shows ALL species.</strong> Even if 7,000+ Gravelmon species are loaded, they all appear in the scrollable list. Use the search bar to find what you need quickly.</li>
+                    <li><strong>The Admin GUI shows ALL species.</strong> Even if 8,000+ species are loaded, they all appear in the scrollable list. Use the search bar to find what you need quickly.</li>
                 </ul>
 
                 <footer>

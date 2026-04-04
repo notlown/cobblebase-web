@@ -20,8 +20,8 @@
         .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
         .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
         .main { margin-left: 260px; flex: 1; }
-        .top-header { text-align: center; padding: 32px 20px 24px; border-bottom: 1px solid #30363d; background-color: #161b22; }
-        .top-header img { max-width: 100%; max-height: 100px; border-radius: 10px; margin-bottom: 12px; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
         .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
         h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
         h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
@@ -43,6 +43,7 @@
         footer a { color: #8b949e; }
         .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
         .back-link:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
         @media (max-width: 768px) { .sidebar { display: none; } .main { margin-left: 0; } .content { padding: 24px 16px; } }
     </style>
 </head>
@@ -68,10 +69,10 @@
             <div class="content">
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
-                <h1>Compatibility</h1>
+                <h1>&#x1F9E9; Compatibility</h1>
                 <p>This page covers supported Fakemon packs, known mod incompatibilities, and dependency information.</p>
 
-                <h2>Dependencies</h2>
+                <h2>&#x1F4E6; Dependencies</h2>
                 <p>Cobblebase requires the following mods to be installed:</p>
                 <table>
                     <tr><th>Dependency</th><th>Version</th><th>Notes</th></tr>
@@ -89,7 +90,7 @@
 
                 <hr>
 
-                <h2>Supported Fakemon Packs</h2>
+                <h2>&#x2705; Supported Fakemon Packs</h2>
                 <p>Cobblebase includes <strong>built-in skill assignments</strong> for all species in these Fakemon mods. They work out of the box with no configuration needed.</p>
 
                 <h3>Official Cobblemon</h3>
@@ -138,7 +139,7 @@
                     <tr><td>Species</td><td>7,194</td></tr>
                     <tr><td>Assignment Method</td><td>Auto-assigned by typing + stats</td></tr>
                     <tr><td>Download</td><td>Available on Modrinth</td></tr>
-                    <tr><td>Notes</td><td>Largest supported pack -- all species have assignments</td></tr>
+                    <tr><td>Notes</td><td>Largest supported pack -- all 7,194 species have assignments</td></tr>
                 </table>
 
                 <h3>Total Species Count</h3>
@@ -153,16 +154,16 @@
                 <p>A Fakemon's type determines which skills it can receive:</p>
                 <table>
                     <tr><th>Type</th><th>Assigned Skills</th></tr>
-                    <tr><td>Water</td><td>Fishing, Water Fill, Water Breathing</td></tr>
-                    <tr><td>Fire</td><td>Furnace Fuel, Lava Fill</td></tr>
-                    <tr><td>Grass</td><td>Harvester, Irrigator, Botanist</td></tr>
+                    <tr><td>&#x1F4A7; Water</td><td>Fishing, Water Fill, Water Breathing</td></tr>
+                    <tr><td>&#x1F525; Fire</td><td>Furnace Fuel, Lava Fill</td></tr>
+                    <tr><td>&#x1F33F; Grass</td><td>Harvester, Irrigator, Botanist</td></tr>
                     <tr><td>Ground/Rock</td><td>Mining, Archeologist, Excavator</td></tr>
                     <tr><td>Fighting</td><td>Guard, Trainer</td></tr>
                     <tr><td>Psychic</td><td>Mentor</td></tr>
                     <tr><td>Fairy</td><td>Friend Recruiter</td></tr>
                     <tr><td>Normal</td><td>Gatherer</td></tr>
                     <tr><td>Ghost/Dark</td><td>Night Vision, Scout</td></tr>
-                    <tr><td>Ice</td><td>Snow Fill</td></tr>
+                    <tr><td>&#x2744;&#xFE0F; Ice</td><td>Snow Fill</td></tr>
                     <tr><td>Bug</td><td>Honey Collect</td></tr>
                     <tr><td>Poison</td><td>Brew Fuel</td></tr>
                 </table>
@@ -181,7 +182,7 @@
                 <p>Base Stat Total determines proficiency levels and access to legendary skills:</p>
                 <table>
                     <tr><th>BST Range</th><th>Effects</th></tr>
-                    <tr><td>600+ (Legendary)</td><td>Prof 5, Legendary Recruiter, Lucky Charm, Aura Boost</td></tr>
+                    <tr><td>600+ (Legendary)</td><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>, Legendary Recruiter, Lucky Charm, Aura Boost</td></tr>
                     <tr><td>570+ (Pseudo)</td><td>High proficiency, Aura Boost, high Mentor</td></tr>
                     <tr><td>530+</td><td>+2 proficiency bonus to all skills</td></tr>
                     <tr><td>480+</td><td>+1 proficiency bonus to all skills</td></tr>
@@ -208,7 +209,7 @@
 
                 <hr>
 
-                <h2>Known Incompatibilities</h2>
+                <h2>&#x274C; Known Incompatibilities</h2>
 
                 <h3>Chiselmon</h3>
                 <p><strong>Status:</strong> Incompatible</p>
