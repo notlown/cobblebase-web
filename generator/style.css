@@ -553,6 +553,99 @@ main {
   pointer-events: none;
 }
 
+/* Template Pills */
+.template-pills {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.template-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.btn-template {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-template:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.btn-template[data-template="water"] { border-color: #3b82f6; }
+.btn-template[data-template="water"]:hover { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+.btn-template[data-template="farm"] { border-color: var(--category-gathering); }
+.btn-template[data-template="farm"]:hover { background: rgba(74, 222, 128, 0.15); color: var(--category-gathering); }
+.btn-template[data-template="combat"] { border-color: var(--category-combat); }
+.btn-template[data-template="combat"]:hover { background: rgba(248, 113, 113, 0.15); color: var(--category-combat); }
+
+/* JSON Preview Panel */
+.json-preview-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.json-preview-panel.hidden {
+  display: none;
+}
+
+.json-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.json-preview-header h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.json-preview-code {
+  padding: 1.25rem;
+  margin: 0;
+  overflow-x: auto;
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  max-height: 500px;
+  overflow-y: auto;
+  tab-size: 2;
+}
+
+/* JSON syntax highlighting */
+.json-key { color: #7dd3fc; }
+.json-string { color: #86efac; }
+.json-number { color: #fbbf24; }
+.json-bool { color: #c084fc; }
+.json-null { color: #9ca3b8; }
+.json-brace { color: #e8eaf0; }
+
 /* Responsive */
 @media (max-width: 640px) {
   header h1 {
@@ -564,6 +657,11 @@ main {
   }
 
   .toolbar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .template-pills {
     width: 100%;
     justify-content: center;
   }

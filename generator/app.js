@@ -84,6 +84,10 @@
   const searchResults = document.getElementById('species-search-results');
   const cardTemplate = document.getElementById('species-card-template');
   const skillTemplate = document.getElementById('skill-item-template');
+  const btnPreviewJson = document.getElementById('btn-preview-json');
+  const jsonPreviewPanel = document.getElementById('json-preview-panel');
+  const jsonPreviewCode = document.getElementById('json-preview-code');
+  const btnClosePreview = document.getElementById('btn-close-preview');
   const toast = document.getElementById('toast');
 
   // ── Search index (pre-built for performance) ───────────────────────
@@ -101,7 +105,13 @@
 
   // ── Update download button state ───────────────────────────────────
   function updateDownloadBtn() {
-    btnDownload.disabled = state.species.size === 0;
+    const empty = state.species.size === 0;
+    btnDownload.disabled = empty;
+    btnPreviewJson.disabled = empty;
+    // Hide preview panel if no species left
+    if (empty && !jsonPreviewPanel.classList.contains('hidden')) {
+      jsonPreviewPanel.classList.add('hidden');
+    }
   }
 
   // ── Modal ──────────────────────────────────────────────────────────
@@ -378,12 +388,118 @@
     }
   }
 
+  // ── JSON Preview ───────────────────────────────────────────────────
+  function buildDatapackJson() {
+    const files = {};
+    for (const [speciesName, skills] of state.species) {
+      const skillEntries = [];
+      for (const [skillId, proficiency] of Object.entries(skills)) {
+        skillEntries.push({ skillId, proficiency });
+      }
+      files[`data/cobblebase/species_skills/${speciesName}.json`] = {
+        species: speciesName,
+        skills: skillEntries
+      };
+    }
+    return files;
+  }
+
+  function syntaxHighlightJson(json) {
+    // Escape HTML first
+    const escaped = json
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+    // Apply syntax highlighting via regex
+    return escaped.replace(
+      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+      function (match) {
+        let cls = 'json-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'json-key';
+          } else {
+            cls = 'json-string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'json-bool';
+        } else if (/null/.test(match)) {
+          cls = 'json-null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      }
+    );
+  }
+
+  function toggleJsonPreview() {
+    if (jsonPreviewPanel.classList.contains('hidden')) {
+      const files = buildDatapackJson();
+      const output = {};
+      // Show pack.mcmeta + all species files
+      output['pack.mcmeta'] = {
+        pack: { pack_format: 15, description: 'Cobblebase custom species skills datapack' }
+      };
+      Object.assign(output, files);
+      const json = JSON.stringify(output, null, 2);
+      jsonPreviewCode.innerHTML = syntaxHighlightJson(json);
+      jsonPreviewPanel.classList.remove('hidden');
+      jsonPreviewPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      jsonPreviewPanel.classList.add('hidden');
+    }
+  }
+
+  // ── Quick Templates ───────────────────────────────────────────────
+  const TEMPLATES = {
+    water: [
+      { name: 'gyarados',  skills: { 'cobblebase:fishing': 5 } },
+      { name: 'lapras',    skills: { 'cobblebase:diving': 4 } },
+      { name: 'vaporeon',  skills: { 'cobblebase:water_fill': 5 } }
+    ],
+    farm: [
+      { name: 'venusaur',  skills: { 'cobblebase:harvester': 5 } },
+      { name: 'celebi',    skills: { 'cobblebase:harvester': 5, 'cobblebase:irrigator': 4 } },
+      { name: 'snorlax',   skills: { 'cobblebase:gatherer': 5 } }
+    ],
+    combat: [
+      { name: 'gallade',   skills: { 'cobblebase:guard': 4 } },
+      { name: 'machamp',   skills: { 'cobblebase:guard': 4 } },
+      { name: 'alakazam',  skills: { 'cobblebase:mentor': 5 } }
+    ]
+  };
+
+  function applyTemplate(templateId) {
+    const template = TEMPLATES[templateId];
+    if (!template) return;
+    let added = 0;
+    for (const entry of template) {
+      if (!state.species.has(entry.name)) {
+        addSpecies(entry.name, { ...entry.skills });
+        added++;
+      }
+    }
+    if (added > 0) {
+      showToast(`Added ${added} species from ${templateId} template`);
+    } else {
+      showToast('All species from this template are already added');
+    }
+  }
+
   // ── Event Listeners ────────────────────────────────────────────────
   btnAdd.addEventListener('click', openModal);
 
   btnDownload.addEventListener('click', generateDatapack);
 
+  btnPreviewJson.addEventListener('click', toggleJsonPreview);
+
+  btnClosePreview.addEventListener('click', () => jsonPreviewPanel.classList.add('hidden'));
+
   btnImport.addEventListener('click', () => importFile.click());
+
+  // Template buttons
+  document.querySelectorAll('.btn-template').forEach(btn => {
+    btn.addEventListener('click', () => applyTemplate(btn.dataset.template));
+  });
 
   importFile.addEventListener('change', (e) => {
     if (e.target.files[0]) {

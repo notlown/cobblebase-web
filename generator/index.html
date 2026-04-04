@@ -6,7 +6,9 @@
   <title>Cobblebase Datapack Generator</title>
   <meta name="description" content="Create custom Minecraft datapacks for the Cobblebase mod. Configure Pokemon species skills and proficiencies without editing JSON files.">
   <link rel="icon" type="image/png" href="../cobblebase_icon.png">
+  <link rel="stylesheet" href="../navbar.css">
   <link rel="stylesheet" href="style.css">
+  <style>body { padding-top: 56px; }</style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 </head>
 <body>
@@ -52,8 +54,23 @@
     <section class="toolbar">
       <button id="btn-add-species" class="btn btn-primary">+ Add Species</button>
       <button id="btn-import" class="btn btn-secondary">Import Datapack</button>
+      <button id="btn-preview-json" class="btn btn-secondary" disabled>Preview JSON</button>
       <button id="btn-download" class="btn btn-accent" disabled>Download Datapack</button>
       <input type="file" id="import-file" accept=".zip" hidden>
+      <div class="template-pills">
+        <span class="template-label">Templates:</span>
+        <button class="btn-template" data-template="water">Water Base</button>
+        <button class="btn-template" data-template="farm">Farm Base</button>
+        <button class="btn-template" data-template="combat">Combat Base</button>
+      </div>
+    </section>
+
+    <section id="json-preview-panel" class="json-preview-panel hidden">
+      <div class="json-preview-header">
+        <h3>JSON Preview</h3>
+        <button id="btn-close-preview" class="modal-close">&times;</button>
+      </div>
+      <pre id="json-preview-code" class="json-preview-code"></pre>
     </section>
 
     <section id="species-container">
@@ -116,5 +133,6 @@
 
   <script src="data.js"></script>
   <script src="app.js"></script>
+  <script src="../navbar.js"></script>
 </body>
 </html>
