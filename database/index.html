@@ -30,8 +30,8 @@ th.sorted .sort-arrow{opacity:1}
 td{padding:8px 12px;border-bottom:1px solid #21262d;font-size:0.95rem;vertical-align:top}
 tr:hover{background:#161b22}
 .pokemon-cell{display:flex;align-items:center;gap:8px}
-.sprite-wrap{width:36px;height:36px;min-width:36px;overflow:hidden;border-radius:4px;background:#161b22;flex-shrink:0}
-.sprite-wrap img{width:56px;height:56px;margin:-10px;image-rendering:pixelated;display:block}
+.sprite-wrap{width:44px;height:44px;min-width:44px;overflow:hidden;border-radius:4px;background:#161b22;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.sprite-wrap img{width:44px;height:44px;image-rendering:pixelated;display:block}
 .pokemon-info{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .species-name{text-transform:capitalize;font-weight:600;font-size:1rem}
 .fakemon-badge{font-size:0.7rem;background:#30363d;color:#8b949e;padding:2px 6px;border-radius:3px;margin-left:6px}
@@ -189,7 +189,7 @@ SPECIES_DB.forEach(function(s){s.skills.forEach(function(sk){skillNames.add(sk.n
 [...skillNames].sort().forEach(function(n){var o=document.createElement("option");o.value=n;o.textContent=n;skillFilter.appendChild(o)});
 
 function stars(n){return "\u2605".repeat(n)+"\u2606".repeat(5-n)}
-function spriteUrl(name){return"https://img.pokemondb.net/sprites/home/normal/"+name.replace(/[^a-z0-9-]/g,"")+".png"}
+function spriteUrl(name){return"https://img.pokemondb.net/sprites/scarlet-violet/icon/"+name.replace(/[^a-z0-9-]/g,"")+".png"}
 
 // Get proficiency of the currently filtered skill for a species
 function getFilteredSkillProf(s){
@@ -208,6 +208,16 @@ panel.innerHTML="";
 var closeBtn=document.createElement("button");closeBtn.className="detail-close";closeBtn.textContent="Close";
 closeBtn.addEventListener("click",function(e){e.stopPropagation();panel.classList.remove("open");tr.classList.remove("expanded");expandedSpecies=null});
 panel.appendChild(closeBtn);
+// Large sprite + name header in detail view
+var detailHeader=document.createElement("div");detailHeader.style.cssText="display:flex;align-items:center;gap:16px;margin-bottom:12px";
+var bigSprite=document.createElement("img");bigSprite.src="https://img.pokemondb.net/sprites/home/normal/"+s.name.replace(/[^a-z0-9-]/g,"")+".png";
+bigSprite.style.cssText="width:96px;height:96px;image-rendering:auto;border-radius:8px;background:#0d1117;padding:4px";bigSprite.alt=s.name;bigSprite.onerror=function(){this.style.display="none"};
+detailHeader.appendChild(bigSprite);
+var detailTitle=document.createElement("div");
+detailTitle.innerHTML="<div style='font-size:1.2rem;font-weight:700;color:#f0f6fc;text-transform:capitalize'>"+s.name+"</div>"
++"<div style='font-size:0.85rem;color:#8b949e'>"+s.count+" skills \u00b7 Highest Prof: <span style=\"color:#f7c948\">"+stars(s.maxProf)+"</span> \u00b7 Total Prof: "+s.totalProf+"</div>"
++(s.mod!=="cobblemon"?"<div style='font-size:0.8rem;color:#8b949e;margin-top:2px'>Pack: "+s.mod+"</div>":"");
+detailHeader.appendChild(detailTitle);panel.appendChild(detailHeader);
 var groups={};
 // Sort skills alphabetically first
 var sortedSkills=s.skills.slice().sort(function(a,b){return a.name.localeCompare(b.name)});
