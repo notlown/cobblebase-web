@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producer - Species Item Production - Cobblebase Documentation</title>
+    <link rel="icon" type="image/png" href="../../cobblebase_icon.png">
+    <link rel="stylesheet" href="../../navbar.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; background-color: #0d1117; color: #c9d1d9; line-height: 1.6; padding-top: 56px; }
+        a { color: #58a6ff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .layout { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background-color: #161b22; border-right: 1px solid #30363d; padding: 20px 0; position: fixed; top: 56px; left: 0; bottom: 0; overflow-y: auto; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #30363d; margin-bottom: 12px; }
+        .sidebar-header a { color: #f0f6fc; font-weight: 700; font-size: 1.1rem; }
+        .sidebar-header a:hover { color: #f7c948; text-decoration: none; }
+        .sidebar nav a { display: block; padding: 8px 20px; color: #8b949e; font-size: 0.9rem; transition: background 0.15s, color 0.15s; }
+        .sidebar nav a:hover { background-color: #1c2128; color: #c9d1d9; text-decoration: none; }
+        .sidebar nav a.active { color: #f7c948; background-color: #1c2128; border-left: 3px solid #f7c948; }
+        .sidebar-group { margin: 0; }
+        .sidebar-group-title { display: flex; justify-content: space-between; align-items: center; padding: 8px 20px; color: #8b949e; font-size: 0.85rem; font-weight: 600; cursor: pointer; user-select: none; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-group-title:hover { color: #c9d1d9; background-color: #1c2128; }
+        .sidebar-arrow { font-size: 0.7rem; transition: transform 0.2s; }
+        .sidebar-group.open .sidebar-arrow { transform: rotate(90deg); }
+        .sidebar-group-links { display: none; }
+        .sidebar-group.open .sidebar-group-links { display: block; }
+        .sidebar-group-links a { padding-left: 36px !important; font-size: 0.85rem !important; }
+        .main { margin-left: 260px; flex: 1; }
+        .top-header { text-align: center; padding: 0; border-bottom: 1px solid #30363d; background-color: #161b22; }
+        .top-header img { width: 100%; max-height: 250px; object-fit: cover; display: block; }
+        .content { max-width: 860px; margin: 0 auto; padding: 40px 32px; }
+        h1 { font-size: 2rem; color: #f0f6fc; margin-bottom: 16px; border-bottom: 1px solid #30363d; padding-bottom: 12px; }
+        h2 { font-size: 1.5rem; color: #f0f6fc; margin-top: 40px; margin-bottom: 12px; border-bottom: 1px solid #21262d; padding-bottom: 8px; }
+        h3 { font-size: 1.2rem; color: #f0f6fc; margin-top: 28px; margin-bottom: 8px; }
+        p { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #30363d; padding: 10px 14px; text-align: left; }
+        th { background-color: #161b22; color: #f0f6fc; font-weight: 600; }
+        tr:nth-child(even) { background-color: #0d1117; }
+        tr:nth-child(odd) { background-color: #161b22; }
+        pre { background-color: #161b22; border: 1px solid #30363d; border-radius: 6px; padding: 16px; overflow-x: auto; margin-bottom: 20px; }
+        code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.9rem; color: #e6edf3; }
+        p code, li code, td code { background-color: #1c2128; padding: 2px 6px; border-radius: 3px; font-size: 0.85rem; }
+        ul, ol { margin-bottom: 16px; padding-left: 24px; }
+        li { margin-bottom: 6px; }
+        strong { color: #f0f6fc; }
+        hr { border: none; border-top: 1px solid #30363d; margin: 32px 0; }
+        footer { text-align: center; padding: 24px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; margin-top: 40px; }
+        footer a { color: #8b949e; }
+        .back-link { display: inline-block; margin-bottom: 24px; color: #8b949e; font-size: 0.9rem; }
+        .back-link:hover { color: #f7c948; }
+        .breadcrumb { margin-bottom: 16px; color: #8b949e; font-size: 0.9rem; }
+        .breadcrumb a { color: #8b949e; }
+        .breadcrumb a:hover { color: #f7c948; }
+        .prof-stars { color: #f7c948; letter-spacing: 1px; }
+        .item-icon { vertical-align: middle; margin-right: 6px; image-rendering: pixelated; }
+        .tier-common { color: #7ee787; }
+        .tier-uncommon { color: #58a6ff; }
+        .tier-rare { color: #d2a8ff; }
+        .tier-ultra-rare { color: #f7c948; }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .content { padding: 24px 16px; }
+        }
+        .db-callout { background-color: #1c2128; border: 1px solid #f7c948; border-left: 4px solid #f7c948; border-radius: 6px; padding: 16px 20px; margin: 20px 0; }
+        .db-callout a { color: #f7c948; font-weight: 600; }
+        .category-header { margin-top: 32px; margin-bottom: 12px; font-size: 1.15rem; color: #f0f6fc; }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-header"><a href="../index.html">Cobblebase Docs</a></div>
+            <nav>
+                <a href="../getting-started.html">Getting Started</a>
+                <a href="../jobs.html">Jobs Guide</a>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Gathering Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                <a href="mining.html">Mining</a>
+                <a href="fishing.html">Fishing</a>
+                <a href="honey-collect.html">Honey Collect</a>
+                <a href="archeologist.html">Archeologist</a>
+                <a href="producer.html" class="active">Producer</a>
+                    </div>
+                </div>
+                <div class="sidebar-group">
+                    <div class="sidebar-group-title" onclick="this.parentElement.classList.toggle('open')">
+                        <span>Finder Jobs</span><span class="sidebar-arrow">&#9656;</span>
+                    </div>
+                    <div class="sidebar-group-links">
+                <a href="finder-alchemist.html">Alchemist</a>
+                <a href="finder-pharmacist.html">Pharmacist</a>
+                <a href="finder-collector.html">Collector</a>
+                <a href="finder-chef.html">Chef</a>
+                <a href="finder-trainer.html">Trainer</a>
+                <a href="finder-armorer.html">Armorer</a>
+                <a href="finder-prospector.html">Prospector</a>
+                <a href="finder-smith.html">Smith</a>
+                <a href="finder-excavator.html">Excavator</a>
+                <a href="finder-scholar.html">Scholar</a>
+                <a href="finder-botanist.html">Botanist</a>
+                <a href="finder-architect.html">Architect</a>
+                    </div>
+                </div>
+                <a href="../proficiency.html">Proficiency System</a>
+                <a href="../gui.html">GUI Guide</a>
+                <a href="../buffs.html">Buffs &amp; Legendaries</a>
+                <a href="../admin.html">Admin Guide</a>
+                <a href="../datapacks.html">Datapacks</a>
+                <a href="../compatibility.html">Compatibility</a>
+                <a href="../faq.html">FAQ</a>
+                <a href="../../generator/index.html">Datapack Generator</a>
+            </nav>
+        </aside>
+        <div class="main">
+            <div class="top-header"><img src="../../cobblebase_header.png" alt="Cobblebase"></div>
+            <div class="content">
+                <div class="breadcrumb"><a href="../jobs.html">Jobs Guide</a> &rarr; Producer</div>
+
+                <h1>Producer - Species Item Production</h1>
+                <p>Pokemon produce unique items based on their species. Each species has a specific product tied to its lore and identity. Unlike other gathering jobs, Producer does not use loot tiers or proficiency-based drop chances -- each species always produces the same item in the same quantity.</p>
+
+                <h2>Properties</h2>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>300 seconds (5 min)</td></tr>
+                    <tr><td>Search Radius</td><td>N/A</td></tr>
+                    <tr><td>Job Type</td><td>Producer</td></tr>
+                </table>
+
+                <h2>Producer Species</h2>
+                <p>Below is the complete list of all species and what they produce, grouped by category. Every species listed here will passively produce its item on each cooldown cycle.</p>
+
+                <!-- Textiles & Fibers -->
+                <h3 class="category-header">&#x1F9F6; Textiles &amp; Fibers</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td></td><td>Wooloo</td><td>White Wool</td><td>1</td></tr>
+                        <tr><td></td><td>Dubwool</td><td>White Wool</td><td>2</td></tr>
+                        <tr><td></td><td>Mareep</td><td>White Wool</td><td>1</td></tr>
+                        <tr><td></td><td>Flaaffy</td><td>White Wool</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Cottonee</td><td>String</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Whimsicott</td><td>String</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Spinarak</td><td>String</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Ariados</td><td>String</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Joltik</td><td>String</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Galvantula</td><td>String</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Sewaddle</td><td>String</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Leavanny</td><td>String</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Snom</td><td>String</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/string.png" width="24" height="24" class="item-icon" alt="String"></td><td>Frosmoth</td><td>String</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Animal Products -->
+                <h3 class="category-header">&#x1F95B; Animal Products</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/milk_bucket.png" width="24" height="24" class="item-icon" alt="Milk Bucket"></td><td>Miltank</td><td>Milk Bucket</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/milk_bucket.png" width="24" height="24" class="item-icon" alt="Milk Bucket"></td><td>Gogoat</td><td>Milk Bucket</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/milk_bucket.png" width="24" height="24" class="item-icon" alt="Milk Bucket"></td><td>Skiddo</td><td>Milk Bucket</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/egg.png" width="24" height="24" class="item-icon" alt="Egg"></td><td>Chansey</td><td>Egg</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/egg.png" width="24" height="24" class="item-icon" alt="Egg"></td><td>Blissey</td><td>Egg</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/egg.png" width="24" height="24" class="item-icon" alt="Egg"></td><td>Happiny</td><td>Egg</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/egg.png" width="24" height="24" class="item-icon" alt="Egg"></td><td>Exeggcute</td><td>Egg</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/egg.png" width="24" height="24" class="item-icon" alt="Egg"></td><td>Torchic</td><td>Egg</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/egg.png" width="24" height="24" class="item-icon" alt="Egg"></td><td>Blaziken</td><td>Egg</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/honeycomb.png" width="24" height="24" class="item-icon" alt="Honeycomb"></td><td>Combee</td><td>Honeycomb</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/honeycomb.png" width="24" height="24" class="item-icon" alt="Honeycomb"></td><td>Vespiquen</td><td>Honeycomb</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/honey_bottle.png" width="24" height="24" class="item-icon" alt="Honey Bottle"></td><td>Ribombee</td><td>Honey Bottle</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/honey_bottle.png" width="24" height="24" class="item-icon" alt="Honey Bottle"></td><td>Cutiefly</td><td>Honey Bottle</td><td>1</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Valuables -->
+                <h3 class="category-header">&#x1F4B0; Valuables</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Meowth</td><td>Gold Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Persian</td><td>Gold Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Perrserker</td><td>Gold Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Gholdengo</td><td>Gold Nugget</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Gimmighoul</td><td>Gold Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/amethyst_shard.png" width="24" height="24" class="item-icon" alt="Amethyst Shard"></td><td>Sableye</td><td>Amethyst Shard</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/diamond.png" width="24" height="24" class="item-icon" alt="Diamond"></td><td>Carbink</td><td>Diamond</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/diamond.png" width="24" height="24" class="item-icon" alt="Diamond"></td><td>Diancie</td><td>Diamond</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/prismarine_shard.png" width="24" height="24" class="item-icon" alt="Prismarine Shard"></td><td>Clamperl</td><td>Prismarine Shard</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Yamask</td><td>Gold Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/gold_nugget.png" width="24" height="24" class="item-icon" alt="Gold Nugget"></td><td>Cofagrigus</td><td>Gold Nugget</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Food -->
+                <h3 class="category-header">&#x1F34E; Food</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/apple.png" width="24" height="24" class="item-icon" alt="Apple"></td><td>Tropius</td><td>Apple</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/apple.png" width="24" height="24" class="item-icon" alt="Apple"></td><td>Applin</td><td>Apple</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/apple.png" width="24" height="24" class="item-icon" alt="Apple"></td><td>Flapple</td><td>Apple</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/apple.png" width="24" height="24" class="item-icon" alt="Apple"></td><td>Appletun</td><td>Apple</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/sweet_berries.png" width="24" height="24" class="item-icon" alt="Sweet Berries"></td><td>Bounsweet</td><td>Sweet Berries</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/sweet_berries.png" width="24" height="24" class="item-icon" alt="Sweet Berries"></td><td>Steenee</td><td>Sweet Berries</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/sweet_berries.png" width="24" height="24" class="item-icon" alt="Sweet Berries"></td><td>Tsareena</td><td>Sweet Berries</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/sweet_berries.png" width="24" height="24" class="item-icon" alt="Sweet Berries"></td><td>Cherubi</td><td>Sweet Berries</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/sweet_berries.png" width="24" height="24" class="item-icon" alt="Sweet Berries"></td><td>Cherrim</td><td>Sweet Berries</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/cookie.png" width="24" height="24" class="item-icon" alt="Cookie"></td><td>Delibird</td><td>Cookie</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Materials -->
+                <h3 class="category-header">&#x2697;&#xFE0F; Materials</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/slime_ball.png" width="24" height="24" class="item-icon" alt="Slime Ball"></td><td>Goomy</td><td>Slime Ball</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/slime_ball.png" width="24" height="24" class="item-icon" alt="Slime Ball"></td><td>Sliggoo</td><td>Slime Ball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/slime_ball.png" width="24" height="24" class="item-icon" alt="Slime Ball"></td><td>Goodra</td><td>Slime Ball</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/slime_ball.png" width="24" height="24" class="item-icon" alt="Slime Ball"></td><td>Ditto</td><td>Slime Ball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/slime_ball.png" width="24" height="24" class="item-icon" alt="Slime Ball"></td><td>Grimer</td><td>Slime Ball</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/slime_ball.png" width="24" height="24" class="item-icon" alt="Slime Ball"></td><td>Muk</td><td>Slime Ball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/magma_cream.png" width="24" height="24" class="item-icon" alt="Magma Cream"></td><td>Slugma</td><td>Magma Cream</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/magma_cream.png" width="24" height="24" class="item-icon" alt="Magma Cream"></td><td>Magcargo</td><td>Magma Cream</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/charcoal.png" width="24" height="24" class="item-icon" alt="Charcoal"></td><td>Torkoal</td><td>Charcoal</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/charcoal.png" width="24" height="24" class="item-icon" alt="Charcoal"></td><td>Coalossal</td><td>Charcoal</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/charcoal.png" width="24" height="24" class="item-icon" alt="Charcoal"></td><td>Rolycoly</td><td>Charcoal</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/charcoal.png" width="24" height="24" class="item-icon" alt="Charcoal"></td><td>Carkol</td><td>Charcoal</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/gunpowder.png" width="24" height="24" class="item-icon" alt="Gunpowder"></td><td>Koffing</td><td>Gunpowder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/gunpowder.png" width="24" height="24" class="item-icon" alt="Gunpowder"></td><td>Weezing</td><td>Gunpowder</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/gunpowder.png" width="24" height="24" class="item-icon" alt="Gunpowder"></td><td>Voltorb</td><td>Gunpowder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/gunpowder.png" width="24" height="24" class="item-icon" alt="Gunpowder"></td><td>Electrode</td><td>Gunpowder</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/gunpowder.png" width="24" height="24" class="item-icon" alt="Gunpowder"></td><td>Stunky</td><td>Gunpowder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/gunpowder.png" width="24" height="24" class="item-icon" alt="Gunpowder"></td><td>Skuntank</td><td>Gunpowder</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Magnemite</td><td>Iron Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Magneton</td><td>Iron Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Magnezone</td><td>Iron Nugget</td><td>3</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Ink -->
+                <h3 class="category-header">&#x1F58A;&#xFE0F; Ink</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"></td><td>Octillery</td><td>Ink Sac</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"></td><td>Inkay</td><td>Ink Sac</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"></td><td>Malamar</td><td>Ink Sac</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"></td><td>Tentacool</td><td>Ink Sac</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"></td><td>Tentacruel</td><td>Ink Sac</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Bones & Feathers -->
+                <h3 class="category-header">&#x1F9B4; Bones &amp; Feathers</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/bone.png" width="24" height="24" class="item-icon" alt="Bone"></td><td>Cubone</td><td>Bone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/bone.png" width="24" height="24" class="item-icon" alt="Bone"></td><td>Marowak</td><td>Bone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/bone.png" width="24" height="24" class="item-icon" alt="Bone"></td><td>Mandibuzz</td><td>Bone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/bone.png" width="24" height="24" class="item-icon" alt="Bone"></td><td>Vullaby</td><td>Bone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/feather.png" width="24" height="24" class="item-icon" alt="Feather"></td><td>Pidgeot</td><td>Feather</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/feather.png" width="24" height="24" class="item-icon" alt="Feather"></td><td>Staraptor</td><td>Feather</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/feather.png" width="24" height="24" class="item-icon" alt="Feather"></td><td>Ho-Oh</td><td>Feather</td><td>1</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Energy -->
+                <h3 class="category-header">&#x26A1; Energy</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/glowstone_dust.png" width="24" height="24" class="item-icon" alt="Glowstone Dust"></td><td>Pikachu</td><td>Glowstone Dust</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/glowstone_dust.png" width="24" height="24" class="item-icon" alt="Glowstone Dust"></td><td>Raichu</td><td>Glowstone Dust</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/glowstone_dust.png" width="24" height="24" class="item-icon" alt="Glowstone Dust"></td><td>Jolteon</td><td>Glowstone Dust</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/glowstone_dust.png" width="24" height="24" class="item-icon" alt="Glowstone Dust"></td><td>Luxray</td><td>Glowstone Dust</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/redstone.png" width="24" height="24" class="item-icon" alt="Redstone"></td><td>Rotom</td><td>Redstone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/redstone.png" width="24" height="24" class="item-icon" alt="Redstone"></td><td>Elekid</td><td>Redstone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/redstone.png" width="24" height="24" class="item-icon" alt="Redstone"></td><td>Electabuzz</td><td>Redstone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/redstone.png" width="24" height="24" class="item-icon" alt="Redstone"></td><td>Electivire</td><td>Redstone</td><td>3</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Brewing -->
+                <h3 class="category-header">&#x1F9EA; Brewing</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/spider_eye.png" width="24" height="24" class="item-icon" alt="Spider Eye"></td><td>Salandit</td><td>Spider Eye</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/spider_eye.png" width="24" height="24" class="item-icon" alt="Spider Eye"></td><td>Salazzle</td><td>Spider Eye</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/spider_eye.png" width="24" height="24" class="item-icon" alt="Spider Eye"></td><td>Skorupi</td><td>Spider Eye</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/spider_eye.png" width="24" height="24" class="item-icon" alt="Spider Eye"></td><td>Drapion</td><td>Spider Eye</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/blaze_powder.png" width="24" height="24" class="item-icon" alt="Blaze Powder"></td><td>Arcanine</td><td>Blaze Powder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/blaze_powder.png" width="24" height="24" class="item-icon" alt="Blaze Powder"></td><td>Litleo</td><td>Blaze Powder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/blaze_powder.png" width="24" height="24" class="item-icon" alt="Blaze Powder"></td><td>Pyroar</td><td>Blaze Powder</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/blaze_powder.png" width="24" height="24" class="item-icon" alt="Blaze Powder"></td><td>Ponyta</td><td>Blaze Powder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/blaze_powder.png" width="24" height="24" class="item-icon" alt="Blaze Powder"></td><td>Rapidash</td><td>Blaze Powder</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/rabbit_foot.png" width="24" height="24" class="item-icon" alt="Rabbit's Foot"></td><td>Buneary</td><td>Rabbit's Foot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/rabbit_foot.png" width="24" height="24" class="item-icon" alt="Rabbit's Foot"></td><td>Lopunny</td><td>Rabbit's Foot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/rabbit_foot.png" width="24" height="24" class="item-icon" alt="Rabbit's Foot"></td><td>Bunnelby</td><td>Rabbit's Foot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/rabbit_foot.png" width="24" height="24" class="item-icon" alt="Rabbit's Foot"></td><td>Diggersby</td><td>Rabbit's Foot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/rabbit_foot.png" width="24" height="24" class="item-icon" alt="Rabbit's Foot"></td><td>Scorbunny</td><td>Rabbit's Foot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/rabbit_foot.png" width="24" height="24" class="item-icon" alt="Rabbit's Foot"></td><td>Raboot</td><td>Rabbit's Foot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/phantom_membrane.png" width="24" height="24" class="item-icon" alt="Phantom Membrane"></td><td>Drifloon</td><td>Phantom Membrane</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/phantom_membrane.png" width="24" height="24" class="item-icon" alt="Phantom Membrane"></td><td>Drifblim</td><td>Phantom Membrane</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/ghast_tear.png" width="24" height="24" class="item-icon" alt="Ghast Tear"></td><td>Gastly</td><td>Ghast Tear</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/ghast_tear.png" width="24" height="24" class="item-icon" alt="Ghast Tear"></td><td>Haunter</td><td>Ghast Tear</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/ghast_tear.png" width="24" height="24" class="item-icon" alt="Ghast Tear"></td><td>Gengar</td><td>Ghast Tear</td><td>1</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Plants & Nature -->
+                <h3 class="category-header">&#x1F33F; Plants &amp; Nature</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/lead.png" width="24" height="24" class="item-icon" alt="Lead"></td><td>Bulbasaur</td><td>Lead</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/lead.png" width="24" height="24" class="item-icon" alt="Lead"></td><td>Ivysaur</td><td>Lead</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/lead.png" width="24" height="24" class="item-icon" alt="Lead"></td><td>Venusaur</td><td>Lead</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/lead.png" width="24" height="24" class="item-icon" alt="Lead"></td><td>Tangela</td><td>Lead</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/lead.png" width="24" height="24" class="item-icon" alt="Lead"></td><td>Tangrowth</td><td>Lead</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/kelp.png" width="24" height="24" class="item-icon" alt="Kelp"></td><td>Bellsprout</td><td>Kelp</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/kelp.png" width="24" height="24" class="item-icon" alt="Kelp"></td><td>Weepinbell</td><td>Kelp</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/kelp.png" width="24" height="24" class="item-icon" alt="Kelp"></td><td>Dhelmise</td><td>Kelp</td><td>2</td></tr>
+                        <tr><td></td><td>Roselia</td><td>Poppy</td><td>1</td></tr>
+                        <tr><td></td><td>Roserade</td><td>Poppy</td><td>2</td></tr>
+                        <tr><td></td><td>Sunkern</td><td>Sunflower</td><td>1</td></tr>
+                        <tr><td></td><td>Sunflora</td><td>Sunflower</td><td>2</td></tr>
+                        <tr><td></td><td>Cacnea</td><td>Cactus</td><td>1</td></tr>
+                        <tr><td></td><td>Cacturne</td><td>Cactus</td><td>2</td></tr>
+                        <tr><td></td><td>Petilil</td><td>Lily of the Valley</td><td>1</td></tr>
+                        <tr><td></td><td>Lilligant</td><td>Lily of the Valley</td><td>2</td></tr>
+                        <tr><td></td><td>Lotad</td><td>Lily Pad</td><td>1</td></tr>
+                        <tr><td></td><td>Lombre</td><td>Lily Pad</td><td>1</td></tr>
+                        <tr><td></td><td>Ludicolo</td><td>Lily Pad</td><td>2</td></tr>
+                        <tr><td></td><td>Pumpkaboo</td><td>Pumpkin</td><td>1</td></tr>
+                        <tr><td></td><td>Gourgeist</td><td>Pumpkin</td><td>1</td></tr>
+                        <tr><td></td><td>Foongus</td><td>Brown Mushroom</td><td>1</td></tr>
+                        <tr><td></td><td>Amoonguss</td><td>Brown Mushroom</td><td>2</td></tr>
+                        <tr><td></td><td>Oddish</td><td>Red Mushroom</td><td>1</td></tr>
+                        <tr><td></td><td>Gloom</td><td>Red Mushroom</td><td>1</td></tr>
+                        <tr><td></td><td>Vileplume</td><td>Red Mushroom</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Wood & Logs -->
+                <h3 class="category-header">&#x1FAB5; Wood &amp; Logs</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td></td><td>Komala</td><td>Oak Log</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/oak_planks.png" width="24" height="24" class="item-icon" alt="Oak Planks"></td><td>Timburr</td><td>Oak Planks</td><td>2</td></tr>
+                        <tr><td></td><td>Gurdurr</td><td>Spruce Log</td><td>1</td></tr>
+                        <tr><td></td><td>Conkeldurr</td><td>Dark Oak Log</td><td>1</td></tr>
+                        <tr><td></td><td>Phantump</td><td>Oak Log</td><td>1</td></tr>
+                        <tr><td></td><td>Trevenant</td><td>Dark Oak Log</td><td>1</td></tr>
+                        <tr><td></td><td>Exeggutor</td><td>Jungle Log</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/stick.png" width="24" height="24" class="item-icon" alt="Stick"></td><td>Sudowoodo</td><td>Stick</td><td>3</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Ores & Metals -->
+                <h3 class="category-header">&#x26CF;&#xFE0F; Ores &amp; Metals</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Roggenrola</td><td>Raw Iron</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Boldore</td><td>Raw Iron</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Gigalith</td><td>Raw Iron</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Ferroseed</td><td>Raw Iron</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Ferrothorn</td><td>Raw Iron</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Durant</td><td>Raw Iron</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Nosepass</td><td>Raw Iron</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Probopass</td><td>Raw Iron</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Shieldon</td><td>Raw Iron</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_iron.png" width="24" height="24" class="item-icon" alt="Raw Iron"></td><td>Bastiodon</td><td>Raw Iron</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/raw_copper.png" width="24" height="24" class="item-icon" alt="Raw Copper"></td><td>Copperajah</td><td>Raw Copper</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/raw_copper.png" width="24" height="24" class="item-icon" alt="Raw Copper"></td><td>Cufant</td><td>Raw Copper</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_copper.png" width="24" height="24" class="item-icon" alt="Raw Copper"></td><td>Drilbur</td><td>Raw Copper</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_copper.png" width="24" height="24" class="item-icon" alt="Raw Copper"></td><td>Bronzor</td><td>Raw Copper</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/raw_copper.png" width="24" height="24" class="item-icon" alt="Raw Copper"></td><td>Bronzong</td><td>Raw Copper</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/raw_gold.png" width="24" height="24" class="item-icon" alt="Raw Gold"></td><td>Excadrill</td><td>Raw Gold</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/raw_gold.png" width="24" height="24" class="item-icon" alt="Raw Gold"></td><td>Sandslash</td><td>Raw Gold</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Geodude</td><td>Cobblestone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Graveler</td><td>Cobblestone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Golem</td><td>Cobblestone</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Rhyhorn</td><td>Cobblestone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Rhydon</td><td>Cobblestone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Rhyperior</td><td>Cobblestone</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Larvitar</td><td>Cobblestone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Pupitar</td><td>Cobblestone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Tyranitar</td><td>Cobblestone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Cranidos</td><td>Cobblestone</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/cobblestone.png" width="24" height="24" class="item-icon" alt="Cobblestone"></td><td>Rampardos</td><td>Cobblestone</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Beldum</td><td>Iron Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Metang</td><td>Iron Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Metagross</td><td>Iron Nugget</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Aron</td><td>Iron Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Lairon</td><td>Iron Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Aggron</td><td>Iron Nugget</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Onix</td><td>Iron Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Steelix</td><td>Iron Nugget</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Skarmory</td><td>Iron Nugget</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Shells & Sea -->
+                <h3 class="category-header">&#x1F41A; Shells &amp; Sea</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/prismarine_shard.png" width="24" height="24" class="item-icon" alt="Prismarine Shard"></td><td>Shellder</td><td>Prismarine Shard</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/prismarine_shard.png" width="24" height="24" class="item-icon" alt="Prismarine Shard"></td><td>Cloyster</td><td>Prismarine Shard</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/prismarine_shard.png" width="24" height="24" class="item-icon" alt="Prismarine Shard"></td><td>Corsola</td><td>Prismarine Shard</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/prismarine_crystals.png" width="24" height="24" class="item-icon" alt="Prismarine Crystals"></td><td>Staryu</td><td>Prismarine Crystals</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/prismarine_crystals.png" width="24" height="24" class="item-icon" alt="Prismarine Crystals"></td><td>Starmie</td><td>Prismarine Crystals</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/nautilus_shell.png" width="24" height="24" class="item-icon" alt="Nautilus Shell"></td><td>Krabby</td><td>Nautilus Shell</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/nautilus_shell.png" width="24" height="24" class="item-icon" alt="Nautilus Shell"></td><td>Kingler</td><td>Nautilus Shell</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/nautilus_shell.png" width="24" height="24" class="item-icon" alt="Nautilus Shell"></td><td>Crabrawler</td><td>Nautilus Shell</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/nautilus_shell.png" width="24" height="24" class="item-icon" alt="Nautilus Shell"></td><td>Crabominable</td><td>Nautilus Shell</td><td>1</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Gems & Crystals -->
+                <h3 class="category-header">&#x1F48E; Gems &amp; Crystals</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/amethyst_shard.png" width="24" height="24" class="item-icon" alt="Amethyst Shard"></td><td>Espeon</td><td>Amethyst Shard</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/amethyst_shard.png" width="24" height="24" class="item-icon" alt="Amethyst Shard"></td><td>Minior</td><td>Amethyst Shard</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Leather & Hide -->
+                <h3 class="category-header">&#x1F9F4; Leather &amp; Hide</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/leather.png" width="24" height="24" class="item-icon" alt="Leather"></td><td>Tauros</td><td>Leather</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/leather.png" width="24" height="24" class="item-icon" alt="Leather"></td><td>Bouffalant</td><td>Leather</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Clay & Earth -->
+                <h3 class="category-header">&#x1F3FA; Clay &amp; Earth</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/clay_ball.png" width="24" height="24" class="item-icon" alt="Clay Ball"></td><td>Mudbray</td><td>Clay Ball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/clay_ball.png" width="24" height="24" class="item-icon" alt="Clay Ball"></td><td>Mudsdale</td><td>Clay Ball</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/sand.png" width="24" height="24" class="item-icon" alt="Sand"></td><td>Sandygast</td><td>Sand</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/sand.png" width="24" height="24" class="item-icon" alt="Sand"></td><td>Palossand</td><td>Sand</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/clay_ball.png" width="24" height="24" class="item-icon" alt="Clay Ball"></td><td>Binacle</td><td>Clay Ball</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/clay_ball.png" width="24" height="24" class="item-icon" alt="Clay Ball"></td><td>Barbaracle</td><td>Clay Ball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/clay_ball.png" width="24" height="24" class="item-icon" alt="Clay Ball"></td><td>Sinistea</td><td>Clay Ball</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/clay_ball.png" width="24" height="24" class="item-icon" alt="Clay Ball"></td><td>Polteageist</td><td>Clay Ball</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Object Pokemon -->
+                <h3 class="category-header">&#x1FA91; Object Pokemon</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/iron_ingot.png" width="24" height="24" class="item-icon" alt="Iron Ingot"></td><td>Varoom</td><td>Iron Ingot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_ingot.png" width="24" height="24" class="item-icon" alt="Iron Ingot"></td><td>Revaroom</td><td>Iron Ingot</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_ingot.png" width="24" height="24" class="item-icon" alt="Iron Ingot"></td><td>Honedge</td><td>Iron Ingot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_ingot.png" width="24" height="24" class="item-icon" alt="Iron Ingot"></td><td>Doublade</td><td>Iron Ingot</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_ingot.png" width="24" height="24" class="item-icon" alt="Iron Ingot"></td><td>Aegislash</td><td>Iron Ingot</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/rotten_flesh.png" width="24" height="24" class="item-icon" alt="Rotten Flesh"></td><td>Trubbish</td><td>Rotten Flesh</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/bone_meal.png" width="24" height="24" class="item-icon" alt="Bone Meal"></td><td>Garbodor</td><td>Bone Meal</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Klefki</td><td>Iron Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Falinks</td><td>Iron Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Klink</td><td>Iron Nugget</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Klang</td><td>Iron Nugget</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/iron_nugget.png" width="24" height="24" class="item-icon" alt="Iron Nugget"></td><td>Klinklang</td><td>Iron Nugget</td><td>3</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Sweets & Baking -->
+                <h3 class="category-header">&#x1F370; Sweets &amp; Baking</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/cake.png" width="24" height="24" class="item-icon" alt="Cake"></td><td>Alcremie</td><td>Cake</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/sugar.png" width="24" height="24" class="item-icon" alt="Sugar"></td><td>Milcery</td><td>Sugar</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/sugar.png" width="24" height="24" class="item-icon" alt="Sugar"></td><td>Swirlix</td><td>Sugar</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/sugar.png" width="24" height="24" class="item-icon" alt="Sugar"></td><td>Slurpuff</td><td>Sugar</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Candles -->
+                <h3 class="category-header">&#x1F56F;&#xFE0F; Candles</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/candle.png" width="24" height="24" class="item-icon" alt="Candle"></td><td>Litwick</td><td>Candle</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/candle.png" width="24" height="24" class="item-icon" alt="Candle"></td><td>Lampent</td><td>Candle</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/candle.png" width="24" height="24" class="item-icon" alt="Candle"></td><td>Chandelure</td><td>Candle</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Snow & Ice -->
+                <h3 class="category-header">&#x2744;&#xFE0F; Snow &amp; Ice</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Snover</td><td>Snowball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Abomasnow</td><td>Snowball</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Vanillite</td><td>Snowball</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Vanillish</td><td>Snowball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Vanilluxe</td><td>Snowball</td><td>3</td></tr>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Swinub</td><td>Snowball</td><td>2</td></tr>
+                        <tr><td><img src="../../icons/items/snowball.png" width="24" height="24" class="item-icon" alt="Snowball"></td><td>Piloswine</td><td>Snowball</td><td>3</td></tr>
+                    </tbody>
+                </table>
+
+                <!-- Special -->
+                <h3 class="category-header">&#x1F52E; Special</h3>
+                <table>
+                    <thead><tr><th style="width:40px"></th><th>Pokemon</th><th>Product</th><th>Qty</th></tr></thead>
+                    <tbody>
+                        <tr><td><img src="../../icons/items/fermented_spider_eye.png" width="24" height="24" class="item-icon" alt="Fermented Spider Eye"></td><td>Shuckle</td><td>Fermented Spider Eye</td><td>1</td></tr>
+                        <tr><td></td><td>Lapras</td><td>Blue Ice</td><td>1</td></tr>
+                        <tr><td><img src="../../icons/items/echo_shard.png" width="24" height="24" class="item-icon" alt="Echo Shard"></td><td>Absol</td><td>Echo Shard</td><td>1</td></tr>
+                        <tr><td></td><td>Duskull</td><td>Soul Sand</td><td>1</td></tr>
+                        <tr><td></td><td>Dusclops</td><td>Soul Sand</td><td>1</td></tr>
+                        <tr><td></td><td>Dusknoir</td><td>Soul Sand</td><td>2</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="db-callout">
+                    <p>Want to know which Pokémon can learn this skill? Check our <a href="../../database/index.html">Species Database</a> — filter by skill to see all compatible species.</p>
+                </div>
+                <footer>
+                    <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="../../navbar.js"></script>
+    <script>
+        // Auto-open sidebar group containing the active link
+        document.querySelectorAll('.sidebar-group-links a.active').forEach(function(a) {
+            a.closest('.sidebar-group').classList.add('open');
+        });
+    </script>
+</body>
+</html>
