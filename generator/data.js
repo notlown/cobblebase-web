@@ -272,17 +272,6 @@ const SKILLS = [
     "effectType": "heal"
   },
   {
-    "id": "cobblebase:honey_collect",
-    "name": "Honey Collect",
-    "description": "Produces honey and honeycomb",
-    "category": "gathering",
-    "cooldownSeconds": 120,
-    "searchRadius": 10,
-    "executor": "honey",
-    "effectType": "harvest",
-    "lootTable": "cobblebase:honey_collect"
-  },
-  {
     "id": "cobblebase:irrigator",
     "name": "Irrigator",
     "description": "Hydrates nearby farmland",
