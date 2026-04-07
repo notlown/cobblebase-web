@@ -468,13 +468,33 @@ if(name.indexOf("_")>=0)return name.replace(/_/g,"-");
 return name;
 }
 function spriteUrl(name){return"https://img.pokemondb.net/sprites/home/normal/"+spriteSlug(name).replace(/[^a-z0-9-]/g,"")+".png"}
-// Generate a colorful SVG placeholder for fakemons (no official sprite available)
+// MissingNo placeholder for fakemons / pokemon without an official sprite
+// Iconic glitched "Q" shape from Pokemon Red/Blue rendered as pixel-perfect SVG
 function placeholderSprite(name){
-var hash=0;for(var i=0;i<name.length;i++)hash=((hash<<5)-hash+name.charCodeAt(i))|0;
-var hue=Math.abs(hash)%360;
-var initials=name.substring(0,2).toUpperCase();
-var bg="hsl("+hue+",55%,38%)",fg="hsl("+hue+",80%,82%)";
-var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56"><circle cx="28" cy="28" r="26" fill="'+bg+'" stroke="'+fg+'" stroke-width="2"/><text x="28" y="36" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="'+fg+'">'+initials+'</text></svg>';
+var rows=[
+"....XXXXXXX...",
+"...XXXXXXXX...",
+"...XX....XX...",
+"...XX....XX...",
+"...XX....XX...",
+"...XX....XX...",
+"...XX....XX...",
+"...XX....XX...",
+"...XX..XXXX...",
+"...XXXXXXXX...",
+"....XXXX.X....",
+".........XX...",
+"..........X...",
+"..............",
+];
+var px=4,size=rows[0].length*px;
+var rects="";
+for(var y=0;y<rows.length;y++){
+for(var x=0;x<rows[y].length;x++){
+if(rows[y][x]==="X")rects+='<rect x="'+(x*px)+'" y="'+(y*px)+'" width="'+px+'" height="'+px+'" fill="#000"/>';
+}
+}
+var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+size+' '+(rows.length*px)+'" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/>'+rects+'</svg>';
 return"data:image/svg+xml;utf8,"+encodeURIComponent(svg);
 }
 
