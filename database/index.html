@@ -128,13 +128,6 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d;overflow:visible}
 <select id="rarity-filter"><option value="">All Rarities</option><option value="common">Common</option><option value="uncommon">Uncommon</option><option value="rare">Rare</option><option value="ultra-rare">Ultra-Rare</option><option value="none">No Spawn</option></select>
 </div>
 <div id="active-skill-filters" style="max-width:1200px;margin:0.5rem auto 0;padding:0 1rem;display:none;flex-wrap:wrap;gap:6px;align-items:center"></div>
-<div id="skill-desc" style="max-width:1200px;margin:0.5rem auto;padding:0 1rem;display:none">
-<div style="background:#161b22;border:1px solid #30363d;border-left:3px solid #f7c948;border-radius:6px;padding:10px 16px;font-size:0.9rem;color:#c9d1d9;display:flex;align-items:center;gap:10px">
-<span style="color:#f7c948;font-weight:700;font-size:1rem" id="skill-desc-name"></span>
-<span style="color:#8b949e" id="skill-desc-text"></span>
-<span style="margin-left:auto;color:#484f58;font-size:0.8rem;white-space:nowrap" id="skill-desc-meta"></span>
-</div>
-</div>
 <div class="editor-bar" id="editor-bar"><div class="editor-bar-inner" style="flex-wrap:wrap">
 <span style="color:#f7c948;font-weight:700">Editor Mode</span>
 <span style="color:#8b949e" id="edit-count">0 changes</span>
@@ -161,9 +154,7 @@ const PER_PAGE=50;
 let page=0,filtered=[],currentMod="cobblemon",expandedSpecies=null;
 const search=document.getElementById("search"),skillFilter=document.getElementById("skill-filter"),
 sortEl=document.getElementById("sort"),modFilter=document.getElementById("mod-filter"),
-tbody=document.getElementById("tbody"),stats=document.getElementById("stats"),pag=document.getElementById("pagination"),
-skillDescEl=document.getElementById("skill-desc"),skillDescName=document.getElementById("skill-desc-name"),
-skillDescText=document.getElementById("skill-desc-text"),skillDescMeta=document.getElementById("skill-desc-meta");
+tbody=document.getElementById("tbody"),stats=document.getElementById("stats"),pag=document.getElementById("pagination");
 
 var SKILL_INFO={
 "Alchemist":{desc:"Searches the area for evolution items and stones",cd:300,cat:"gathering"},
@@ -432,15 +423,7 @@ if(!confirm("Reset all "+total+" changes?"))return;
 location.reload();
 };
 
-function updateSkillDesc(){
-var sk=skillFilter.value;
-if(!sk||!SKILL_INFO[sk]){skillDescEl.style.display="none";return}
-var info=SKILL_INFO[sk];
-skillDescEl.style.display="block";
-skillDescName.textContent=sk;
-skillDescText.textContent=info.desc;
-skillDescMeta.textContent=info.cat+(info.cd>0?" \u00b7 "+info.cd+"s cooldown":" \u00b7 passive");
-}
+function updateSkillDesc(){}
 
 // Precompute totalProf for each species
 SPECIES_DB.forEach(function(s){
@@ -669,17 +652,14 @@ catDiv.appendChild(grid);skillsSection.appendChild(catDiv);
 layout.appendChild(skillsSection);panel.appendChild(layout);
 }
 
-var extraSkillFilters=[];// additional skills (combined with main filter via AND)
+var extraSkillFilters=[];// skills added via +Add (combined with main dropdown via AND)
 function renderActiveFilters(){
 var bar=document.getElementById("active-skill-filters");
 bar.innerHTML="";
-var all=[];
-if(skillFilter.value)all.push(skillFilter.value);
-extraSkillFilters.forEach(function(s){if(s!==skillFilter.value)all.push(s)});
-if(all.length===0){bar.style.display="none";return}
+if(extraSkillFilters.length===0){bar.style.display="none";return}
 bar.style.display="flex";
-var lbl=document.createElement("span");lbl.textContent=all.length>1?"Filtering by ALL of:":"Filter:";lbl.style.cssText="color:#8b949e;font-size:0.8rem;font-weight:600;margin-right:2px";bar.appendChild(lbl);
-all.forEach(function(name){
+var lbl=document.createElement("span");lbl.textContent=extraSkillFilters.length>1?"Also filtering by:":"Also filter:";lbl.style.cssText="color:#8b949e;font-size:0.8rem;font-weight:600;margin-right:2px";bar.appendChild(lbl);
+extraSkillFilters.forEach(function(name){
 var info=SKILL_INFO[name];
 var cat=info?info.cat:"utility";
 var catColors={"gathering":"#4caf50","generation":"#ff9800","combat":"#f44336","support":"#e91e9e","utility":"#2196f3","legendary":"#ffd700","social":"#ff55ff"};
@@ -692,9 +672,8 @@ x.style.cssText="background:"+color+"33;border:none;color:"+color+";cursor:point
 x.addEventListener("mouseenter",function(){x.style.background=color;x.style.color="#000"});
 x.addEventListener("mouseleave",function(){x.style.background=color+"33";x.style.color=color});
 x.addEventListener("click",function(){
-if(name===skillFilter.value){skillFilter.value=extraSkillFilters[0]||"";extraSkillFilters=extraSkillFilters.slice(1)}
-else{extraSkillFilters=extraSkillFilters.filter(function(s){return s!==name})}
-renderActiveFilters();applyFilters();updateSkillDesc();
+extraSkillFilters=extraSkillFilters.filter(function(s){return s!==name});
+renderActiveFilters();applyFilters();
 });
 tag.appendChild(x);bar.appendChild(tag);
 });
