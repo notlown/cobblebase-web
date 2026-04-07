@@ -231,7 +231,7 @@ var modifications={};// species name -> modified skills array
 var editorBar=document.getElementById("editor-bar"),editCount=document.getElementById("edit-count");
 
 function updateEditorBar(){
-var count=Object.keys(modifications).length;
+var count=Object.keys(modifications).length+Object.keys(rarityChanges).length;
 editorBar.style.display=count>0?"block":"none";
 editCount.textContent=count+" change"+(count!==1?"s":"");
 }
@@ -294,10 +294,21 @@ var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fi
 }
 
 // Store original state for diff computation
-var originalState={};
+var originalState={},originalRarity={};
 SPECIES_DB.forEach(function(s){
 originalState[s.name]=s.skills.map(function(sk){return{name:sk.name,prof:sk.prof}});
+originalRarity[s.name]=s.rarity||"none";
 });
+
+// Rarity modifications: species name -> new rarity
+var rarityChanges={};
+
+function changeRarity(s,newRarity){
+s.rarity=newRarity;
+if(newRarity===originalRarity[s.name]){delete rarityChanges[s.name]}
+else{rarityChanges[s.name]=newRarity}
+updateEditorBar();
+}
 
 // Webhook URLs assembled at runtime to avoid plain-text exposure in git
 var _h="https://disc"+"ord.com/api/"+"webhooks/";
@@ -326,7 +337,8 @@ return{added:added,removed:removed,changed:changed};
 
 window.submitToDiscord=function(){
 var keys=Object.keys(modifications);
-if(keys.length===0)return;
+var rarKeys=Object.keys(rarityChanges);
+if(keys.length===0&&rarKeys.length===0)return;
 var now=Date.now();
 var statusEl=document.getElementById("submit-status");
 if(now-lastSubmitTime<180000){
@@ -342,12 +354,20 @@ document.getElementById("submit-btn").disabled=true;
 // Build per-species embeds for community channel (max 10 embeds per message)
 var communityEmbeds=[];
 var devEmbeds=[];
-keys.forEach(function(name){
-var diff=computeDiff(name);
+var allKeys={};
+keys.forEach(function(k){allKeys[k]=true});
+rarKeys.forEach(function(k){allKeys[k]=true});
+Object.keys(allKeys).forEach(function(name){
 var lines=[];
+if(modifications[name]){
+var diff=computeDiff(name);
 if(diff.added.length)diff.added.forEach(function(a){lines.push("\uD83D\uDFE2 **Added:** "+a)});
 if(diff.changed.length)diff.changed.forEach(function(c){lines.push("\uD83D\uDFE1 **Changed:** "+c)});
 if(diff.removed.length)diff.removed.forEach(function(r){lines.push("\uD83D\uDD34 **Removed:** "+r)});
+}
+if(rarityChanges[name]){
+lines.push("\uD83C\uDFAF **Rarity:** "+(originalRarity[name]||"none")+" \u2192 "+rarityChanges[name]);
+}
 if(!lines.length)return;
 var spriteUrl="https://img.pokemondb.net/sprites/home/normal/"+name.replace(/[^a-z0-9-]/g,"")+".png";
 communityEmbeds.push({
@@ -357,10 +377,14 @@ color:16238920,
 thumbnail:{url:spriteUrl}
 });
 // Dev embed with JSON
+var dev_desc=lines.join("\n");
+if(modifications[name]){
 var specJson=buildSpeciesJson(name,modifications[name]);
+dev_desc+="\n```json\n"+JSON.stringify(specJson,null,1).substring(0,700)+"\n```";
+}
 devEmbeds.push({
 title:name,
-description:lines.join("\n")+"\n```json\n"+JSON.stringify(specJson,null,1).substring(0,800)+"\n```",
+description:dev_desc,
 color:16238920,
 thumbnail:{url:spriteUrl}
 });
@@ -368,9 +392,10 @@ thumbnail:{url:spriteUrl}
 
 // Header embed with username + comment
 var submissionId="#"+Math.random().toString(36).substring(2,6).toUpperCase();
+var totalChanges=Object.keys(allKeys).length;
 var headerEmbed={
 title:"\uD83D\uDCDD Skill Change Proposal  \u2014  "+submissionId,
-description:"**"+keys.length+" species** modified by **"+username+"**"+(comment?"\n\n\uD83D\uDCAC "+comment:""),
+description:"**"+totalChanges+" species** modified by **"+username+"**"+(comment?"\n\n\uD83D\uDCAC "+comment:""),
 color:16238920,
 timestamp:new Date().toISOString()
 };
@@ -399,7 +424,8 @@ document.getElementById("submit-btn").disabled=false;
 };
 
 window.resetChanges=function(){
-if(!confirm("Reset all "+Object.keys(modifications).length+" changes?"))return;
+var total=Object.keys(modifications).length+Object.keys(rarityChanges).length;
+if(!confirm("Reset all "+total+" changes?"))return;
 // Reload page to restore original data
 location.reload();
 };
@@ -509,12 +535,19 @@ bigSprite.alt=s.name;bigSprite.onerror=function(){this.style.display="none"};
 profile.appendChild(bigSprite);
 var pName=document.createElement("div");pName.className="detail-profile-name";pName.textContent=s.name;profile.appendChild(pName);
 var pStats=document.createElement("div");pStats.className="detail-profile-stats";
-var rarLabel=s.rarity==="ultra-rare"?"Ultra-Rare":s.rarity==="rare"?"Rare":s.rarity==="uncommon"?"Uncommon":s.rarity==="common"?"Common":"No Spawn";
-var rarColor=s.rarity==="ultra-rare"?"#ffd700":s.rarity==="rare"?"#2196f3":s.rarity==="uncommon"?"#4caf50":s.rarity==="common"?"#aaa":"#666";
 pStats.innerHTML=(s.dex&&s.dex<99999?"#"+String(s.dex).padStart(4,"0")+"<br>":"")
 +s.count+" Skills<br>Highest: <span>"+stars(s.maxProf)+"</span><br>Total Prof: <span>"+s.totalProf+"</span>"
-+"<br>Rarity: <span style='color:"+rarColor+";font-weight:700'>"+rarLabel+"</span>"
 +(s.mod!=="cobblemon"?"<br>Pack: "+s.mod:"");
+// Rarity selector (editable)
+var rarWrap=document.createElement("div");rarWrap.style.cssText="margin-top:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap";
+var rarLbl=document.createElement("span");rarLbl.textContent="Rarity:";rarLbl.style.cssText="font-size:0.85rem;color:#8b949e";rarWrap.appendChild(rarLbl);
+var rarSel=document.createElement("select");rarSel.style.cssText="background:#0d1117;border:1px solid #30363d;color:#c9d1d9;padding:3px 6px;border-radius:4px;font-size:0.8rem";
+[["common","Common"],["uncommon","Uncommon"],["rare","Rare"],["ultra-rare","Ultra-Rare"],["none","No Spawn"]].forEach(function(opt){
+var o=document.createElement("option");o.value=opt[0];o.textContent=opt[1];if((s.rarity||"none")===opt[0])o.selected=true;rarSel.appendChild(o);
+});
+rarSel.addEventListener("change",function(){changeRarity(s,rarSel.value);rebuildDetailContent(panel,s,tr,detailTr)});
+rarWrap.appendChild(rarSel);
+pStats.appendChild(rarWrap);
 profile.appendChild(pStats);layout.appendChild(profile);
 // Right: ALL skills by category (owned = normal, unowned = faded)
 var skillsSection=document.createElement("div");skillsSection.className="detail-skills-section";
