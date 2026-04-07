@@ -111,6 +111,7 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d;overflow:visible}
 <input type="text" id="search" placeholder="Search species...">
 <select id="skill-filter"><option value="">All Skills</option></select>
 <select id="sort">
+<option value="dex" selected>Sort: Pokedex ID</option>
 <option value="name">Sort: Name (A-Z)</option>
 <option value="name-desc">Sort: Name (Z-A)</option>
 <option value="count">Sort: Most Skills</option>
@@ -617,7 +618,8 @@ if(rar&&(s.rarity||"none")!==rar)return false;
 return true;
 });
 var sv=sortEl.value;
-if(sv==="count")filtered.sort(function(a,b){return b.count-a.count});
+if(sv==="dex")filtered.sort(function(a,b){return (a.dex||99999)-(b.dex||99999)||a.name.localeCompare(b.name)});
+else if(sv==="count")filtered.sort(function(a,b){return b.count-a.count});
 else if(sv==="count-asc")filtered.sort(function(a,b){return a.count-b.count});
 else if(sv==="prof")filtered.sort(function(a,b){return b.maxProf-a.maxProf||a.name.localeCompare(b.name)});
 else if(sv==="prof-asc")filtered.sort(function(a,b){return a.maxProf-b.maxProf||a.name.localeCompare(b.name)});
@@ -646,7 +648,7 @@ var img=document.createElement("img");img.src=spriteUrl(s.name);img.alt="";img.l
 spriteWrap.appendChild(img);cellWrap.appendChild(spriteWrap);
 var infoWrap=document.createElement("div");infoWrap.className="pokemon-info";
 var span=document.createElement("span");span.className="species-name";span.textContent=s.name;infoWrap.appendChild(span);
-if(s.rarity){var rt=document.createElement("span");rt.className="rarity-tag rar-"+s.rarity;rt.textContent=s.rarity==="ultra-rare"?"UR":s.rarity==="rare"?"R":s.rarity==="uncommon"?"U":s.rarity==="common"?"C":"-";infoWrap.appendChild(rt)}
+if(s.rarity){var rt=document.createElement("span");rt.className="rarity-tag rar-"+s.rarity;rt.textContent=s.rarity==="ultra-rare"?"UR":s.rarity==="rare"?"R":s.rarity==="uncommon"?"U":s.rarity==="common"?"C":"-";rt.title=s.rarity==="ultra-rare"?"Ultra-Rare spawn":s.rarity==="rare"?"Rare spawn":s.rarity==="uncommon"?"Uncommon spawn":s.rarity==="common"?"Common spawn":"No natural spawn";rt.setAttribute("data-tip",rt.title);infoWrap.appendChild(rt)}
 if(s.mod!=="cobblemon"){var b=document.createElement("span");b.className="fakemon-badge";b.textContent=s.mod;infoWrap.appendChild(b)}
 if(modifications[s.name]){var mb=document.createElement("span");mb.className="modified-badge";mb.textContent="EDITED";infoWrap.appendChild(mb)}
 cellWrap.appendChild(infoWrap);nameCell.appendChild(cellWrap)
