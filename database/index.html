@@ -761,7 +761,8 @@ var next=document.createElement("button");next.textContent="Next \u2192";next.di
 
 // Auto-switch to skill-prof sort when a skill filter is selected
 skillFilter.addEventListener("change",function(){
-    if(skillFilter.value&&sortEl.value==="name"){sortEl.value="skill-prof"}
+    if(skillFilter.value&&(sortEl.value==="name"||sortEl.value==="dex")){sortEl.value="skill-prof"}
+    if(!skillFilter.value&&(sortEl.value==="skill-prof"||sortEl.value==="skill-prof-asc")){sortEl.value="dex"}
     updateSkillDesc();
     applyFilters();
 });
