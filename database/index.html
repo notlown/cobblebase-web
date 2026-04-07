@@ -470,17 +470,10 @@ var SPECIAL_SPRITE_NAMES={
 "tapukoko":"tapu-koko","tapulele":"tapu-lele","tapubulu":"tapu-bulu","tapufini":"tapu-fini",
 "chiyu":"chi-yu","chienpao":"chien-pao","tinglu":"ting-lu","wochien":"wo-chien"
 };
-var REGIONAL_FORMS={"alolan":"alola","galarian":"galar","hisuian":"hisui","paldean":"paldea","valencian":"valencia"};
 function spriteSlug(name){
 if(SPECIAL_SPRITE_NAMES[name])return SPECIAL_SPRITE_NAMES[name];
-// Handle regional forms (e.g. vulpix_alolan → vulpix-alola)
-if(name.indexOf("_")>=0){
-var parts=name.split("_");
-var base=parts[0],form=parts[1];
-if(REGIONAL_FORMS[form])return base+"-"+REGIONAL_FORMS[form];
-// Other forms (e.g. mr_mime → mr-mime)
-return parts.join("-");
-}
+// PokemonDB uses dashed form: vulpix_alolan → vulpix-alolan, mr_mime → mr-mime
+if(name.indexOf("_")>=0)return name.replace(/_/g,"-");
 return name;
 }
 function spriteUrl(name){return"https://img.pokemondb.net/sprites/home/normal/"+spriteSlug(name).replace(/[^a-z0-9-]/g,"")+".png"}
