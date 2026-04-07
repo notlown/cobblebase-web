@@ -110,6 +110,7 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d;overflow:visible}
 <div class="controls">
 <input type="text" id="search" placeholder="Search species...">
 <select id="skill-filter"><option value="">All Skills</option></select>
+<button id="add-skill-filter" type="button" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:6px 10px;border-radius:6px;font-size:0.85rem;cursor:pointer" title="Add skill to filter (combine multiple)">+ Add</button>
 <select id="sort">
 <option value="dex" selected>Sort: Pokedex ID</option>
 <option value="name">Sort: Name (A-Z)</option>
@@ -126,6 +127,7 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d;overflow:visible}
 <select id="mod-filter"><option value="cobblemon">Cobblemon Only</option><option value="all">All (incl. Fakemons)</option><option value="lively">Lively Mons</option><option value="alatias">Alatias AFP</option><option value="laser">Laser's Pack</option><option value="wilbayan">Wilbayan's</option><option value="gravelmon">Gravelmon</option></select>
 <select id="rarity-filter"><option value="">All Rarities</option><option value="common">Common</option><option value="uncommon">Uncommon</option><option value="rare">Rare</option><option value="ultra-rare">Ultra-Rare</option><option value="none">No Spawn</option></select>
 </div>
+<div id="active-skill-filters" style="max-width:1200px;margin:0.5rem auto 0;padding:0 1rem;display:none;flex-wrap:wrap;gap:6px;align-items:center"></div>
 <div id="skill-desc" style="max-width:1200px;margin:0.5rem auto;padding:0 1rem;display:none">
 <div style="background:#161b22;border:1px solid #30363d;border-left:3px solid #f7c948;border-radius:6px;padding:10px 16px;font-size:0.9rem;color:#c9d1d9;display:flex;align-items:center;gap:10px">
 <span style="color:#f7c948;font-weight:700;font-size:1rem" id="skill-desc-name"></span>
@@ -667,14 +669,46 @@ catDiv.appendChild(grid);skillsSection.appendChild(catDiv);
 layout.appendChild(skillsSection);panel.appendChild(layout);
 }
 
+var extraSkillFilters=[];// additional skills (combined with main filter via AND)
+function renderActiveFilters(){
+var bar=document.getElementById("active-skill-filters");
+bar.innerHTML="";
+var all=[];
+if(skillFilter.value)all.push(skillFilter.value);
+extraSkillFilters.forEach(function(s){if(s!==skillFilter.value)all.push(s)});
+if(all.length<=1){bar.style.display="none";return}
+bar.style.display="flex";
+var lbl=document.createElement("span");lbl.textContent="Filtering by ALL of:";lbl.style.cssText="color:#8b949e;font-size:0.85rem;font-weight:600";bar.appendChild(lbl);
+all.forEach(function(name,i){
+var tag=document.createElement("span");tag.style.cssText="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 10px;border-radius:6px;font-size:0.85rem;display:inline-flex;align-items:center;gap:6px";
+tag.innerHTML="<span>"+name+"</span>";
+var x=document.createElement("button");x.textContent="\u2716";x.style.cssText="background:none;border:none;color:#f44336;cursor:pointer;padding:0;font-size:0.75rem";
+x.addEventListener("click",function(){
+if(name===skillFilter.value){skillFilter.value=extraSkillFilters[0]||"";extraSkillFilters=extraSkillFilters.slice(1)}
+else{extraSkillFilters=extraSkillFilters.filter(function(s){return s!==name})}
+renderActiveFilters();applyFilters();updateSkillDesc();
+});
+tag.appendChild(x);bar.appendChild(tag);
+});
+}
+
 function applyFilters(){
 var q=search.value.toLowerCase().trim(),sk=skillFilter.value;currentMod=modFilter.value;var mod=currentMod;
 var rar=document.getElementById("rarity-filter").value;
+var requiredSkills=[];
+if(sk)requiredSkills.push(sk);
+extraSkillFilters.forEach(function(s){if(s!==sk)requiredSkills.push(s)});
 filtered=SPECIES_DB.filter(function(s){
 if(mod==="cobblemon"&&s.mod!=="cobblemon")return false;
 if(mod!=="all"&&mod!=="cobblemon"&&s.mod!==mod)return false;
 if(q&&!s.name.includes(q))return false;
-if(sk&&!s.skills.some(function(x){return x.name===sk}))return false;
+// Multi-skill AND filter
+if(requiredSkills.length){
+var skillNames=s.skills.map(function(x){return x.name});
+for(var i=0;i<requiredSkills.length;i++){
+if(skillNames.indexOf(requiredSkills[i])<0)return false;
+}
+}
 if(rar&&(s.rarity||"none")!==rar)return false;
 return true;
 });
@@ -770,6 +804,18 @@ search.addEventListener("input",applyFilters);
 sortEl.addEventListener("change",applyFilters);
 modFilter.addEventListener("change",applyFilters);
 document.getElementById("rarity-filter").addEventListener("change",applyFilters);
+document.getElementById("add-skill-filter").addEventListener("click",function(){
+var current=skillFilter.value;
+if(!current){alert("Pick a skill first, then click + Add to combine with another");return}
+if(extraSkillFilters.indexOf(current)>=0||extraSkillFilters.length===0&&current===skillFilter.value){
+// Already in list — just open dropdown for next
+}
+if(extraSkillFilters.indexOf(current)<0)extraSkillFilters.push(current);
+// Reset main filter so user can pick another
+skillFilter.value="";
+renderActiveFilters();
+applyFilters();
+});
 applyFilters();
 })();
 </script>
