@@ -18,7 +18,7 @@ The Admin GUI has two main panels:
 
 A scrollable, searchable list of **all loaded Pokemon species**, including:
 - All official Cobblemon species
-- Fakemon from installed mods (Lively Mons, Alatias Pack, Gravelmon, etc.)
+- Fakemon from installed mods (Lively Mons, Alatias Pack, etc.)
 - Custom species added through the Admin GUI
 
 Each entry shows the Pokemon's **sprite** (with a fallback icon for unknown species).
@@ -106,4 +106,4 @@ Assign unusual skills to specific Pokemon for themed bases:
 - **Changes are live.** If a Pokemon is currently assigned to a job and you remove that skill, the Pokemon will stop working immediately.
 - **Override file is per-world.** Different worlds can have different skill configurations.
 - **Back up your overrides.** If you have spent time configuring many species, back up `cobblebase_species_overrides.json` before wiping your world.
-- **The Admin GUI shows ALL species.** Even if 7,000+ Gravelmon species are loaded, they all appear in the scrollable list. Use the search bar to find what you need quickly.
+- **The Admin GUI shows ALL species.** Every loaded species appears in the scrollable list. Use the search bar to find what you need quickly.

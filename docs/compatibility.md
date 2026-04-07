@@ -70,18 +70,9 @@ Cobblebase includes **built-in skill assignments** for all species in these Fake
 | Assignment Method | Auto-assigned by typing + stats |
 | Download | Available on Modrinth |
 
-### Gravelmon
-
-| Property | Value |
-|----------|-------|
-| Species | 7,194 |
-| Assignment Method | Auto-assigned by typing + stats |
-| Download | Available on Modrinth |
-| Notes | Largest supported pack -- all 7,194 species have assignments |
-
 ### Total Species Count
 
-**8,426 species** have built-in skill assignments across all supported packs.
+**1,318 species** have built-in skill assignments across all supported packs.
 
 ---
 
