@@ -45,7 +45,9 @@ tr:hover{background:#161b22}
 .skill-tag.best-skill{background:#4caf5018;border:1px solid #4caf5044}
 .skill-tag.worst-skill{background:#f4433618;border:1px solid #f4433644}
 .cat-gathering{border-left:2px solid #4caf50}.cat-generation{border-left:2px solid #ff9800}.cat-combat{border-left:2px solid #f44336}
-.cat-support{border-left:2px solid #e91e9e}.cat-utility{border-left:2px solid #2196f3}.cat-legendary{border-left:2px solid #ffd700}.cat-fairy{border-left:2px solid #f0abfc}
+.cat-support{border-left:2px solid #e91e9e}.cat-utility{border-left:2px solid #2196f3}.cat-legendary{border-left:2px solid #ffd700}.cat-social{border-left:2px solid #ff55ff}
+.rarity-tag{display:inline-block;font-size:0.65rem;font-weight:700;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:0.5px}
+.rar-common{background:#6b6b6b;color:#fff}.rar-uncommon{background:#4caf50;color:#fff}.rar-rare{background:#2196f3;color:#fff}.rar-ultra-rare{background:#ffd700;color:#000}.rar-none{background:#30363d;color:#8b949e}
 .pagination{max-width:1200px;margin:1rem auto;padding:0 1rem;display:flex;justify-content:center;gap:0.5rem}
 .pagination button{background:#161b22;border:1px solid #30363d;color:#c9d1d9;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:0.85rem}
 .pagination button:hover{background:#21262d}
@@ -121,6 +123,7 @@ tr.detail-row td{padding:0;border-bottom:1px solid #21262d;overflow:visible}
 <option value="skill-prof-asc">Sort: Filtered Skill Prof (Low)</option>
 </select>
 <select id="mod-filter"><option value="cobblemon">Cobblemon Only</option><option value="all">All (incl. Fakemons)</option><option value="lively">Lively Mons</option><option value="alatias">Alatias AFP</option><option value="laser">Laser's Pack</option><option value="wilbayan">Wilbayan's</option><option value="gravelmon">Gravelmon</option></select>
+<select id="rarity-filter"><option value="">All Rarities</option><option value="common">Common</option><option value="uncommon">Uncommon</option><option value="rare">Rare</option><option value="ultra-rare">Ultra-Rare</option><option value="none">No Spawn</option></select>
 </div>
 <div id="skill-desc" style="max-width:1200px;margin:0.5rem auto;padding:0 1rem;display:none">
 <div style="background:#161b22;border:1px solid #30363d;border-left:3px solid #f7c948;border-radius:6px;padding:10px 16px;font-size:0.9rem;color:#c9d1d9;display:flex;align-items:center;gap:10px">
@@ -172,14 +175,13 @@ var SKILL_INFO={
 "Excavator":{desc:"Searches the area for ores and raw minerals",cd:300,cat:"gathering"},
 "Extinguisher":{desc:"Puts out nearby fires",cd:0,cat:"utility"},
 "Fishing":{desc:"Catches fish from nearby water",cd:300,cat:"gathering"},
-"Friend Recruiter":{desc:"Attracts wild Pokemon of the same type to appear nearby",cd:300,cat:"utility"},
+"Friend Recruiter":{desc:"Attracts wild Pokemon of the same type to appear nearby",cd:300,cat:"social"},
 "Furnace Fuel":{desc:"Adds fuel to furnaces",cd:300,cat:"generation"},
 "Growth Aura":{desc:"Crops and berries grow faster nearby",cd:0,cat:"legendary"},
 "Guard":{desc:"Repels wild Pokemon, earns XP or loot",cd:300,cat:"combat"},
 "Harvester":{desc:"Harvests crops, berries, apricorns, mints, and more",cd:60,cat:"gathering"},
 "Haste Boost":{desc:"Grants Haste I near base, owner-only beyond 40 blocks",cd:60,cat:"support"},
 "Healer":{desc:"Heals injured Pokemon in your team",cd:0,cat:"support"},
-"Honey Collect":{desc:"Produces honey and honeycomb",cd:300,cat:"gathering"},
 "Irrigator":{desc:"Hydrates nearby farmland",cd:0,cat:"utility"},
 "Item Gatherer":{desc:"Picks up dropped items and sorts them into nearby chests",cd:5,cat:"utility"},
 "Jump Boost":{desc:"Grants Jump Boost I near base, owner-only beyond 40 blocks",cd:60,cat:"support"},
@@ -190,7 +192,6 @@ var SKILL_INFO={
 "Night Vision":{desc:"Grants Night Vision near base, owner-only beyond 40 blocks",cd:60,cat:"support"},
 "Pharmacist":{desc:"Searches the area for healing items and berries",cd:300,cat:"gathering"},
 "Prospector":{desc:"Searches the area for relics and treasure",cd:300,cat:"gathering"},
-"Recruiter":{desc:"Attracts legendary wild Pokemon to spawn near your base",cd:540,cat:"legendary"},
 "Resistance Boost":{desc:"Grants Resistance I near base, owner-only beyond 40 blocks",cd:60,cat:"support"},
 "Saturation Boost":{desc:"Grants Saturation near base, owner-only beyond 40 blocks",cd:60,cat:"support"},
 "Scholar":{desc:"Searches the area for XP Candies and Rare Candies",cd:300,cat:"gathering"},
@@ -606,11 +607,13 @@ layout.appendChild(skillsSection);panel.appendChild(layout);
 
 function applyFilters(){
 var q=search.value.toLowerCase().trim(),sk=skillFilter.value;currentMod=modFilter.value;var mod=currentMod;
+var rar=document.getElementById("rarity-filter").value;
 filtered=SPECIES_DB.filter(function(s){
 if(mod==="cobblemon"&&s.mod!=="cobblemon")return false;
 if(mod!=="all"&&mod!=="cobblemon"&&s.mod!==mod)return false;
 if(q&&!s.name.includes(q))return false;
 if(sk&&!s.skills.some(function(x){return x.name===sk}))return false;
+if(rar&&(s.rarity||"none")!==rar)return false;
 return true;
 });
 var sv=sortEl.value;
@@ -643,6 +646,7 @@ var img=document.createElement("img");img.src=spriteUrl(s.name);img.alt="";img.l
 spriteWrap.appendChild(img);cellWrap.appendChild(spriteWrap);
 var infoWrap=document.createElement("div");infoWrap.className="pokemon-info";
 var span=document.createElement("span");span.className="species-name";span.textContent=s.name;infoWrap.appendChild(span);
+if(s.rarity){var rt=document.createElement("span");rt.className="rarity-tag rar-"+s.rarity;rt.textContent=s.rarity==="ultra-rare"?"UR":s.rarity==="rare"?"R":s.rarity==="uncommon"?"U":s.rarity==="common"?"C":"-";infoWrap.appendChild(rt)}
 if(s.mod!=="cobblemon"){var b=document.createElement("span");b.className="fakemon-badge";b.textContent=s.mod;infoWrap.appendChild(b)}
 if(modifications[s.name]){var mb=document.createElement("span");mb.className="modified-badge";mb.textContent="EDITED";infoWrap.appendChild(mb)}
 cellWrap.appendChild(infoWrap);nameCell.appendChild(cellWrap)
@@ -701,6 +705,7 @@ skillFilter.addEventListener("change",function(){
 search.addEventListener("input",applyFilters);
 sortEl.addEventListener("change",applyFilters);
 modFilter.addEventListener("change",applyFilters);
+document.getElementById("rarity-filter").addEventListener("change",applyFilters);
 applyFilters();
 })();
 </script>
