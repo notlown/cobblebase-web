@@ -232,7 +232,10 @@ var editorBar=document.getElementById("editor-bar"),editCount=document.getElemen
 function updateEditorBar(){
 var count=Object.keys(modifications).length+Object.keys(rarityChanges).length;
 editorBar.style.display=count>0?"block":"none";
-editCount.textContent=count+" change"+(count!==1?"s":"");
+var warn=count>9?" \u26A0 Max 9 per Discord submission \u2014 use Export JSON":"";
+editCount.innerHTML=count+" change"+(count!==1?"s":"")+(warn?"<span style=\"color:#f44336;font-size:0.8rem;margin-left:8px\">"+warn+"</span>":"");
+var btn=document.getElementById("submit-btn");
+if(btn){btn.disabled=count>9;btn.style.opacity=count>9?"0.5":"1"}
 }
 
 function modifySpecies(s,newSkills){
@@ -338,6 +341,16 @@ window.submitToDiscord=function(){
 var keys=Object.keys(modifications);
 var rarKeys=Object.keys(rarityChanges);
 if(keys.length===0&&rarKeys.length===0)return;
+// Hard limit: Discord webhooks support max 10 embeds per message (header + 9 changes)
+var totalCount=Object.keys(Object.assign({},
+keys.reduce(function(o,k){o[k]=1;return o},{}),
+rarKeys.reduce(function(o,k){o[k]=1;return o},{}))).length;
+if(totalCount>9){
+var statusEl=document.getElementById("submit-status");
+statusEl.textContent="\u26A0 Max 9 species per submission (you have "+totalCount+"). Please use Export JSON for larger batches, or submit in smaller chunks.";
+statusEl.style.color="#f44336";
+return;
+}
 var now=Date.now();
 var statusEl=document.getElementById("submit-status");
 if(now-lastSubmitTime<180000){
