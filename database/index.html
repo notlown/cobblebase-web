@@ -676,13 +676,21 @@ bar.innerHTML="";
 var all=[];
 if(skillFilter.value)all.push(skillFilter.value);
 extraSkillFilters.forEach(function(s){if(s!==skillFilter.value)all.push(s)});
-if(all.length<=1){bar.style.display="none";return}
+if(all.length===0){bar.style.display="none";return}
 bar.style.display="flex";
-var lbl=document.createElement("span");lbl.textContent="Filtering by ALL of:";lbl.style.cssText="color:#8b949e;font-size:0.85rem;font-weight:600";bar.appendChild(lbl);
-all.forEach(function(name,i){
-var tag=document.createElement("span");tag.style.cssText="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 10px;border-radius:6px;font-size:0.85rem;display:inline-flex;align-items:center;gap:6px";
-tag.innerHTML="<span>"+name+"</span>";
-var x=document.createElement("button");x.textContent="\u2716";x.style.cssText="background:none;border:none;color:#f44336;cursor:pointer;padding:0;font-size:0.75rem";
+var lbl=document.createElement("span");lbl.textContent=all.length>1?"Filtering by ALL of:":"Filter:";lbl.style.cssText="color:#8b949e;font-size:0.8rem;font-weight:600;margin-right:2px";bar.appendChild(lbl);
+all.forEach(function(name){
+var info=SKILL_INFO[name];
+var cat=info?info.cat:"utility";
+var catColors={"gathering":"#4caf50","generation":"#ff9800","combat":"#f44336","support":"#e91e9e","utility":"#2196f3","legendary":"#ffd700","social":"#ff55ff"};
+var color=catColors[cat]||"#f7c948";
+var tag=document.createElement("span");
+tag.style.cssText="background:"+color+"22;border:1px solid "+color+"88;color:"+color+";padding:3px 8px 3px 10px;border-radius:12px;font-size:0.78rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;line-height:1.2";
+var nm=document.createElement("span");nm.textContent=name;tag.appendChild(nm);
+var x=document.createElement("button");x.textContent="\u00D7";x.title="Remove filter";
+x.style.cssText="background:"+color+"33;border:none;color:"+color+";cursor:pointer;padding:0;width:16px;height:16px;border-radius:50%;font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1";
+x.addEventListener("mouseenter",function(){x.style.background=color;x.style.color="#000"});
+x.addEventListener("mouseleave",function(){x.style.background=color+"33";x.style.color=color});
 x.addEventListener("click",function(){
 if(name===skillFilter.value){skillFilter.value=extraSkillFilters[0]||"";extraSkillFilters=extraSkillFilters.slice(1)}
 else{extraSkillFilters=extraSkillFilters.filter(function(s){return s!==name})}
@@ -796,8 +804,9 @@ var next=document.createElement("button");next.textContent="Next \u2192";next.di
 // Auto-switch to skill-prof sort when a skill filter is selected
 skillFilter.addEventListener("change",function(){
     if(skillFilter.value&&(sortEl.value==="name"||sortEl.value==="dex")){sortEl.value="skill-prof"}
-    if(!skillFilter.value&&(sortEl.value==="skill-prof"||sortEl.value==="skill-prof-asc")){sortEl.value="dex"}
+    if(!skillFilter.value&&extraSkillFilters.length===0&&(sortEl.value==="skill-prof"||sortEl.value==="skill-prof-asc")){sortEl.value="dex"}
     updateSkillDesc();
+    renderActiveFilters();
     applyFilters();
 });
 search.addEventListener("input",applyFilters);
@@ -806,12 +815,14 @@ modFilter.addEventListener("change",applyFilters);
 document.getElementById("rarity-filter").addEventListener("change",applyFilters);
 document.getElementById("add-skill-filter").addEventListener("click",function(){
 var current=skillFilter.value;
-if(!current){alert("Pick a skill first, then click + Add to combine with another");return}
-if(extraSkillFilters.indexOf(current)>=0||extraSkillFilters.length===0&&current===skillFilter.value){
-// Already in list — just open dropdown for next
+if(!current){
+var btn=document.getElementById("add-skill-filter");
+btn.style.transition="background 0.2s";
+btn.style.background="#f4433644";
+setTimeout(function(){btn.style.background="#21262d"},400);
+return;
 }
 if(extraSkillFilters.indexOf(current)<0)extraSkillFilters.push(current);
-// Reset main filter so user can pick another
 skillFilter.value="";
 renderActiveFilters();
 applyFilters();
