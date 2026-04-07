@@ -8,7 +8,7 @@ Cobblebase is a Minecraft mod that transforms the Pasture Block into a living, b
 
 ## Key Features
 
-- **996 Pokemon** with unique, hand-crafted skill assignments (1,318 total including Fakemon packs)
+- **996 Pokemon** with unique, hand-crafted skill assignments (1,367 total including Fakemon packs)
 - **44 jobs** across 10 categories -- gathering, finding, combat, support, logistics, exploration, environmental, recruiting, passive buffs, and legendary
 - **Proficiency 1-5** per skill per species -- novice to master, affecting cooldowns, range, and loot quality
 - **Tabbed GUI** with Skills, Buffs, Logs, and Discovery panels

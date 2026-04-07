@@ -70,9 +70,25 @@ Cobblebase includes **built-in skill assignments** for all species in these Fake
 | Assignment Method | Auto-assigned by typing + stats |
 | Download | Available on Modrinth |
 
+### Baby Legends
+
+| Property | Value |
+|----------|-------|
+| Species | 22 |
+| Assignment Method | Inherited from legendary evolution target (proficiency -1) |
+| Download | Available on Modrinth |
+
+### Extra Paradox Mons
+
+| Property | Value |
+|----------|-------|
+| Species | 27 |
+| Assignment Method | Auto-assigned by typing (ultra-rare tier, proficiency capped at 4) |
+| Download | Available on Modrinth |
+
 ### Total Species Count
 
-**1,318 species** have built-in skill assignments across all supported packs.
+**1,367 species** have built-in skill assignments across all supported packs.
 
 ---
 
