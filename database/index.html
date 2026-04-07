@@ -468,35 +468,9 @@ if(name.indexOf("_")>=0)return name.replace(/_/g,"-");
 return name;
 }
 function spriteUrl(name){return"https://img.pokemondb.net/sprites/home/normal/"+spriteSlug(name).replace(/[^a-z0-9-]/g,"")+".png"}
-// MissingNo placeholder for fakemons / pokemon without an official sprite
-// Iconic glitched "Q" shape from Pokemon Red/Blue rendered as pixel-perfect SVG
-function placeholderSprite(name){
-var rows=[
-"....XXXXXXX...",
-"...XXXXXXXX...",
-"...XX....XX...",
-"...XX....XX...",
-"...XX....XX...",
-"...XX....XX...",
-"...XX....XX...",
-"...XX....XX...",
-"...XX..XXXX...",
-"...XXXXXXXX...",
-"....XXXX.X....",
-".........XX...",
-"..........X...",
-"..............",
-];
-var px=4,size=rows[0].length*px;
-var rects="";
-for(var y=0;y<rows.length;y++){
-for(var x=0;x<rows[y].length;x++){
-if(rows[y][x]==="X")rects+='<rect x="'+(x*px)+'" y="'+(y*px)+'" width="'+px+'" height="'+px+'" fill="#000"/>';
-}
-}
-var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+size+' '+(rows.length*px)+'" shape-rendering="crispEdges"><rect width="100%" height="100%" fill="#fff"/>'+rects+'</svg>';
-return"data:image/svg+xml;utf8,"+encodeURIComponent(svg);
-}
+// MissingNo placeholder — actual classic Game Boy sprite from Pokemon Red/Blue
+var MISSINGNO_SPRITE="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAYAAACohjseAAADKElEQVR42u1avbKiUAyOdywooVtLX8WSV7CkpTt0WGJ36G4ppY+gJa9iaYmddmeL3cOGmADO7kjYMTPM4UdmyM2XfMl37sI550CRPc4lBLERn++zCnKbwD6rOvdzm/AvOGX2Iwzd/WTd/WTbc7xiK8yh97lzzqlzsDAHV5jDy+/gFdsXKLPvKmuhyK1991iYaoygFBkMSXpIEF1oKzJcMZGKir9Hz7GpdPBxLmG9LTr3LscdAAAEsWmd8XDGv6EVWJ2D+6wCs7mxz9bbAi7HXet8mthO1Lg8XGjlwTEQxYVG4kGVDnJRw9cejvScg+hSW/6ttwVcm6a9TpMQgvhPtOgzAICy/gVX/zts6niQ8hyFIseBuU3mBVFaTDxEaXTpH4TNRafUaMsmtXBcY4BtqZEDyzoUI7SKoifuw7w5mwhy7RrXuqmLIOUzapTzKBdKLZtYaDTmHG6e6TE2mpONSzSHuOeY2HEVvRx3nWjRboeztzvIlXla4jl6wLTxkmmCKJ7n+iZ7CaKcvZ3oORoYKjYYfrS7GYLq2x1cRZEIU/+BPk+5JjtNrH5VbazkMATDoQo6CUS5CFJo9VXaa9OwXOoj/4SOqXRPuvpzH437yQ52KWMKjZppguoslCK8YU1GKj6T8uAqisTZLrcJpImFNLFQ1iGUdQjXpmnP8bTOtXQq5kGpF+Uqo6S/SO9+V9lTDr692TabG8uDHmJek5G4kouUd462eJNN9HRqpyvXh9JcHNJyJqui95PtrYBSFZV2k3D15aR7daKTF32D2IDZ3OBxLmEVRfA4l2A2Nwhi81tB666qICr1kJyKRq8l1dvnrXplG3cjlNuG1AAf4VlpMn3ay5hORqXwiyPGbXxK1MFRiDrRaeijafdDN2tmscPbJxXixtwfs4WotC9BSV8cdjVU0Vf3/fogrjIH+zY5Od6UCF0aplVME5yTnIjEKd5DUVxOlVevdDvcu5K8P7t5kH60H6fw1KF6CxtvqkizHo6QnxNprqVJCGUNkMfKtrDpXsMrkz4neailCUmW4BTuoWir/0+nf2lf8J/bx8GPgx8HPw5+HPwb+wmKAASR0DkHDAAAAABJRU5ErkJggg==";
+function placeholderSprite(name){return MISSINGNO_SPRITE}
 
 // Get proficiency of the currently filtered skill for a species
 function getFilteredSkillProf(s){
