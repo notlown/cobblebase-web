@@ -509,7 +509,11 @@ bigSprite.alt=s.name;bigSprite.onerror=function(){this.style.display="none"};
 profile.appendChild(bigSprite);
 var pName=document.createElement("div");pName.className="detail-profile-name";pName.textContent=s.name;profile.appendChild(pName);
 var pStats=document.createElement("div");pStats.className="detail-profile-stats";
-pStats.innerHTML=s.count+" Skills<br>Highest: <span>"+stars(s.maxProf)+"</span><br>Total Prof: <span>"+s.totalProf+"</span>"
+var rarLabel=s.rarity==="ultra-rare"?"Ultra-Rare":s.rarity==="rare"?"Rare":s.rarity==="uncommon"?"Uncommon":s.rarity==="common"?"Common":"No Spawn";
+var rarColor=s.rarity==="ultra-rare"?"#ffd700":s.rarity==="rare"?"#2196f3":s.rarity==="uncommon"?"#4caf50":s.rarity==="common"?"#aaa":"#666";
+pStats.innerHTML=(s.dex&&s.dex<99999?"#"+String(s.dex).padStart(4,"0")+"<br>":"")
++s.count+" Skills<br>Highest: <span>"+stars(s.maxProf)+"</span><br>Total Prof: <span>"+s.totalProf+"</span>"
++"<br>Rarity: <span style='color:"+rarColor+";font-weight:700'>"+rarLabel+"</span>"
 +(s.mod!=="cobblemon"?"<br>Pack: "+s.mod:"");
 profile.appendChild(pStats);layout.appendChild(profile);
 // Right: ALL skills by category (owned = normal, unowned = faded)
