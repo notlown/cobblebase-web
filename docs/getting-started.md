@@ -63,7 +63,7 @@ Press **K** (default keybind) to open the Cloth Config settings screen. Key opti
 | Passive XP Interval | Seconds between passive XP ticks | 60s |
 | Skill Toggles | Enable/disable entire skill categories | All on |
 | Search Radius | Default block search radius for skills | 10 |
-| Mentor Max Boost | Cap the mentor XP multiplier | 100% |
+| Mentor Max Boost | Maximum passive XP percentage at Prof 5 | 100% |
 
 All settings are also available as JSON configuration files for server admins.
 

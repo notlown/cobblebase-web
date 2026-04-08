@@ -247,7 +247,7 @@ Directly heals Pokemon in the pasture by a percentage of their max HP. Also revi
 
 ### Mentor
 
-Provides a passive XP boost for all Pokemon in the same pasture. The highest proficiency Mentor wins -- bonuses do not stack.
+Lets every Pokemon in the same pasture gain passive XP over time. **Without an active Mentor, Pokemon do not gain XP from working at all** — the Mentor is the source of passive XP, not a multiplier on top of base gains. The highest proficiency Mentor wins; multiple Mentors do not stack.
 
 | Property | Value |
 |----------|-------|
