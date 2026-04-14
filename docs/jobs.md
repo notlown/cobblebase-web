@@ -66,14 +66,19 @@ Excavates ancient relics and artifacts including prismarine, nautilus shells, an
 
 ### Diving
 
-Dives for underwater treasure including prismarine, nautilus shells, heart of the sea, and tridents.
+Dives underwater to find treasures and rare items. Pokemon must be near water to dive. Loot includes Cobblemon items like Deep Sea Scales, Prism Scales, and fossils, plus vanilla treasures like Heart of the Sea.
+
+- **Common:** Relic Coin, Water Gem, Prismarine Shard, Dive Ball, Net Ball
+- **Uncommon:** Deep Sea Scale, Deep Sea Tooth, Mystic Water, Lure Ball
+- **Rare:** Prism Scale, Shell Bell, Water Stone, Dragon Scale, Nautilus Shell, Fossils
+- **Ultra Rare:** Heart of the Sea
 
 | Property | Value |
 |----------|-------|
-| Base Cooldown | 90 seconds |
-| Search Radius | 10 blocks |
+| Base Cooldown | 360 seconds (6 min) |
+| Search Radius | 15 blocks |
 | Requires | Water nearby |
-| Example Pokemon | Manaphy, Tentacruel, Lapras |
+| Example Pokemon | Lapras, Kyogre, Manaphy |
 
 ---
 

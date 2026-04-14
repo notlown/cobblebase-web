@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archeologist - Loot Table - Cobblebase Documentation</title>
+    <title>Diving - Loot Table - Cobblebase Documentation</title>
     <link rel="icon" type="image/png" href="../../cobblebase_icon.png">
     <link rel="stylesheet" href="../../navbar.css">
     <style>
@@ -83,8 +83,8 @@
                     <div class="sidebar-group-links">
                 <a href="mining.html">Mining</a>
                 <a href="fishing.html">Fishing</a>
-                <a href="diving.html">Diving</a>
-                <a href="archeologist.html" class="active">Archeologist</a>
+                <a href="diving.html" class="active">Diving</a>
+                <a href="archeologist.html">Archeologist</a>
                 <a href="producer.html">Producer</a>
                     </div>
                 </div>
@@ -120,110 +120,97 @@
         <div class="main">
             <div class="top-header"><img src="../../cobblebase_header.png" alt="Cobblebase"></div>
             <div class="content">
-                <div class="breadcrumb"><a href="../jobs.html">Jobs Guide</a> &rarr; Archeologist</div>
+                <div class="breadcrumb"><a href="../jobs.html">Jobs Guide</a> &rarr; Diving</div>
 
-                <h1>Archeologist - Loot Table</h1>
-                <p>Excavates ancient relics and artifacts from dive treasure sites. Finds prismarine, nautilus shells, coral, and other ocean treasures.</p>
+                <h1>Diving - Loot Table</h1>
+                <p>Dives underwater to find treasures and rare items. The Pokemon must be near water to dive. Loot is drawn from a dedicated diving loot table featuring Cobblemon-specific items like Deep Sea Scales, Prism Scales, and fossils, alongside vanilla Minecraft treasures.</p>
 
                 <h2>Properties</h2>
                 <table>
                     <tr><th>Property</th><th>Value</th></tr>
-                    <tr><td>Base Cooldown</td><td>300 seconds (5 min)</td></tr>
-                    <tr><td>Search Radius</td><td>10 blocks</td></tr>
+                    <tr><td>Base Cooldown</td><td>360 seconds (6 min)</td></tr>
+                    <tr><td>Search Radius</td><td>15 blocks</td></tr>
+                    <tr><td>Requires</td><td>Water nearby</td></tr>
+                    <tr><td>168 Species</td><td>Water-type Pokemon that can realistically dive</td></tr>
                 </table>
 
-                <h2>Proficiency Drop Chances</h2>
-                <p>The tier rolled each cycle depends on your Pokemon's proficiency level. Higher proficiency shifts the odds toward rarer tiers.</p>
-                <p>Archeologist uses a single flat loot table (no tiers). Proficiency affects <strong>cooldown speed only</strong>, not loot quality.</p>
+                <h2>Loot Table</h2>
+                <p>Each dive produces one item from the pool below. Items are weighted -- common items drop more frequently than rare ones. The <strong>Drop Chance</strong> column shows the probability of getting that specific item per dive cycle.</p>
 
-                <h2>Loot Tables</h2>
-                <p>Each tier has its own pool of items. When a tier is rolled, one entry is chosen from that pool based on weight. The <strong>Drop Chance</strong> column shows the probability of getting that specific item <em>within</em> the tier.</p>
-
-                <h3 style="color:#58a6ff;">Dive Treasure Loot Pool</h3>
+                <h3 class="tier-common">Common Tier</h3>
                 <table>
                     <thead>
-                        <tr><th>Item</th><th>Quantity</th><th>Weight</th><th>Drop Chance</th></tr>
+                        <tr><th>Item</th><th>Weight</th><th>Drop Chance</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><img src="../../icons/items/prismarine_shard.png" width="24" height="24" class="item-icon" alt="Prismarine Shard"> Prismarine Shard</td>
-                            <td>1-2</td>
-                            <td>25</td>
-                            <td>19.4%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/prismarine_crystals.png" width="24" height="24" class="item-icon" alt="Prismarine Crystals"> Prismarine Crystals</td>
-                            <td>1-2</td>
-                            <td>20</td>
-                            <td>15.5%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/nautilus_shell.png" width="24" height="24" class="item-icon" alt="Nautilus Shell"> Nautilus Shell</td>
-                            <td>1</td>
-                            <td>10</td>
-                            <td>7.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Sea Lantern</td>
-                            <td>1</td>
-                            <td>8</td>
-                            <td>6.2%</td>
-                        </tr>
-                        <tr>
-                            <td>Sponge</td>
-                            <td>1</td>
-                            <td>5</td>
-                            <td>3.9%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/heart_of_the_sea.png" width="24" height="24" class="item-icon" alt="Heart Of The Sea"> Heart Of The Sea</td>
-                            <td>1</td>
-                            <td>2</td>
-                            <td>1.6%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/trident.png" width="24" height="24" class="item-icon" alt="Trident"> Trident</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>0.8%</td>
-                        </tr>
-                        <tr>
-                            <td>Tube Coral Block</td>
-                            <td>1-2</td>
-                            <td>8</td>
-                            <td>6.2%</td>
-                        </tr>
-                        <tr>
-                            <td>Brain Coral Block</td>
-                            <td>1-2</td>
-                            <td>7</td>
-                            <td>5.4%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/kelp.png" width="24" height="24" class="item-icon" alt="Kelp"> Kelp</td>
-                            <td>1-3</td>
-                            <td>20</td>
-                            <td>15.5%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/ink_sac.png" width="24" height="24" class="item-icon" alt="Ink Sac"> Ink Sac</td>
-                            <td>1-2</td>
-                            <td>15</td>
-                            <td>11.6%</td>
-                        </tr>
-                        <tr>
-                            <td><img src="../../icons/items/glow_ink_sac.png" width="24" height="24" class="item-icon" alt="Glow Ink Sac"> Glow Ink Sac</td>
-                            <td>1</td>
-                            <td>8</td>
-                            <td>6.2%</td>
-                        </tr>
+                        <tr><td>Relic Coin</td><td>25</td><td>23.6%</td></tr>
+                        <tr><td>Prismarine Shard</td><td>12</td><td>11.3%</td></tr>
+                        <tr><td>Water Gem</td><td>12</td><td>11.3%</td></tr>
+                        <tr><td>Dive Ball</td><td>10</td><td>9.4%</td></tr>
+                        <tr><td>Net Ball</td><td>10</td><td>9.4%</td></tr>
                     </tbody>
                 </table>
 
+                <h3 class="tier-uncommon">Uncommon Tier</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Deep Sea Scale</td><td>6</td><td>5.7%</td></tr>
+                        <tr><td>Deep Sea Tooth</td><td>6</td><td>5.7%</td></tr>
+                        <tr><td>Mystic Water</td><td>5</td><td>4.7%</td></tr>
+                        <tr><td>Lure Ball</td><td>5</td><td>4.7%</td></tr>
+                    </tbody>
+                </table>
 
+                <h3 class="tier-rare">Rare Tier</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Prism Scale</td><td>3</td><td>2.8%</td></tr>
+                        <tr><td>Shell Bell</td><td>3</td><td>2.8%</td></tr>
+                        <tr><td>Water Stone</td><td>3</td><td>2.8%</td></tr>
+                        <tr><td>Dragon Scale</td><td>3</td><td>2.8%</td></tr>
+                        <tr><td>Nautilus Shell</td><td>3</td><td>2.8%</td></tr>
+                        <tr><td>Helix Fossil</td><td>2</td><td>1.9%</td></tr>
+                        <tr><td>Fossilized Fish</td><td>2</td><td>1.9%</td></tr>
+                        <tr><td>Fossilized Drake</td><td>2</td><td>1.9%</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 class="tier-ultra-rare">Ultra Rare Tier</h3>
+                <table>
+                    <thead>
+                        <tr><th>Item</th><th>Weight</th><th>Drop Chance</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Heart of the Sea</td><td>1</td><td>0.9%</td></tr>
+                    </tbody>
+                </table>
+
+                <hr>
+
+                <h2>Proficiency &amp; Cooldown</h2>
+                <p>The base cooldown of 360 seconds scales with proficiency. Higher proficiency means faster dive cycles and more loot over time.</p>
+                <table>
+                    <thead>
+                        <tr><th>Proficiency</th><th>Cooldown</th><th>Dives per Hour</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span></td><td>~600s (10 min)</td><td>~6</td></tr>
+                        <tr><td><span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span></td><td>~480s (8 min)</td><td>~7.5</td></tr>
+                        <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span></td><td>360s (6 min)</td><td>10</td></tr>
+                        <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span></td><td>~240s (4 min)</td><td>15</td></tr>
+                        <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span></td><td>~120s (2 min)</td><td>30</td></tr>
+                    </tbody>
+                </table>
+                <p>Most water-type Pokemon have Diving at Prof 3. Legendaries like Kyogre, Manaphy, Palkia, and Keldeo have Prof 5. Lapras has Prof 4.</p>
 
                 <div class="db-callout">
-                    <p>Want to know which Pokémon can learn this skill? Check our <a href="../../database/index.html">Species Database</a> — filter by skill to see all compatible species.</p>
+                    <p>Want to know which Pokemon can learn this skill? Check our <a href="../../database/index.html">Species Database</a> -- filter by skill to see all 168 compatible species.</p>
                 </div>
                 <footer>
                     <p>Cobblebase is licensed under <a href="https://mozilla.org/MPL/2.0/">MPL-2.0</a>. Built by <a href="https://github.com/notlown">notlown</a>.</p>
