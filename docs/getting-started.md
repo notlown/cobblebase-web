@@ -81,7 +81,7 @@ Output JARs are located in `fabric/build/libs/` and `neoforge/build/libs/`. Requ
 
 ## Next Steps
 
-- Learn about all [44 jobs](jobs.md) your Pokemon can perform
+- Learn about all [45 jobs](jobs.md) your Pokemon can perform
 - Understand the [proficiency system](proficiency.md) that scales performance
 - Explore the [GUI](gui.md) tabs for managing your base
 - Check [compatibility](compatibility.md) with Fakemon packs

@@ -115,7 +115,7 @@
                 <a href="index.html" class="back-link">&larr; Back to Documentation Index</a>
 
                 <h1>Jobs</h1>
-                <p>Cobblebase features <strong>44 unique jobs</strong> across 10 categories. Every Pokemon species has hand-crafted skill assignments -- not based on type alone, but on the identity and lore of each species.</p>
+                <p>Cobblebase features <strong>45 unique jobs</strong> across 11 categories. Every Pokemon species has hand-crafted skill assignments -- not based on type alone, but on the identity and lore of each species.</p>
                 <p>All standard jobs use a <strong>300-second base cooldown</strong> unless otherwise noted. Cooldowns scale with <a href="proficiency.html">proficiency</a>: <span class="prof-stars">&#9733;</span> ~8 min, <span class="prof-stars">&#9733;&#9733;&#9733;</span> 5 min, <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> ~1.7 min.</p>
 
                 <hr>
@@ -377,6 +377,25 @@
 
                 <hr>
 
+                <h2>&#x1F95A; Breeding (1 job)</h2>
+
+                <h3>Egg Hatcher</h3>
+                <p>Sequentially incubates <a href="https://www.curseforge.com/minecraft/mc-mods/cobbreeding">Cobbreeding</a> eggs from your pasture's egg slot or nearby chests. Each Egg Hatcher Pokemon claims exactly one egg at a time and incubates it by simulating walking with the egg in inventory &mdash; when the hatch timer expires, Cobbreeding's own logic spawns the resulting Pokemon. A second Hatcher in the same pasture picks a <em>different</em> egg.</p>
+                <table>
+                    <tr><th>Property</th><th>Value</th></tr>
+                    <tr><td>Base Cooldown</td><td>1 second (continuous tick)</td></tr>
+                    <tr><td>Search Radius</td><td>6 blocks (chests + own pasture)</td></tr>
+                    <tr><td>Egg Sources</td><td>Own pasture inventory + nearby chests/barrels</td></tr>
+                    <tr><td>Prof 1 <span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> Speed</td><td>1x (vanilla Cobbreeding)</td></tr>
+                    <tr><td>Prof 5 <span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> Speed</td><td>10x (10 tick simulations per cycle)</td></tr>
+                    <tr><td>Requires</td><td><a href="https://www.curseforge.com/minecraft/mc-mods/cobbreeding">Cobbreeding</a> mod (soft-dep &mdash; no-op without it)</td></tr>
+                    <tr><td>Example Pokemon</td><td>Chansey, Blissey, Togekiss, Audino, Volcarona, Manaphy, Ditto, Latias</td></tr>
+                </table>
+                <p>Hatches are logged in the dedicated <strong>Hatchery</strong> tab in the Pasture GUI, showing every Pokemon hatched + statistics (total ever, this session, unique species, top hatchers).</p>
+                <p>The incubation speed multiplier is configurable per-job via Admin &rarr; Jobs &rarr; Egg Hatcher &rarr; <code>incubationSpeed</code>.</p>
+
+                <hr>
+
                 <h2>&#x1F4E6; Logistics (1 job)</h2>
 
                 <h3>Item Gatherer</h3>
@@ -536,13 +555,14 @@
                     <tr><td>&#x1F50D; Finding</td><td>12</td></tr>
                     <tr><td>&#x2694;&#xFE0F; Combat</td><td>1</td></tr>
                     <tr><td>&#x1F49A; Support</td><td>2</td></tr>
+                    <tr><td>&#x1F95A; Breeding</td><td>1</td></tr>
                     <tr><td>&#x1F4E6; Logistics</td><td>1</td></tr>
                     <tr><td>&#x1F9ED; Exploration</td><td>1</td></tr>
                     <tr><td>&#x1F30D; Environmental</td><td>6</td></tr>
                     <tr><td>&#x1F91D; Recruiting</td><td>2</td></tr>
                     <tr><td>&#x2728; Passive Buffs</td><td>9</td></tr>
                     <tr><td>&#x1F31F; Legendary</td><td>3</td></tr>
-                    <tr><td><strong>Total</strong></td><td><strong>44</strong> (including Aura Boost counted under Buffs)</td></tr>
+                    <tr><td><strong>Total</strong></td><td><strong>45</strong> (including Aura Boost counted under Buffs)</td></tr>
                 </table>
                 <p>All cooldowns are affected by the <a href="proficiency.html">proficiency system</a>. Higher proficiency means faster cooldowns, better loot, and wider range.</p>
 

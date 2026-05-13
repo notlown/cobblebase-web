@@ -1,6 +1,6 @@
 # Jobs
 
-Cobblebase features **44 unique jobs** across 10 categories. Every Pokemon species has hand-crafted skill assignments -- not based on type alone, but on the identity and lore of each species.
+Cobblebase features **45 unique jobs** across 11 categories. Every Pokemon species has hand-crafted skill assignments -- not based on type alone, but on the identity and lore of each species.
 
 ---
 
@@ -266,6 +266,28 @@ The max boost is configurable via Cloth Config (default: 100%).
 
 ---
 
+## Breeding (1 job)
+
+### Egg Hatcher
+
+Sequentially incubates [Cobbreeding](https://www.curseforge.com/minecraft/mc-mods/cobbreeding) eggs from your pasture's egg slot or nearby chests. Each Egg Hatcher Pokemon claims exactly one egg at a time and incubates it by simulating walking with the egg in inventory -- when the hatch timer expires, Cobbreeding's own logic spawns the resulting Pokemon. A second Hatcher in the same pasture picks a *different* egg.
+
+| Property | Value |
+|----------|-------|
+| Base Cooldown | 1 second (continuous tick) |
+| Search Radius | 6 blocks (chests + own pasture) |
+| Egg Sources | Own pasture inventory + nearby chests/barrels |
+| Prof 1 Speed | 1x (vanilla Cobbreeding) |
+| Prof 5 Speed | 10x (10 tick simulations per cycle) |
+| Requires | [Cobbreeding](https://www.curseforge.com/minecraft/mc-mods/cobbreeding) mod (soft-dep -- no-op without it) |
+| Example Pokemon | Chansey, Blissey, Togekiss, Audino, Volcarona, Manaphy, Ditto, Latias |
+
+Hatches are logged in the dedicated **Hatchery** tab in the Pasture GUI, showing every Pokemon hatched + statistics (total ever, this session, unique species, top hatchers).
+
+The incubation speed multiplier is configurable per-job via Admin → Jobs → Egg Hatcher → `incubationSpeed`.
+
+---
+
 ## Logistics (1 job)
 
 ### Item Gatherer
@@ -442,12 +464,13 @@ Special passive abilities found only on legendary and mythical Pokemon. See the 
 | Finding | 12 |
 | Combat | 1 |
 | Support | 2 |
+| Breeding | 1 |
 | Logistics | 1 |
 | Exploration | 1 |
 | Environmental | 6 |
 | Recruiting | 2 |
 | Passive Buffs | 9 |
 | Legendary | 3 |
-| **Total** | **44** (including Aura Boost counted under Buffs) |
+| **Total** | **45** (including Aura Boost counted under Buffs) |
 
 All cooldowns are affected by the [proficiency system](proficiency.md). Higher proficiency means faster cooldowns, better loot, and wider range.
