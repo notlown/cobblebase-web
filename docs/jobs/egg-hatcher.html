@@ -137,33 +137,44 @@
                 <h2>Properties</h2>
                 <table>
                     <tr><th>Property</th><th>Value</th></tr>
-                    <tr><td>Base Cooldown</td><td>20 seconds (incubation tick)</td></tr>
-                    <tr><td>Search Radius</td><td>10 blocks (egg slot + nearby chests)</td></tr>
+                    <tr><td>Base Cooldown</td><td>1 second (the executor ticks every second)</td></tr>
+                    <tr><td>Search Radius</td><td>6 blocks (egg slot + nearby chests)</td></tr>
                     <tr><td>Job Type</td><td>Support / Utility</td></tr>
                     <tr><td>Concurrency</td><td>One egg per Hatcher; multiple Hatchers in the same pasture pick different eggs.</td></tr>
-                    <tr><td>Tuning Field</td><td><code>incubationSpeed</code> (multiplier, default 1.0)</td></tr>
+                    <tr><td>Tuning Fields</td><td><code>prof1Speed</code> ... <code>prof5Speed</code> (one multiplier per proficiency level)</td></tr>
                 </table>
+
+                <h2>Hatch Speed by Proficiency</h2>
+                <p>Higher proficiency = more incubation ticks per executor cycle = faster hatch. Each Hatcher's <em>tick multiplier</em> is fed straight from the per-proficiency tuning fields — there's no hidden scaling, what you see in Admin &rarr; Jobs is exactly what the executor runs.</p>
+                <table>
+                    <tr><th>Proficiency</th><th>Default Multiplier</th><th>Relative Speed</th><th>Example: 600 s egg</th></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9734;&#9734;&#9734;&#9734;</span> (1)</td><td><code>1.0&times;</code></td><td>Baseline — same pace as a player carrying the egg</td><td>~10 min</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9734;&#9734;&#9734;</span> (2)</td><td><code>2.0&times;</code></td><td>Twice as fast</td><td>~5 min</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span> (3)</td><td><code>3.0&times;</code></td><td>Three times as fast</td><td>~3 min 20 s</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span> (4)</td><td><code>4.0&times;</code></td><td>Four times as fast</td><td>~2 min 30 s</td></tr>
+                    <tr><td><span class="prof-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> (5)</td><td><code>5.0&times;</code></td><td>Five times as fast — Master Hatcher</td><td>~2 min</td></tr>
+                </table>
+                <p>Concrete example times assume Cobbreeding's standard 600-second egg timer; longer/shorter timers scale linearly. An admin can rewrite any of the five values via <code>prof1Speed</code> ... <code>prof5Speed</code> (range 0.1&ndash;20.0&times;) — make Master 10&times; for fast-progress servers, or flatten the curve for hardcore.</p>
 
                 <h2>How It Works</h2>
                 <ol>
                     <li>The Hatcher scans the pasture's egg slot and chests within range for a Cobbreeding egg.</li>
                     <li>It <strong>claims</strong> one egg — that egg is now reserved for this Pokémon. Other Hatchers in the same pasture skip it and pick the next one.</li>
-                    <li>Each tick (default every 20 ticks = 1 s), Cobbreeding's internal <code>TIMER</code> data component on the egg is decremented. Cobblebase reads/writes this component reflectively so it stays compatible across Cobbreeding versions.</li>
-                    <li>When the TIMER hits zero, Cobbreeding's own hatch logic fires — the Pokémon is spawned by Cobbreeding, not by Cobblebase. The Hatcher's involvement is purely the incubation tick.</li>
+                    <li>Each second (the executor's base cooldown), Cobbreeding's <code>inventoryTick</code> is invoked <em>N times</em> on the egg, where N is the proficiency-level multiplier from the table above. Cobblebase resolves the owner's <code>ServerPlayerEntity</code> and passes them as the tick target so Cobbreeding's internal SECOND/TIMER counters actually advance.</li>
+                    <li>When the TIMER hits zero, Cobbreeding's own hatch logic fires — the Pokémon is spawned by Cobbreeding, not by Cobblebase. The Hatcher's involvement is purely simulating the inventory ticks.</li>
                     <li>A <strong>visual indicator</strong> (an <code>ItemDisplay</code> entity showing the egg item) is spawned at the Hatcher's head height while the claim is active, so other players can see at a glance which Mon is incubating.</li>
                 </ol>
 
-                <h2>Configuration</h2>
-                <h3>incubationSpeed tuning field</h3>
-                <p>Per-job tuning value editable in <strong>Mod Menu &rarr; Admin &rarr; Jobs &rarr; Egg Hatcher</strong>. Multiplies the decrement applied to Cobbreeding's TIMER each tick.</p>
-                <table>
-                    <tr><th>Value</th><th>Effect</th></tr>
-                    <tr><td><code>0.5</code></td><td>Half speed — slower hatches, useful on hardcore-balance servers.</td></tr>
-                    <tr><td><code>1.0</code></td><td>Default — matches Cobbreeding's own hatch pace.</td></tr>
-                    <tr><td><code>2.0</code></td><td>Twice as fast — eggs hatch in half the time.</td></tr>
-                    <tr><td><code>5.0</code></td><td>Max recommended for testing.</td></tr>
-                </table>
-                <p>Combine with the per-proficiency cooldown rows (<code>_prof1Cd</code> ... <code>_prof5Cd</code>) under the same job to make higher-proficiency Hatchers tick more frequently — see <a href="../admin.html">Admin Guide &rarr; Jobs Tab</a>.</p>
+                <h2>Admin Configuration</h2>
+                <p>All five proficiency multipliers are editable in <strong>Mod Menu &rarr; Admin &rarr; Jobs &rarr; Egg Hatcher</strong>. Each renders as a sub-row under the job:</p>
+                <ul>
+                    <li><code>prof1Speed</code> — default <code>1.0&times;</code> (range 0.1&ndash;20.0)</li>
+                    <li><code>prof2Speed</code> — default <code>2.0&times;</code></li>
+                    <li><code>prof3Speed</code> — default <code>3.0&times;</code></li>
+                    <li><code>prof4Speed</code> — default <code>4.0&times;</code></li>
+                    <li><code>prof5Speed</code> — default <code>5.0&times;</code></li>
+                </ul>
+                <p>If the owner is offline, the Hatcher pauses (no hatching without the player to tick against); the claim is preserved so progress resumes when they come back.</p>
 
                 <h2>Hatchery Tab</h2>
                 <p>The Pasture GUI gets a dedicated <strong>Hatchery</strong> tab whenever at least one Hatcher is pastured. Two sub-tabs:</p>
