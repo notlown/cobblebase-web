@@ -79,6 +79,59 @@ This file is loaded on server start and takes priority over built-in assignments
 
 Custom assignments **fully override** built-in data for a species. If you toggle a single skill for a Pokemon, all of its skills (including the ones you did not change) are saved in the override file.
 
+## Jobs Tab
+
+The Jobs tab (added in 1.5.5) lets admins tune cooldown, search radius, per-proficiency cooldowns, and job-specific parameters per skill — globally, without datapacks.
+
+### Layout
+
+- **Left sidebar** -- expandable category list (Gathering / Finder / Combat / Production / Support / etc.). Click a category to expand; click a job to enter its detail view.
+- **Detail view** has three sub-tabs:
+  - **Settings** -- cooldown, search radius, enabled toggle, declared tuning fields (see below), and five synthetic per-proficiency cooldown rows (`_prof1Cd` ... `_prof5Cd`) that override the global cooldown for that specific proficiency level.
+  - **Loot** -- embedded loot editor in `lockedToBaseName` mode, so the job's loot table is editable inline without leaving the Jobs tab.
+  - **Stats** -- placeholder for future per-job analytics.
+
+All edits are previewed in-tab and saved together when you click **Save**. An unsaved-changes indicator (`*unsaved`) appears next to the button while edits are pending.
+
+### Per-Job Tuning Fields
+
+Several support and production jobs expose extra parameters beyond cooldown/radius. Each renders as an indented sub-row in the Settings sub-tab.
+
+| Job | Tuning key | What it does |
+|---|---|---|
+| Mentor | `xpMultiplier` | Scales the proficiency-derived XP boost (1.0 = vanilla, 2.0 = doubled) |
+| Speed / Strength / Resistance / Jump / Haste / Saturation / Night Vision / Water Breathing | `effectLevel` | Sets the status effect amplifier applied to players (Speed I, II, III, ...) |
+| Aura Boost | `luckBonus` | Adds extra Luck levels on top of the proficiency-scaled amplifier |
+| Lucky Charm | `shinyMultiplier` | Multiplier on top of the proficiency-scaled shiny rate |
+| Growth Aura | `growthMultiplier` | Multiplier on crops ticked per pulse |
+| Egg Hatcher | `incubationSpeed` | Multiplier on the Cobbreeding egg timer tick rate (1.0 = vanilla, 2.0 = hatch twice as fast) |
+
+Each support executor falls back to its built-in default if the JSON omits the tuning declaration, so existing third-party skill JSONs keep working unchanged.
+
+### Per-Proficiency Cooldowns
+
+Every job auto-gets five extra rows (`_prof1Cd` ... `_prof5Cd`) under Settings. Defaults follow the existing prof-cooldown formula; admins only need to edit the rows they want to override. Stored in the same `JobConfigOverrides.tuning` map and consumed via `CobblebaseConfig.getEffectiveCooldownTicks(base, prof, skillId)`.
+
+## Server Tab
+
+The Server tab (added in 1.5.5) houses server-wide feature flags that aren't tied to any single job.
+
+| Setting | Default | Effect |
+|---|---|---|
+| **WorkerWiki visibility** | enabled | When disabled, the in-game WorkerWiki sub-tab renders a "disabled" message instead of the species grid -- useful for servers where admins want players to discover skills by experimenting. |
+| **Pasture Range** | 10 blocks | Server-wide radius Pokemon use to scan for work targets and stay near the pasture. Overrides the local cloth-config `jobSearchRadius` value. Bounded 5-30. |
+| **Max Working Pokemon per Pasture** | 0 (unlimited) | Caps how many tethered Pokemon can hold a job assignment at once per pasture. Mons past the cap (in tether order) are hard-unassigned to Relax. Aura-only mons (null assignment, species grants passive buff) are not counted toward the cap. Bounds 0-64. |
+
+Settings persist in `cobblebase_general.json` and broadcast to all clients on change.
+
+## Loot Tab
+
+The dedicated Loot tab from earlier releases was folded into each job's per-job detail view (Jobs tab -> select job -> Loot sub-tab). All loot editing now happens inline alongside the job's other settings — see the Jobs Tab section above.
+
+## Wiki Tab
+
+External-resources panel: Modrinth page, GitHub, Discord, Ko-fi support box. Server-config flags that previously lived here (e.g. the WorkerWiki visibility toggle) have moved to the Server tab.
+
 ## Use Cases
 
 ### Balancing Skills for Your Server

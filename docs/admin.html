@@ -173,6 +173,54 @@
                 <h3>Override Behavior</h3>
                 <p>Custom assignments <strong>fully override</strong> built-in data for a species. If you toggle a single skill for a Pokemon, all of its skills (including the ones you did not change) are saved in the override file.</p>
 
+                <h2>&#x1F527; Jobs Tab</h2>
+                <p>The Jobs tab (added in 1.5.5) lets admins tune cooldown, search radius, per-proficiency cooldowns, and job-specific parameters per skill &mdash; globally, without datapacks.</p>
+
+                <h3>Layout</h3>
+                <ul>
+                    <li><strong>Left sidebar</strong> &mdash; expandable category list (Gathering / Finder / Combat / Production / Support / etc.). Click a category to expand; click a job to enter its detail view.</li>
+                    <li><strong>Detail view</strong> has three sub-tabs:
+                        <ul>
+                            <li><strong>Settings</strong> &mdash; cooldown, search radius, enabled toggle, declared tuning fields (see below), and five synthetic per-proficiency cooldown rows (<code>_prof1Cd</code> ... <code>_prof5Cd</code>) that override the global cooldown for that specific proficiency level.</li>
+                            <li><strong>Loot</strong> &mdash; embedded loot editor in <code>lockedToBaseName</code> mode, so the job's loot table is editable inline without leaving the Jobs tab.</li>
+                            <li><strong>Stats</strong> &mdash; placeholder for future per-job analytics.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>All edits are previewed in-tab and saved together when you click <strong>Save</strong>. An unsaved-changes indicator (<code>*unsaved</code>) appears next to the button while edits are pending.</p>
+
+                <h3>Per-Job Tuning Fields</h3>
+                <p>Several support and production jobs expose extra parameters beyond cooldown/radius. Each renders as an indented sub-row in the Settings sub-tab.</p>
+                <table>
+                    <tr><th>Job</th><th>Tuning key</th><th>What it does</th></tr>
+                    <tr><td>Mentor</td><td><code>xpMultiplier</code></td><td>Scales the proficiency-derived XP boost (1.0 = vanilla, 2.0 = doubled)</td></tr>
+                    <tr><td>Speed / Strength / Resistance / Jump / Haste / Saturation / Night Vision / Water Breathing</td><td><code>effectLevel</code></td><td>Sets the status effect amplifier applied to players (Speed I, II, III, ...)</td></tr>
+                    <tr><td>Aura Boost</td><td><code>luckBonus</code></td><td>Adds extra Luck levels on top of the proficiency-scaled amplifier</td></tr>
+                    <tr><td>Lucky Charm</td><td><code>shinyMultiplier</code></td><td>Multiplier on top of the proficiency-scaled shiny rate</td></tr>
+                    <tr><td>Growth Aura</td><td><code>growthMultiplier</code></td><td>Multiplier on crops ticked per pulse</td></tr>
+                    <tr><td>Egg Hatcher</td><td><code>incubationSpeed</code></td><td>Multiplier on the Cobbreeding egg timer tick rate (1.0 = vanilla, 2.0 = hatch twice as fast)</td></tr>
+                </table>
+                <p>Each support executor falls back to its built-in default if the JSON omits the tuning declaration, so existing third-party skill JSONs keep working unchanged.</p>
+
+                <h3>Per-Proficiency Cooldowns</h3>
+                <p>Every job auto-gets five extra rows (<code>_prof1Cd</code> ... <code>_prof5Cd</code>) under Settings. Defaults follow the existing prof-cooldown formula; admins only need to edit the rows they want to override. Stored in the same <code>JobConfigOverrides.tuning</code> map and consumed via <code>CobblebaseConfig.getEffectiveCooldownTicks(base, prof, skillId)</code>.</p>
+
+                <h2>&#x1F310; Server Tab</h2>
+                <p>The Server tab (added in 1.5.5) houses server-wide feature flags that aren't tied to any single job.</p>
+                <table>
+                    <tr><th>Setting</th><th>Default</th><th>Effect</th></tr>
+                    <tr><td><strong>WorkerWiki visibility</strong></td><td>enabled</td><td>When disabled, the in-game WorkerWiki sub-tab renders a "disabled" message instead of the species grid &mdash; useful for servers where admins want players to discover skills by experimenting.</td></tr>
+                    <tr><td><strong>Pasture Range</strong></td><td>10 blocks</td><td>Server-wide radius Pokemon use to scan for work targets and stay near the pasture. Overrides the local cloth-config <code>jobSearchRadius</code> value. Bounded 5&ndash;30.</td></tr>
+                    <tr><td><strong>Max Working Pokemon per Pasture</strong></td><td>0 (unlimited)</td><td>Caps how many tethered Pokemon can hold a job assignment at once per pasture. Mons past the cap (in tether order) are hard-unassigned to Relax. Aura-only mons (null assignment, species grants passive buff) are not counted toward the cap. Bounds 0&ndash;64.</td></tr>
+                </table>
+                <p>Settings persist in <code>cobblebase_general.json</code> and broadcast to all clients on change.</p>
+
+                <h2>&#x1F4B0; Loot Tab</h2>
+                <p>The dedicated Loot tab from earlier releases was folded into each job's per-job detail view (Jobs tab &rarr; select job &rarr; Loot sub-tab). All loot editing now happens inline alongside the job's other settings &mdash; see the Jobs Tab section above.</p>
+
+                <h2>&#x1F517; Wiki Tab</h2>
+                <p>External-resources panel: Modrinth page, GitHub, Discord, Ko-fi support box. Server-config flags that previously lived here (e.g. the WorkerWiki visibility toggle) have moved to the Server tab.</p>
+
                 <h2>&#x1F4A1; Use Cases</h2>
 
                 <h3>Balancing Skills for Your Server</h3>

@@ -259,6 +259,29 @@
 
                 <hr>
 
+                <h2>&#x1F95A; Hatchery Tab</h2>
+                <p>The Hatchery tab shows incubation progress and a hatch history for <a href="https://www.curseforge.com/minecraft/mc-mods/cobbreeding">Cobbreeding</a> eggs handled by <a href="jobs.html">Egg Hatcher</a> Pokemon in this pasture.</p>
+
+                <h3>Sub-tabs</h3>
+                <table>
+                    <tr><th>Sub-tab</th><th>What it shows</th></tr>
+                    <tr><td><strong>Home</strong></td><td>Live progress bar per egg currently being incubated, plus which Pokemon is incubating it. Species of the hatching egg is intentionally hidden so the result stays a surprise.</td></tr>
+                    <tr><td><strong>Logs</strong></td><td>Chronological list of past hatches: species hatched, parent species, hatcher Pokemon, time-ago.</td></tr>
+                </table>
+
+                <h3>Visual indicator in the world</h3>
+                <p>While a Hatcher is actively progressing an egg, an <code>ItemDisplay</code> entity sits at the Pokemon's head height showing the egg. This lets others see at a glance which Mon is incubating, without opening the GUI.</p>
+
+                <h3>Hatch log storage</h3>
+                <ul>
+                    <li>Up to <strong>100 entries</strong> per world, oldest dropped first</li>
+                    <li>Saved to <code>cobblebase_hatch_log.json</code> in the world folder</li>
+                    <li>Each entry: timestamp, world time, species hatched, parent species, hatcher Pokemon</li>
+                </ul>
+                <p>The Logs sub-tab polls the server every 2 seconds while open; while closed, no network traffic.</p>
+
+                <hr>
+
                 <h2>&#x1F4A1; Tips</h2>
                 <ul>
                     <li><strong>Use Idle sparingly.</strong> Idle mode does nothing -- only set it if you want to pause a Pokemon's job while keeping passive buffs active.</li>

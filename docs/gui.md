@@ -144,6 +144,31 @@ A scrollable table with:
 
 ---
 
+## Hatchery Tab
+
+The Hatchery tab shows incubation progress and a hatch history for [Cobbreeding](https://www.curseforge.com/minecraft/mc-mods/cobbreeding) eggs handled by [Egg Hatcher](jobs.md#egg-hatcher) Pokemon in this pasture.
+
+### Sub-tabs
+
+| Sub-tab | What it shows |
+|---|---|
+| **Home** | Live progress bar per egg currently being incubated, plus which Pokemon is incubating it. Species of the hatching egg is intentionally hidden so the result stays a surprise. |
+| **Logs** | Chronological list of past hatches: species hatched, parent species, hatcher Pokemon, time-ago. |
+
+### Visual indicator in the world
+
+While a Hatcher is actively progressing an egg, an `ItemDisplay` entity sits at the Pokemon's head height showing the egg. This lets others see at a glance which Mon is incubating, without opening the GUI.
+
+### Hatch log storage
+
+- Up to **100 entries** per world, oldest dropped first
+- Saved to `cobblebase_hatch_log.json` in the world folder
+- Each entry: timestamp, world time, species hatched, parent species, hatcher Pokemon
+
+The Logs sub-tab polls the server every 2 seconds while open; while closed, no network traffic.
+
+---
+
 ## Tips
 
 - **Use Auto for most Pokemon.** It picks the highest-proficiency skill, which is almost always optimal.
