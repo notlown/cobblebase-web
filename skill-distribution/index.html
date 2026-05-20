@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cobblebase — Skill Prof Distribution</title>
+<style>
+:root {
+  --bg: #0f1419;
+  --panel: #1a2129;
+  --border: #2a3441;
+  --text: #e6ecf0;
+  --muted: #8b98a5;
+  --p1: #4a5568;
+  --p2: #2b6cb0;
+  --p3: #38a169;
+  --p4: #d69e2e;
+  --p5: #c53030;
+  --accent: #f6ad55;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; background: var(--bg); color: var(--text); padding: 32px; line-height: 1.5; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 28px; margin-bottom: 8px; }
+.subtitle { color: var(--muted); margin-bottom: 24px; }
+.meta { display: flex; gap: 24px; margin-bottom: 32px; padding: 16px; background: var(--panel); border-radius: 8px; border: 1px solid var(--border); }
+.meta-item { font-size: 14px; }
+.meta-item strong { display: block; font-size: 22px; color: var(--accent); margin-bottom: 4px; }
+.meta-item span { color: var(--muted); }
+.controls { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.btn { padding: 8px 14px; background: var(--panel); border: 1px solid var(--border); color: var(--text); border-radius: 6px; cursor: pointer; font-size: 13px; transition: 0.15s; }
+.btn:hover { background: var(--border); }
+.btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+th { background: #0d1218; padding: 12px 10px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
+th:hover { color: var(--text); }
+th.sort-asc::after { content: " ↑"; color: var(--accent); }
+th.sort-desc::after { content: " ↓"; color: var(--accent); }
+td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 14px; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background: rgba(255,255,255,0.02); }
+.cat { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.cat-gathering { background: #2c5282; color: #bee3f8; }
+.cat-combat { background: #742a2a; color: #fed7d7; }
+.cat-support { background: #553c9a; color: #d6bcfa; }
+.cat-utility { background: #285e61; color: #b2f5ea; }
+.cat-generation { background: #744210; color: #faf089; }
+.cat-social { background: #702459; color: #fbb6ce; }
+.cat-legendary { background: #c05621; color: #feebc8; }
+.prof-cell { text-align: center; font-variant-numeric: tabular-nums; font-weight: 600; }
+.bar { display: inline-block; width: 100%; height: 22px; background: var(--bg); border-radius: 3px; position: relative; overflow: hidden; }
+.bar-inner { height: 100%; display: flex; }
+.bar-seg { transition: 0.2s; }
+.bar-seg.p1 { background: var(--p1); }
+.bar-seg.p2 { background: var(--p2); }
+.bar-seg.p3 { background: var(--p3); }
+.bar-seg.p4 { background: var(--p4); }
+.bar-seg.p5 { background: var(--p5); }
+.legend { display: flex; gap: 16px; margin-bottom: 16px; padding: 12px; background: var(--panel); border-radius: 6px; border: 1px solid var(--border); font-size: 13px; }
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 2px; }
+.zero { color: var(--muted); opacity: 0.4; }
+.total { color: var(--accent); font-weight: 700; }
+.tier-flag { font-size: 11px; padding: 2px 6px; border-radius: 3px; margin-left: 6px; }
+.tier-good { background: #22543d; color: #9ae6b4; }
+.tier-warn { background: #744210; color: #faf089; }
+.tier-bad { background: #742a2a; color: #fed7d7; }
+.p5-mons { font-size: 11px; color: var(--muted); padding: 4px 0; }
+.p5-mons:not(:empty)::before { content: "P5: "; color: var(--p5); font-weight: 600; }
+.detail-row td { background: rgba(0,0,0,0.2); padding: 8px 10px; font-size: 12px; }
+.summary-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.summary-card { background: var(--panel); border: 1px solid var(--border); padding: 16px; border-radius: 8px; }
+.summary-card h3 { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.summary-card .num { font-size: 24px; font-weight: 700; color: var(--accent); }
+.summary-card .breakdown { font-size: 11px; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Skill Proficiency Distribution</h1>
+  <p class="subtitle">How many species have each proficiency level across all 44 jobs/skills in the species DB</p>
+
+  <div class="meta" id="meta"></div>
+
+  <div class="summary-row" id="summary"></div>
+
+  <div class="legend">
+    <strong style="color: var(--muted); font-size: 12px;">PROF LEVELS:</strong>
+    <div class="legend-item"><span class="legend-dot" style="background: var(--p1);"></span>1 — Beginner</div>
+    <div class="legend-item"><span class="legend-dot" style="background: var(--p2);"></span>2 — Common</div>
+    <div class="legend-item"><span class="legend-dot" style="background: var(--p3);"></span>3 — Solid</div>
+    <div class="legend-item"><span class="legend-dot" style="background: var(--p4);"></span>4 — Rare</div>
+    <div class="legend-item"><span class="legend-dot" style="background: var(--p5);"></span>5 — Legendary</div>
+  </div>
+
+  <div class="controls">
+    <button class="btn active" data-filter="all">All Skills</button>
+    <button class="btn" data-filter="no-p5">No Prof 5</button>
+    <button class="btn" data-filter="too-many-p5">10+ Prof 5</button>
+    <button class="btn" data-filter="healthy">Healthy P5 (1-9)</button>
+  </div>
+
+  <table id="dist-table">
+    <thead>
+      <tr>
+        <th data-sort="skill">Skill</th>
+        <th data-sort="cat">Category</th>
+        <th data-sort="p1" class="prof-cell">P1</th>
+        <th data-sort="p2" class="prof-cell">P2</th>
+        <th data-sort="p3" class="prof-cell">P3</th>
+        <th data-sort="p4" class="prof-cell">P4</th>
+        <th data-sort="p5" class="prof-cell">P5</th>
+        <th data-sort="total" class="prof-cell">Total</th>
+        <th>Distribution</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+
+  <p style="margin-top: 24px; color: var(--muted); font-size: 12px;">Click any row to expand and see which species hold P5 and P4 for that skill.</p>
+</div>
+
+<script src="../database/database-data.js"></script>
+<script>
+const skills = {};
+SPECIES_DB.forEach(sp => {
+  sp.skills.forEach(s => {
+    if (!skills[s.id]) skills[s.id] = { id: s.id, name: s.name, cat: s.cat, p1:[], p2:[], p3:[], p4:[], p5:[] };
+    skills[s.id]["p"+s.prof].push(sp.name);
+  });
+});
+const data = Object.values(skills).map(s => ({
+  ...s,
+  p1c: s.p1.length, p2c: s.p2.length, p3c: s.p3.length, p4c: s.p4.length, p5c: s.p5.length,
+  total: s.p1.length + s.p2.length + s.p3.length + s.p4.length + s.p5.length,
+}));
+
+const metaEl = document.getElementById('meta');
+const totalSpecies = SPECIES_DB.length;
+const totalSkills = data.length;
+const skillsNoP5 = data.filter(d => d.p5c === 0).length;
+const skillsOverP5 = data.filter(d => d.p5c > 10).length;
+metaEl.innerHTML = `
+  <div class="meta-item"><strong>${totalSpecies}</strong><span>Total species</span></div>
+  <div class="meta-item"><strong>${totalSkills}</strong><span>Total skills</span></div>
+  <div class="meta-item"><strong>${skillsNoP5}</strong><span>Skills with NO P5</span></div>
+  <div class="meta-item"><strong>${skillsOverP5}</strong><span>Skills with 10+ P5</span></div>
+`;
+
+// Summary cards: per category averages
+const byCat = {};
+data.forEach(d => {
+  if (!byCat[d.cat]) byCat[d.cat] = { skills: 0, p5: 0, p4: 0, total: 0 };
+  byCat[d.cat].skills++;
+  byCat[d.cat].p5 += d.p5c;
+  byCat[d.cat].p4 += d.p4c;
+  byCat[d.cat].total += d.total;
+});
+const sumEl = document.getElementById('summary');
+sumEl.innerHTML = Object.entries(byCat).sort().map(([cat, v]) => `
+  <div class="summary-card">
+    <h3>${cat}</h3>
+    <div class="num">${v.skills}</div>
+    <div class="breakdown">${v.total} assignments · ${v.p5} P5 · ${v.p4} P4</div>
+  </div>
+`).join('');
+
+let currentFilter = 'all';
+let sortKey = 'p5';
+let sortDir = -1;
+
+function render() {
+  let rows = [...data];
+  if (currentFilter === 'no-p5') rows = rows.filter(d => d.p5c === 0);
+  if (currentFilter === 'too-many-p5') rows = rows.filter(d => d.p5c >= 10);
+  if (currentFilter === 'healthy') rows = rows.filter(d => d.p5c >= 1 && d.p5c < 10);
+
+  rows.sort((a, b) => {
+    let va = a[sortKey === 'skill' ? 'name' : sortKey === 'cat' ? 'cat' : sortKey + 'c'];
+    let vb = b[sortKey === 'skill' ? 'name' : sortKey === 'cat' ? 'cat' : sortKey + 'c'];
+    if (sortKey === 'total') { va = a.total; vb = b.total; }
+    if (typeof va === 'string') return va.localeCompare(vb) * sortDir;
+    return (va - vb) * sortDir;
+  });
+
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = rows.map(d => {
+    const segs = ['p1','p2','p3','p4','p5'].map(p => {
+      const w = d.total > 0 ? (d[p].length / d.total * 100) : 0;
+      return w > 0 ? `<div class="bar-seg ${p}" style="width:${w}%" title="${p.toUpperCase()}: ${d[p].length}"></div>` : '';
+    }).join('');
+
+    let tierFlag = '';
+    if (d.p5c === 0) tierFlag = '<span class="tier-flag tier-warn">no P5</span>';
+    else if (d.p5c > 15) tierFlag = '<span class="tier-flag tier-bad">P5 oversaturated</span>';
+    else if (d.p5c >= 1 && d.p5c <= 9) tierFlag = '<span class="tier-flag tier-good">healthy P5</span>';
+
+    return `
+      <tr onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'table-row' ? 'none' : 'table-row'">
+        <td><strong>${d.name}</strong>${tierFlag}</td>
+        <td><span class="cat cat-${d.cat}">${d.cat}</span></td>
+        <td class="prof-cell ${d.p1c === 0 ? 'zero' : ''}">${d.p1c}</td>
+        <td class="prof-cell ${d.p2c === 0 ? 'zero' : ''}">${d.p2c}</td>
+        <td class="prof-cell ${d.p3c === 0 ? 'zero' : ''}">${d.p3c}</td>
+        <td class="prof-cell ${d.p4c === 0 ? 'zero' : ''}">${d.p4c}</td>
+        <td class="prof-cell ${d.p5c === 0 ? 'zero' : ''}">${d.p5c}</td>
+        <td class="prof-cell total">${d.total}</td>
+        <td><div class="bar"><div class="bar-inner">${segs}</div></div></td>
+      </tr>
+      <tr class="detail-row" style="display:none">
+        <td colspan="9">
+          ${d.p5c > 0 ? `<div class="p5-mons">${d.p5.join(', ')}</div>` : ''}
+          ${d.p4c > 0 && d.p4c <= 25 ? `<div style="font-size:11px;color:var(--muted)"><span style="color:var(--p4);font-weight:600">P4:</span> ${d.p4.join(', ')}</div>` : ''}
+          ${d.p4c > 25 ? `<div style="font-size:11px;color:var(--muted)"><span style="color:var(--p4);font-weight:600">P4 (${d.p4c} mons):</span> ${d.p4.slice(0, 20).join(', ')}…</div>` : ''}
+        </td>
+      </tr>`;
+  }).join('');
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.dataset.sort === sortKey) {
+      th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+    }
+  });
+}
+
+document.querySelectorAll('th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const k = th.dataset.sort;
+    if (sortKey === k) sortDir *= -1;
+    else { sortKey = k; sortDir = -1; }
+    render();
+  });
+});
+
+document.querySelectorAll('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
